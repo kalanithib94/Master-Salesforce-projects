@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /B \"c:\\\\CC\\\\Project_SFDC\\\\QA to UAT\\\\QA to UAT\")",
+      "Bash(sf:*)",
+      "Bash(sfdx --version:*)",
+      "Bash(where:*)",
+      "Bash(\"C:\\\\Program Files\\\\sf\\\\bin\\\\sf.cmd\" data query --query \"SELECT Id, Name, ProductCode, Description, IsActive, Family FROM Product2 WHERE IsActive = true LIMIT 5\" --target-org kalanithi@cloudcompliance.app.sgpt-qa --result-format json)",
+      "Bash(cmd /c:*)",
+      "Bash(test-connection.bat)",
+      "Bash(cmd.exe /c \"\"\"c:\\\\CC\\\\Project_SFDC\\\\QA to UAT\\\\QA to UAT\\\\scripts\\\\test-connection.bat\"\"\")",
+      "Bash(timeout /t 5 /nobreak)",
+      "Bash(powershell:*)",
+      "Bash(Tee-Object -FilePath \"c:\\\\CC\\\\Project_SFDC\\\\QA to UAT\\\\QA to UAT\\\\data\\\\import-log.txt\")"
+    ]
+  }
+}

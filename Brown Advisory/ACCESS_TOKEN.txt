@@ -1,0 +1,18 @@
+# Microsoft Graph API Access Token
+# Generated: 2025-11-01
+# Expires: ~1 hour from generation time
+#
+# Do not commit real tokens. Paste a short-lived token from Microsoft Graph Explorer when needed.
+# Format for Named Credential Custom Authorization Header:
+#   Bearer <paste_token_here>
+
+Bearer <PASTE_MICROSOFT_GRAPH_TOKEN_FROM_GRAPH_EXPLORER>
+
+# Token Scopes: openid, profile, User.Read, email
+# User: (configure in your org)
+
+# IMPORTANT: Tokens expire in ~1 hour.
+# For production, implement OAuth 2.0 with refresh tokens.
+
+# Use this in Salesforce Named Credential:
+# Custom Authorization Header = Bearer [paste the token above]

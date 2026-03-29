@@ -1,0 +1,4 @@
+Subject,StartDateTime,EndDateTime,Location,What__r.External_Id__c,Who__r.External_Id__c
+"Discovery call - Acme","2026-02-01T15:00:00Z","2026-02-01T16:00:00Z","Zoom",OPP-ACME-NEW,CON-ACME-1
+"Renewal QBR - Acme","2026-02-08T15:00:00Z","2026-02-08T16:00:00Z","Teams",OPP-ACME-REN,CON-ACME-1
+"Risk suite demo - Nova","2026-02-05T15:00:00Z","2026-02-05T16:00:00Z","On-site",OPP-NOVA-NEW,CON-NOVA-1

@@ -1,0 +1,139 @@
+openapi: 3.0.0
+info:
+  title: GPTfy REST API
+  description: |
+    API for interacting with Salesforce data through the GPTfy REST service.
+    This API provides functionality for making synchronous calls to OpenAI's API
+    using Salesforce Continuations.
+  version: 1.0.0
+  contact:
+    name: Salesforce Support
+servers:
+  - url: https://tsogptfy.lightning.force.com
+    description: Salesforce Development Instance
+security:
+  - basicAuth: []
+paths:
+  /services/apexrest/ccai/v1/agentic:
+    post:
+      summary: Synchronous call to OpenAI
+      description: |
+        Makes a synchronous call to OpenAI's API using Salesforce Continuations.
+        This endpoint blocks for up to 120 seconds while waiting for the response from OpenAI.
+        The response is logged asynchronously in GPTfy_AI_Conversations__c.
+      operationId: syncOpenAI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userMessage
+              properties:
+                userMessage:
+                  type: string
+                  description: The message to send to OpenAI
+                userContextId:
+                  type: string
+                  description: Optional thread ID for conversation context
+            examples:
+              simpleQuestion:
+                summary: Simple question example
+                value:
+                  message: "How do I create a new account in Salesforce?"
+              withThread:
+                summary: Question with thread ID
+                value:
+                  message: "What fields are required for a new opportunity?"
+                  threadId: "thread_12345"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - success
+                      - error
+                  response:
+                    type: object
+                    description: The processed response from OpenAI
+                  responseId:
+                    type: string
+                    description: Unique identifier for the response
+                  message:
+                    type: string
+                    description: Error message if status is 'error'
+                  arguments:
+                    type: object
+                    description: Additional arguments or structured data from the response
+              examples:
+                successExample:
+                  summary: Successful AI response
+                  value:
+                    status: "success"
+                    response: {
+                      "content": "To create a new account in Salesforce, you need to navigate to the Accounts tab, click on the 'New' button, fill in the required fields (typically Name and other business information), and click 'Save'."
+                    }
+                    responseId: "resp_67890"
+        '400':
+          description: Bad request - Missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: "error"
+                message: "Request must contain a non-empty \"message\" field"
+        '401':
+          description: Unauthorized - Invalid or expired authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error or timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: "error"
+                message: "Error processing request: Callout timeout"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - error
+        message:
+          type: string
+          description: Error message details
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Basic authentication using Salesforce username, password, and security token
+x-ms-capabilities:
+  naturalLanguage:
+    type: conversation
+    operations:
+      - syncOpenAI
+    prompts:
+      - type: query
+        prompt: |
+          Ask GPTfy: {message}
+      - type: query
+        prompt: |
+          Use AI to help me with {task} in Salesforce.
+x-ms-basic-auth-credentials:
+  username: demosg@outlook.com.newdev
+  password: 6wIU8IFs8EC*XcuWtR^V*Oxw0c3ycgytljZZHIuvjFIcYDlfI9KgA15

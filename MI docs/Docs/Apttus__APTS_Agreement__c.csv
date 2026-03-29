@@ -1,0 +1,4 @@
+External_Id__c,Name,Apttus__Account__r.External_Id__c,Apttus__Status__c,Apttus__StartDate__c,Apttus__EndDate__c
+AGR-ACME-PLAT,Acme - DataFeed Platform Subscription,ACC-ACME,Activated,2025-04-01,2026-03-31
+AGR-ACME-PILOT,Acme - DataFeed Pilot,ACC-ACME,Expired,2024-01-01,2024-03-31
+AGR-NOVA-RISK,Nova - Credit Risk Suite,ACC-NOVA,Activated,2025-10-01,2026-09-30

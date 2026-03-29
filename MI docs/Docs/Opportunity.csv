@@ -1,0 +1,4 @@
+External_Id__c,Name,StageName,Type,Amount,CloseDate,Account__r.External_Id__c
+OPP-ACME-NEW,Acme - DataFeed Platform - New,Proposal/Price Quote,New Business,185000,2026-02-28,ACC-ACME
+OPP-ACME-REN,Acme - DataFeed Platform - Renewal,Negotiation/Review,Renewal,155000,2026-03-15,ACC-ACME
+OPP-NOVA-NEW,Nova - Credit Risk Suite - New,Qualification,New Business,420000,2026-03-30,ACC-NOVA

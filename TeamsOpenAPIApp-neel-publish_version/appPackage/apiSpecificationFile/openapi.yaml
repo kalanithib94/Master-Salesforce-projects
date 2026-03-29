@@ -1,0 +1,142 @@
+openapi: 3.0.0
+info:
+  title: GPTfy REST API
+  description: |
+    API for interacting with Salesforce data through the GPTfy REST service.
+    This API provides functionality for making synchronous calls to OpenAI's API
+    using Salesforce Continuations.
+  version: 1.0.0
+  contact:
+    name: Salesforce Support
+servers:
+  - url: https://outlookcomnewdev-dev-ed.my.salesforce.com
+    description: Salesforce Development Instance
+security:
+  - oauth2:
+      - full
+      - refresh_token
+      - offline_access
+      - sfap_api
+paths:
+  /services/apexrest/v1/gptfy-sync-continuation:
+    post:
+      x-openai-isConsequential: true
+      summary: Synchronous call to OpenAI
+      description: >
+        Makes a synchronous call to OpenAI's API using Salesforce Continuations.
+        This endpoint blocks for up to 120 seconds while waiting for the
+        response from OpenAI.
+        The response is logged asynchronously in GPTfy_AI_Conversations__c.
+      operationId: syncOpenAI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The message to send to OpenAI
+                threadId:
+                  type: string
+                  description: Optional thread ID for conversation context
+            examples:
+              simpleQuestion:
+                summary: Simple question example
+                value:
+                  message: How do I create a new account in Salesforce?
+              withThread:
+                summary: Question with thread ID
+                value:
+                  message: What fields are required for a new opportunity?
+                  threadId: thread_12345
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - success
+                      - error
+                  response:
+                    type: object
+                    description: The processed response from OpenAI
+                  responseId:
+                    type: string
+                    description: Unique identifier for the response
+                  message:
+                    type: string
+                    description: Error message if status is 'error'
+                  arguments:
+                    type: object
+                    description: Additional arguments or structured data from the response
+              examples:
+                successExample:
+                  summary: Successful AI response
+                  value:
+                    status: success
+                    response:
+                      content: >-
+                        To create a new account in Salesforce, you need to
+                        navigate to the Accounts tab, click on the 'New' button,
+                        fill in the required fields (typically Name and other
+                        business information), and click 'Save'.
+                    responseId: resp_67890
+        '400':
+          description: Bad request - Missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: error
+                message: Request must contain a non-empty "message" field
+        '401':
+          description: Unauthorized - Invalid or expired authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error or timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: error
+                message: 'Error processing request: Callout timeout'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - error
+        message:
+          type: string
+          description: Error message details
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization using the Salesforce Connected App (sg_poc_dd)
+      flows:
+        authorizationCode:
+          authorizationUrl: https://outlookcomnewdev-dev-ed.my.salesforce.com/services/oauth2/authorize
+          tokenUrl: https://outlookcomnewdev-dev-ed.my.salesforce.com/services/oauth2/token
+          refreshUrl: https://outlookcomnewdev-dev-ed.my.salesforce.com/services/oauth2/token
+          scopes:
+            full: Full access (full)
+            refresh_token: Perform requests at any time (refresh_token)
+            offline_access: Perform requests at any time (offline_access)
+            sfap_api: Access the Salesforce API Platform (sfap_api)

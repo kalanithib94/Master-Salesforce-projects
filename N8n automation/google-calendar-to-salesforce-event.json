@@ -1,0 +1,159 @@
+{
+  "name": "Google Calendar to Salesforce Event",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "google-calendar-trigger",
+      "name": "Google Calendar Trigger",
+      "type": "n8n-nodes-base.googleCalendarTrigger",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "google-calendar-event-created",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "1",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format Google Calendar event data for Salesforce Event\nconst googleEvent = $input.item.json;\n\n// Extract relevant data from Google Calendar event\nconst eventData = {\n  Subject: googleEvent.summary || 'Untitled Event',\n  Description: googleEvent.description || '',\n  StartDateTime: googleEvent.start?.dateTime || googleEvent.start?.date,\n  EndDateTime: googleEvent.end?.dateTime || googleEvent.end?.date,\n  Location: googleEvent.location || '',\n  IsAllDayEvent: !googleEvent.start?.dateTime && !!googleEvent.start?.date,\n  // Map Google Calendar attendees to Salesforce Event attendees\n  Attendees: googleEvent.attendees?.map(attendee => attendee.email) || [],\n  // Store Google Calendar event ID for reference\n  GoogleCalendarEventId: googleEvent.id,\n  GoogleCalendarEventLink: googleEvent.htmlLink || '',\n  // Additional metadata\n  OrganizerEmail: googleEvent.organizer?.email || '',\n  Status: googleEvent.status || 'confirmed'\n};\n\nreturn {\n  json: eventData\n};"
+      },
+      "id": "format-event-data",
+      "name": "Format Event Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "resource": "event",
+        "fields": {
+          "Subject": "={{ $json.Subject }}",
+          "Description": "={{ $json.Description }}",
+          "StartDateTime": "={{ $json.StartDateTime }}",
+          "EndDateTime": "={{ $json.EndDateTime }}",
+          "Location": "={{ $json.Location }}",
+          "IsAllDayEvent": "={{ $json.IsAllDayEvent }}",
+          "Google_Calendar_Event_ID__c": "={{ $json.GoogleCalendarEventId }}",
+          "Google_Calendar_Event_Link__c": "={{ $json.GoogleCalendarEventLink }}"
+        }
+      },
+      "id": "create-salesforce-event",
+      "name": "Create Salesforce Event",
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1.1,
+      "position": [680, 300],
+      "credentials": {
+        "salesforceOAuth2Api": {
+          "id": "2",
+          "name": "Salesforce OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "={{ $env.SLACK_CHANNEL || '#n8n-alerts' }}",
+        "text": "=✅ *New Google Calendar Event Synced to Salesforce*\n\n*Event:* {{ $('Format Event Data').item.json.Subject }}\n*Start:* {{ $('Format Event Data').item.json.StartDateTime }}\n*End:* {{ $('Format Event Data').item.json.EndDateTime }}\n*Location:* {{ $('Format Event Data').item.json.Location || 'N/A' }}\n*Salesforce Event ID:* {{ $json.id }}\n*Google Calendar Link:* {{ $('Format Event Data').item.json.GoogleCalendarEventLink }}",
+        "otherOptions": {}
+      },
+      "id": "slack-alert",
+      "name": "Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [900, 300],
+      "credentials": {
+        "slackApi": {
+          "id": "3",
+          "name": "Slack API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "continueOnFail": true,
+        "options": {}
+      },
+      "id": "error-trigger",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [240, 500]
+    },
+    {
+      "parameters": {
+        "channel": "={{ $env.SLACK_CHANNEL || '#n8n-alerts' }}",
+        "text": "=❌ *Google Calendar to Salesforce Event Error*\n\n*Error:* {{ $json.error.message }}\n*Node:* {{ $json.node.name }}\n*Workflow:* {{ $json.workflow.name }}\n*Execution ID:* {{ $json.execution.id }}\n\n*Event Data:*\n```json\n{{ JSON.stringify($json.executionData, null, 2) }}\n```",
+        "otherOptions": {}
+      },
+      "id": "send-error-slack",
+      "name": "Send Error to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [460, 500],
+      "credentials": {
+        "slackApi": {
+          "id": "3",
+          "name": "Slack API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Calendar Trigger": {
+      "main": [
+        [
+          {
+            "node": "Format Event Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Event Data": {
+      "main": [
+        [
+          {
+            "node": "Create Salesforce Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Salesforce Event": {
+      "main": [
+        [
+          {
+            "node": "Slack Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send Error to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-01-27T00:00:00.000Z",
+  "versionId": "1"
+}

@@ -1,0 +1,247 @@
+<template>
+    <div class="cra-page">
+
+        <!-- INPUT FORM -->
+        <div class={inputStateClass}>
+            <div class="cra-page-header">
+                <h1 class="cra-page-title">Submit a Support Case</h1>
+                <p class="cra-page-subtitle">
+                    Describe your issue and our AI will search the knowledge base
+                    for a solution before logging a case
+                </p>
+            </div>
+
+            <div class="cra-form-card">
+                <div class="cra-form-card-header">
+                    <div class="cra-form-card-icon">
+                        <lightning-icon icon-name="standard:case" size="small"></lightning-icon>
+                    </div>
+                    <span class="cra-form-card-title">Case Details</span>
+                </div>
+
+                <div class="cra-form-body">
+                    <div class="cra-form-row cra-form-row-2col">
+                        <lightning-input
+                            type="text"
+                            label="First Name"
+                            required
+                            value={firstName}
+                            onchange={handleFirstNameChange}>
+                        </lightning-input>
+                        <lightning-input
+                            type="text"
+                            label="Last Name"
+                            required
+                            value={lastName}
+                            onchange={handleLastNameChange}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="cra-form-row cra-form-row-2col">
+                        <lightning-input
+                            type="email"
+                            label="Email"
+                            required
+                            value={email}
+                            onchange={handleEmailChange}>
+                        </lightning-input>
+                        <lightning-combobox
+                            label="Product"
+                            required
+                            value={product}
+                            options={productOptions}
+                            onchange={handleProductChange}
+                            placeholder="Select a product">
+                        </lightning-combobox>
+                    </div>
+
+                    <div class="cra-form-row">
+                        <lightning-input
+                            type="text"
+                            label="Subject"
+                            required
+                            value={subject}
+                            onchange={handleSubjectChange}
+                            max-length="255">
+                        </lightning-input>
+                    </div>
+
+                    <div class="cra-form-row">
+                        <lightning-textarea
+                            label="Submit your case"
+                            placeholder="e.g. How do I reset my password? Describe your issue in as much detail as you can."
+                            required
+                            value={query}
+                            onchange={handleQueryChange}
+                            max-length="5000"
+                            class="cra-question-textarea">
+                        </lightning-textarea>
+                    </div>
+                </div>
+
+                <div class="cra-form-actions">
+                    <button class="cra-btn-cancel" onclick={handleCancel}>Cancel</button>
+                    <button class="cra-btn-find-solution" onclick={handleSubmit} disabled={isSubmitDisabled}>
+                        <svg class="cra-search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Find a Solution
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        <div class={loadingStateClass}>
+            <div class="cra-loading-wrapper">
+                <lightning-spinner
+                    alternative-text="Searching knowledge base"
+                    size="medium"
+                    variant="brand">
+                </lightning-spinner>
+                <p class="cra-loading-title">Searching our knowledge base&hellip;</p>
+                <p class="cra-loading-sub">Our AI is looking for a relevant solution for you.</p>
+            </div>
+        </div>
+
+        <!-- RECOMMENDATION -->
+        <div class={recommendationStateClass}>
+            <div class="cra-result-wrapper">
+                <div class="cra-ka-badge">
+                    <span class="cra-ka-badge-star">&#9733;</span>
+                    KNOWLEDGE ARTICLE FOUND
+                </div>
+                <div class="cra-article-card">
+                    <div class="cra-article-header">
+                        <div class="cra-article-icon">
+                            <lightning-icon icon-name="standard:case_comment" size="small"></lightning-icon>
+                        </div>
+                        <div class="cra-article-meta">
+                            <span class="cra-article-label">KNOWLEDGE ARTICLE</span>
+                            <h2 class="cra-article-title">{subject}</h2>
+                        </div>
+                    </div>
+                    <div class="cra-article-body">
+                        <div class="cra-article-text">
+                            <lightning-formatted-rich-text value={formattedRecommendation}></lightning-formatted-rich-text>
+                        </div>
+                    </div>
+                </div>
+                <div class="cra-feedback-section">
+                    <p class="cra-feedback-question">
+                        <lightning-icon icon-name="utility:clock" size="x-small" class="cra-feedback-icon"></lightning-icon>
+                        &nbsp;Did this article resolve your issue?
+                    </p>
+                    <div class="cra-feedback-buttons">
+                        <button class="cra-btn-yes" onclick={handleYes}>
+                            <span class="cra-btn-check">&#10003;</span>
+                            Yes, resolved
+                        </button>
+                        <button class="cra-btn-no" onclick={handleNo}>
+                            <span class="cra-btn-x">&#215;</span>
+                            No, still need help
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESOLVING (brief spinner while closing case) -->
+        <div class={resolvingStateClass}>
+            <div class="cra-loading-wrapper">
+                <lightning-spinner alternative-text="Saving" size="medium" variant="brand"></lightning-spinner>
+                <p class="cra-loading-title">Marking as resolved&hellip;</p>
+            </div>
+        </div>
+
+        <!-- RESOLVED -->
+        <div class={resolvedStateClass}>
+            <div class="cra-result-wrapper">
+                <div class="cra-ka-badge">
+                    <span class="cra-ka-badge-star">&#9733;</span>
+                    KNOWLEDGE ARTICLE FOUND
+                </div>
+                <div class="cra-article-card">
+                    <div class="cra-article-header">
+                        <div class="cra-article-icon">
+                            <lightning-icon icon-name="standard:case_comment" size="small"></lightning-icon>
+                        </div>
+                        <div class="cra-article-meta">
+                            <span class="cra-article-label">KNOWLEDGE ARTICLE</span>
+                            <h2 class="cra-article-title">{subject}</h2>
+                        </div>
+                    </div>
+                    <div class="cra-article-body">
+                        <div class="cra-article-text">
+                            <lightning-formatted-rich-text value={formattedRecommendation}></lightning-formatted-rich-text>
+                        </div>
+                    </div>
+                </div>
+                <div class="cra-resolved-section">
+                    <div class="cra-resolved-icon-wrap">
+                        <lightning-icon icon-name="action:approval" size="medium"></lightning-icon>
+                    </div>
+                    <h3 class="cra-resolved-title">Issue Resolved</h3>
+                    <p class="cra-resolved-msg">
+                        Great &mdash; we&rsquo;re glad the article helped! Feel free to come back anytime.
+                    </p>
+                    <button class="cra-btn-new-question" onclick={handleReset}>Submit Another Case</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CASE CREATED -->
+        <div class={caseCreatedStateClass}>
+            <div class="cra-result-wrapper">
+                <div class="cra-ka-badge">
+                    <span class="cra-ka-badge-star">&#9733;</span>
+                    KNOWLEDGE ARTICLE FOUND
+                </div>
+                <div class="cra-article-card">
+                    <div class="cra-article-header">
+                        <div class="cra-article-icon">
+                            <lightning-icon icon-name="standard:case_comment" size="small"></lightning-icon>
+                        </div>
+                        <div class="cra-article-meta">
+                            <span class="cra-article-label">KNOWLEDGE ARTICLE</span>
+                            <h2 class="cra-article-title">{subject}</h2>
+                        </div>
+                    </div>
+                    <div class="cra-article-body">
+                        <div class="cra-article-text">
+                            <lightning-formatted-rich-text value={formattedRecommendation}></lightning-formatted-rich-text>
+                        </div>
+                    </div>
+                </div>
+                <div class="cra-case-logged-section">
+                    <div class="cra-case-logged-main">
+                        <div class="cra-case-logged-icon">
+                            <lightning-icon icon-name="utility:clock" size="medium"></lightning-icon>
+                        </div>
+                        <div class="cra-case-logged-content">
+                            <h3 class="cra-case-logged-title">Case Logged Successfully</h3>
+                            <p class="cra-case-logged-msg">
+                                A support agent will review your case and reach out to <strong>{email}</strong> within 1 business day.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cra-case-number-pill">{caseNumber}</div>
+                </div>
+                <div class="cra-case-logged-actions">
+                    <button class="cra-btn-done" onclick={handleReset}>Done</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ERROR BANNER -->
+        <div class={errorStateClass}>
+            <div class="cra-error-banner">
+                <lightning-icon icon-name="utility:ban" size="x-small"></lightning-icon>
+                <span class="cra-error-text">{errorMessage}</span>
+                <button class="cra-error-retry" onclick={handleReset}>Try Again</button>
+            </div>
+        </div>
+
+    </div>
+</template>

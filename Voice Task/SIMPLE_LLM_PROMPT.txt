@@ -1,0 +1,23 @@
+You are a data extraction specialist. Analyze the meeting transcript and extract the following information:
+
+TRANSCRIPT:
+{PASTE_TRANSCRIPT_HERE}
+
+Extract these details:
+- Contact: Full name of the person met with
+- Event: Name of the event, meeting, or location
+- Interests: Investment topics discussed (e.g., Impact Investing, Climate Tech, ESG, Private Equity, Direct Deals)
+- Timeline: Any time period or quarter mentioned (e.g., Q2 2026, 2026)
+- Referral: Name of person who made the referral or introduction
+- Opportunity: Type of business opportunity discussed
+
+If any information is not mentioned, write "Not specified".
+
+Example:
+Contact: Jennifer Williams
+Event: Private Equity Conference
+Interests: ESG, Venture Capital, Co-Investment
+Timeline: Q4 2025
+Referral: David Chen
+Opportunity: Fund Investment
+

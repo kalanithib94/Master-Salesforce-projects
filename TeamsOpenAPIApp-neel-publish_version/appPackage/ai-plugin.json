@@ -1,0 +1,62 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.2/schema.json",
+  "schema_version": "v2.2",
+  "name_for_human": "GPTfy AI + Salesforce",
+  "description_for_human": "API for interacting with Salesforce data through the GPTfy REST service.\nThis API provides functionality for making synchronous calls to OpenAI's API\nusing Salesforce Continuations.\n",
+  "namespace": "GptfyAIAgent",
+  "functions": [
+    {
+      "name": "syncOpenAI",
+      "description": "Calls GPTfy AI endpoint on Salesforce to get answer for user's question",
+      "capabilities": {
+        "confirmation": {
+          "type": "AdaptiveCard",
+          "title": "Invoke GPTfy AI",
+          "body": "Do you want to allow sending data to GPTfy AI?"
+        },
+        "response_semantics": {
+          "data_path": "$",
+          "properties": {
+            "title": "$.status",
+            "subtitle": "$.responseId"
+          }
+        }
+      }
+    }
+  ],
+  "runtimes": [
+    {
+      "type": "OpenApi",
+      "auth": {
+        "type": "OAuthPluginVault",
+        "reference_id": "${{OAUTH2_REGISTRATION_ID}}"
+      },
+      "spec": {
+        "url": "apiSpecificationFile/openapi.yaml"
+      },
+      "run_for_functions": ["syncOpenAI"]
+    }
+  ],
+  "capabilities": {
+    "conversation_starters": [
+      {
+        "text": "Give me Account details for "
+    },
+    {
+        "text": "Give me all opportunities and contacts for the burlington north account "
+    },
+    {
+        "text": "Give me all opportunities and contacts for our account in the industry of [industry name]"
+    },
+    {
+        "text": "Create a task to follow up with [Contact] on [Date] with subject [details]"
+    },
+    {
+        "text": "Give me all opportunities and contacts for our account at Burlington North"
+    },
+    {
+        "text": "What are the open activities for [Account]"
+    }  
+    ]
+  }
+}

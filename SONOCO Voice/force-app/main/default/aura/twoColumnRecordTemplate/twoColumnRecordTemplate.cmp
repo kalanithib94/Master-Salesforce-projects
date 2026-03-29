@@ -1,0 +1,17 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:pageTemplate" access="global">
+    <aura:attribute name="templateTitle" type="String" default="Two Column Rich Text Template"/>
+
+    <flexipage:template>
+        <flexipage:templateRegion name="LeftRegion" label="Left Column"/>
+        <flexipage:templateRegion name="RightRegion" label="Right Column"/>
+    </flexipage:template>
+
+    <div class="container slds-grid slds-wrap slds-gutters">
+        <section class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <flexipage:region regionName="LeftRegion"/>
+        </section>
+        <section class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+            <flexipage:region regionName="RightRegion"/>
+        </section>
+    </div>
+</aura:component>

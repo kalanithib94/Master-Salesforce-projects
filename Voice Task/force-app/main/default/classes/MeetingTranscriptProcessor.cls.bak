@@ -1,0 +1,472 @@
+/**
+ * @description Invocable Apex class to process meeting transcripts from voice recordings
+ * Identifies contacts, creates tasks, manages opportunities, and provides follow-up suggestions
+ * @author Brown Advisory
+ * @date 2025
+ */
+public with sharing class MeetingTranscriptProcessor {
+    
+    /**
+     * @description Wrapper class for input parameters from Flow
+     */
+    public class ProcessRequest {
+        @InvocableVariable(label='Event Id' description='The Id of the Event record created from the transcript' required=true)
+        public Id eventId;
+        
+        @InvocableVariable(label='Transcript' description='The full transcript from the voice recording' required=true)
+        public String transcript;
+        
+        @InvocableVariable(label='LLM Parsed Data' description='JSON string with parsed data from LLM (optional)' required=false)
+        public String llmParsedData;
+    }
+    
+    /**
+     * @description Wrapper class for output results to Flow
+     */
+    public class ProcessResult {
+        @InvocableVariable(label='Success' description='Whether processing was successful')
+        public Boolean isSuccess;
+        
+        @InvocableVariable(label='Contact Id' description='The Id of the identified/matched Contact')
+        public Id contactId;
+        
+        @InvocableVariable(label='Task Id' description='The Id of the created Task')
+        public Id taskId;
+        
+        @InvocableVariable(label='Opportunity Id' description='The Id of the created/updated Opportunity')
+        public Id opportunityId;
+        
+        @InvocableVariable(label='Follow-Up Suggestions' description='AI-generated follow-up suggestions')
+        public String followUpSuggestions;
+        
+        @InvocableVariable(label='Error Message' description='Error message if processing failed')
+        public String errorMessage;
+    }
+    
+    /**
+     * @description Data structure for parsed meeting information
+     */
+    public class MeetingData {
+        public String contactName;
+        public String eventName;
+        public List<String> interests;
+        public String timeline;
+        public Date estimatedCloseDate;
+        public String referralSource;
+        public String opportunityType;
+        public String meetingContext;
+    }
+    
+    /**
+     * @description Main invocable method called from Flow
+     * @param requests List of ProcessRequest objects
+     * @return List of ProcessResult objects
+     */
+    @InvocableMethod(label='Process Meeting Transcript' description='Processes transcript to identify contact, create task, and manage opportunity')
+    public static List<ProcessResult> processMeetingTranscript(List<ProcessRequest> requests) {
+        List<ProcessResult> results = new List<ProcessResult>();
+        
+        for (ProcessRequest request : requests) {
+            ProcessResult result = new ProcessResult();
+            result.isSuccess = false;
+            
+            try {
+                // Validate input
+                if (String.isBlank(request.transcript)) {
+                    result.errorMessage = 'Transcript cannot be empty';
+                    results.add(result);
+                    continue;
+                }
+                
+                // Parse the transcript
+                MeetingData meetingData = parseTranscript(request.transcript, request.llmParsedData);
+                
+                // Get the Event record
+                Event evt = getEventRecord(request.eventId);
+                
+                // Identify and match contact
+                Contact identifiedContact = identifyContact(meetingData, evt);
+                
+                if (identifiedContact != null) {
+                    result.contactId = identifiedContact.Id;
+                    
+                    // Link Event to Contact
+                    linkEventToContact(request.eventId, identifiedContact.Id);
+                    
+                    // Create Task under Contact
+                    result.taskId = createFollowUpTask(identifiedContact.Id, meetingData, request.eventId);
+                    
+                    // Create or Update Opportunity
+                    result.opportunityId = createOrUpdateOpportunity(identifiedContact.Id, meetingData);
+                    
+                    // Generate follow-up suggestions
+                    result.followUpSuggestions = generateFollowUpSuggestions(meetingData);
+                    
+                    result.isSuccess = true;
+                } else {
+                    result.errorMessage = 'Could not identify contact from transcript. Contact name: ' + meetingData.contactName;
+                }
+                
+            } catch (Exception e) {
+                result.errorMessage = 'Error processing transcript: ' + e.getMessage();
+                System.debug('Error in processMeetingTranscript: ' + e.getMessage() + '\n' + e.getStackTraceString());
+            }
+            
+            results.add(result);
+        }
+        
+        return results;
+    }
+    
+    /**
+     * @description Parse transcript to extract structured data
+     * @param transcript The raw transcript text
+     * @param llmParsedData Optional pre-parsed JSON from LLM
+     * @return MeetingData object with extracted information
+     */
+    private static MeetingData parseTranscript(String transcript, String llmParsedData) {
+        MeetingData data = new MeetingData();
+        
+        // If LLM already parsed the data, use it
+        if (String.isNotBlank(llmParsedData)) {
+            try {
+                Map<String, Object> parsedMap = (Map<String, Object>) JSON.deserializeUntyped(llmParsedData);
+                data.contactName = (String) parsedMap.get('contactName');
+                data.eventName = (String) parsedMap.get('eventName');
+                data.interests = (List<String>) parsedMap.get('interests');
+                data.timeline = (String) parsedMap.get('timeline');
+                data.referralSource = (String) parsedMap.get('referralSource');
+                data.opportunityType = (String) parsedMap.get('opportunityType');
+                data.meetingContext = (String) parsedMap.get('meetingContext');
+                
+                // Parse close date if available
+                if (parsedMap.containsKey('estimatedCloseDate')) {
+                    String closeDateStr = (String) parsedMap.get('estimatedCloseDate');
+                    data.estimatedCloseDate = parseCloseDate(closeDateStr);
+                }
+                
+                return data;
+            } catch (Exception e) {
+                System.debug('Error parsing LLM data, falling back to manual parsing: ' + e.getMessage());
+            }
+        }
+        
+        // Manual parsing as fallback
+        data.contactName = extractContactName(transcript);
+        data.eventName = extractEventName(transcript);
+        data.interests = extractInterests(transcript);
+        data.timeline = extractTimeline(transcript);
+        data.estimatedCloseDate = extractCloseDate(transcript);
+        data.referralSource = extractReferralSource(transcript);
+        data.opportunityType = extractOpportunityType(transcript);
+        data.meetingContext = transcript.left(5000); // Store first 5000 chars as context
+        
+        return data;
+    }
+    
+    /**
+     * @description Extract contact name from transcript
+     */
+    private static String extractContactName(String transcript) {
+        // Pattern: "Met with [Name]" or "Meeting with [Name]"
+        Pattern p = Pattern.compile('(?i)met with ([A-Z][a-z]+ [A-Z][a-z]+)');
+        Matcher m = p.matcher(transcript);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+    
+    /**
+     * @description Extract event name from transcript
+     */
+    private static String extractEventName(String transcript) {
+        Pattern p = Pattern.compile('(?i)at the ([A-Z][\\w\\s]+Summit|[A-Z][\\w\\s]+Conference|[A-Z][\\w\\s]+Meeting)');
+        Matcher m = p.matcher(transcript);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+    
+    /**
+     * @description Extract interests/topics from transcript
+     */
+    private static List<String> extractInterests(String transcript) {
+        List<String> interests = new List<String>();
+        String lowerTranscript = transcript.toLowerCase();
+        
+        // Common investment topics
+        if (lowerTranscript.contains('impact investing')) {
+            interests.add('Impact Investing');
+        }
+        if (lowerTranscript.contains('climate tech')) {
+            interests.add('Climate Tech');
+        }
+        if (lowerTranscript.contains('direct deal')) {
+            interests.add('Direct Deals');
+        }
+        if (lowerTranscript.contains('private equity')) {
+            interests.add('Private Equity');
+        }
+        if (lowerTranscript.contains('venture capital')) {
+            interests.add('Venture Capital');
+        }
+        if (lowerTranscript.contains('esg')) {
+            interests.add('ESG');
+        }
+        
+        return interests;
+    }
+    
+    /**
+     * @description Extract timeline from transcript
+     */
+    private static String extractTimeline(String transcript) {
+        Pattern p = Pattern.compile('(?i)(Q[1-4]\\s*\\d{4}|[A-Z][a-z]+\\s*\\d{4})');
+        Matcher m = p.matcher(transcript);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+    
+    /**
+     * @description Extract and parse close date from timeline
+     */
+    private static Date extractCloseDate(String transcript) {
+        String timeline = extractTimeline(transcript);
+        return parseCloseDate(timeline);
+    }
+    
+    /**
+     * @description Parse close date from timeline string
+     */
+    private static Date parseCloseDate(String timeline) {
+        if (String.isBlank(timeline)) return null;
+        
+        try {
+            // Parse Q1-Q4 2024 format
+            Pattern p = Pattern.compile('Q([1-4])\\s*(\\d{4})');
+            Matcher m = p.matcher(timeline);
+            if (m.find()) {
+                Integer quarter = Integer.valueOf(m.group(1));
+                Integer year = Integer.valueOf(m.group(2));
+                Integer month = (quarter * 3); // End of quarter
+                return Date.newInstance(year, month, 1).addMonths(1).addDays(-1);
+            }
+        } catch (Exception e) {
+            System.debug(LoggingLevel.WARN, 'Error parsing close date: ' + e.getMessage());
+        }
+        
+        return null;
+    }
+    
+    /**
+     * @description Extract referral source from transcript
+     */
+    private static String extractReferralSource(String transcript) {
+        Pattern p = Pattern.compile('(?i)referred by ([A-Z][a-z]+ [A-Z][a-z]+)');
+        Matcher m = p.matcher(transcript);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+    
+    /**
+     * @description Extract opportunity type from transcript
+     */
+    private static String extractOpportunityType(String transcript) {
+        String lowerTranscript = transcript.toLowerCase();
+        if (lowerTranscript.contains('direct deal')) {
+            return 'Direct deal exploration';
+        }
+        if (lowerTranscript.contains('fund investment')) {
+            return 'Fund Investment';
+        }
+        if (lowerTranscript.contains('co-investment')) {
+            return 'Co-Investment';
+        }
+        return 'New Business';
+    }
+    
+    /**
+     * @description Get Event record
+     */
+    private static Event getEventRecord(Id eventId) {
+        return [SELECT Id, Subject, StartDateTime, WhoId, WhatId, Description 
+                FROM Event 
+                WHERE Id = :eventId 
+                LIMIT 1];
+    }
+    
+    /**
+     * @description Identify and match contact from meeting data
+     */
+    private static Contact identifyContact(MeetingData meetingData, Event evt) {
+        // First check if Event already has a contact linked
+        if (evt.WhoId != null) {
+            try {
+                return [SELECT Id, Name, AccountId FROM Contact WHERE Id = :evt.WhoId LIMIT 1];
+            } catch (Exception e) {
+                System.debug('Contact from Event not found: ' + e.getMessage());
+            }
+        }
+        
+        // Search by name from parsed data
+        if (String.isNotBlank(meetingData.contactName)) {
+            List<Contact> contacts = [SELECT Id, Name, AccountId 
+                                     FROM Contact 
+                                     WHERE Name LIKE :('%' + meetingData.contactName + '%')
+                                     LIMIT 1];
+            if (!contacts.isEmpty()) {
+                return contacts[0];
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * @description Link Event to Contact
+     */
+    private static void linkEventToContact(Id eventId, Id contactId) {
+        Event evt = new Event(Id = eventId, WhoId = contactId);
+        update evt;
+    }
+    
+    /**
+     * @description Create follow-up task under contact
+     */
+    private static Id createFollowUpTask(Id contactId, MeetingData meetingData, Id eventId) {
+        Task followUpTask = new Task();
+        followUpTask.WhoId = contactId;
+        followUpTask.Subject = 'Follow-up: ' + (meetingData.eventName != null ? meetingData.eventName : 'Meeting Discussion');
+        followUpTask.Status = 'Not Started';
+        followUpTask.Priority = 'High';
+        followUpTask.ActivityDate = Date.today().addDays(7); // Due in 7 days
+        followUpTask.WhatId = eventId;
+        
+        // Build description
+        String description = 'Follow-up from meeting discussion.\n\n';
+        if (!meetingData.interests.isEmpty()) {
+            description += 'Topics of Interest: ' + String.join(meetingData.interests, ', ') + '\n';
+        }
+        if (String.isNotBlank(meetingData.referralSource)) {
+            description += 'Referred by: ' + meetingData.referralSource + '\n';
+        }
+        if (String.isNotBlank(meetingData.timeline)) {
+            description += 'Timeline: ' + meetingData.timeline + '\n';
+        }
+        
+        followUpTask.Description = description;
+        
+        insert followUpTask;
+        return followUpTask.Id;
+    }
+    
+    /**
+     * @description Create or update opportunity
+     */
+    private static Id createOrUpdateOpportunity(Id contactId, MeetingData meetingData) {
+        Contact con = [SELECT Id, AccountId FROM Contact WHERE Id = :contactId LIMIT 1];
+        
+        // Check if there's an existing open opportunity for this contact/account
+        List<Opportunity> existingOpps = [SELECT Id, Name, StageName, CloseDate 
+                                          FROM Opportunity 
+                                          WHERE (AccountId = :con.AccountId OR Id IN 
+                                                (SELECT OpportunityId FROM OpportunityContactRole WHERE ContactId = :contactId))
+                                          AND IsClosed = false
+                                          ORDER BY CreatedDate DESC
+                                          LIMIT 1];
+        
+        Opportunity opp;
+        Boolean isNewOpp = existingOpps.isEmpty();
+        
+        if (isNewOpp) {
+            // Create new opportunity
+            opp = new Opportunity();
+            opp.Name = (meetingData.contactName != null ? meetingData.contactName + ' - ' : '') + 
+                       (meetingData.opportunityType != null ? meetingData.opportunityType : 'New Business Opportunity');
+            opp.AccountId = con.AccountId;
+            opp.StageName = 'Qualification';
+            opp.CloseDate = meetingData.estimatedCloseDate != null ? meetingData.estimatedCloseDate : Date.today().addMonths(3);
+            opp.Type = meetingData.opportunityType;
+            
+            // Add interests to description
+            if (!meetingData.interests.isEmpty()) {
+                opp.Description = 'Interests: ' + String.join(meetingData.interests, ', ') + '\n';
+            }
+            if (String.isNotBlank(meetingData.referralSource)) {
+                opp.Description = (opp.Description != null ? opp.Description : '') + 'Referral: ' + meetingData.referralSource;
+            }
+            
+            insert opp;
+            
+            // Create opportunity contact role
+            OpportunityContactRole ocr = new OpportunityContactRole();
+            ocr.OpportunityId = opp.Id;
+            ocr.ContactId = contactId;
+            ocr.Role = 'Decision Maker';
+            ocr.IsPrimary = true;
+            insert ocr;
+            
+        } else {
+            // Update existing opportunity
+            opp = existingOpps[0];
+            String updateNote = '\n\n[Updated from meeting: ' + System.now().format() + ']\n';
+            if (!meetingData.interests.isEmpty()) {
+                updateNote += 'Additional Interests: ' + String.join(meetingData.interests, ', ');
+            }
+            
+            opp.Description = (opp.Description != null ? opp.Description : '') + updateNote;
+            if (meetingData.estimatedCloseDate != null && meetingData.estimatedCloseDate > opp.CloseDate) {
+                opp.CloseDate = meetingData.estimatedCloseDate;
+            }
+            
+            update opp;
+        }
+        
+        return opp.Id;
+    }
+    
+    /**
+     * @description Generate AI-powered follow-up suggestions
+     */
+    private static String generateFollowUpSuggestions(MeetingData meetingData) {
+        List<String> suggestions = new List<String>();
+        
+        // Generate suggestions based on interests
+        if (!meetingData.interests.isEmpty()) {
+            for (String interest : meetingData.interests) {
+                String lowerInterest = interest.toLowerCase();
+                if (lowerInterest.contains('climate tech')) {
+                    suggestions.add('Send climate tech deal memo and portfolio overview');
+                }
+                if (lowerInterest.contains('impact investing')) {
+                    suggestions.add('Share impact investing framework and case studies');
+                }
+            }
+        }
+        
+        // Timeline-based suggestions
+        if (String.isNotBlank(meetingData.timeline)) {
+            suggestions.add('Schedule follow-up call before ' + meetingData.timeline);
+        } else {
+            suggestions.add('Schedule follow-up call in 2-3 weeks');
+        }
+        
+        // Referral-based suggestions
+        if (String.isNotBlank(meetingData.referralSource)) {
+            suggestions.add('Send thank you note to ' + meetingData.referralSource);
+        }
+        
+        // General suggestions
+        suggestions.add('Notify investment team of new opportunity');
+        suggestions.add('Add to quarterly pipeline review');
+        
+        return String.join(suggestions, '\n• ');
+    }
+}
+

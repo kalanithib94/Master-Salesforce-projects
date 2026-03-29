@@ -1,0 +1,19 @@
+# TeamsFx files
+env/.env.*.user
+env/.env.local
+.localConfigs
+
+
+# dependencies
+node_modules/
+
+# misc
+.env
+.deployment
+.DS_Store
+appPackage/build/manifest.dev.json
+appPackage/build/manifest.prod.json
+appPackage/build/declarativeAgent.prod.json
+appPackage/build/declarativeAgent.dev.json
+appPackage/build/ai-plugin.prod.json
+appPackage/build/ai-plugin.dev.json

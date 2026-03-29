@@ -1,0 +1,17 @@
+# Salesforce CLI — local org auth and cache (do not commit)
+.sfdx/
+.sf/
+**/.localdevserver/
+
+# Dependencies & build
+**/node_modules/
+**/dist/
+**/.venv/
+**/__pycache__/
+*.pyc
+
+# OS / editor
+Thumbs.db
+Desktop.ini
+*.swp
+.idea/

@@ -1,0 +1,38 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.19",
+    "version": "1.0.1",
+    "id": "${{TEAMS_APP_ID}}",
+    "developer": {
+        "name": "GPTfy",
+        "websiteUrl": "https://gptfy.ai/",
+        "privacyUrl": "https://www.privacy.cloudcompliance.app/privacy/PrivacyEnglish?SiteId=a0w3l00000C2GCP&ShowCountry=true&ShowLanguage=true&_ga=2.193009389.1955579098.1684210168-281336963.1683950052&_gl=1*15btbl7*_ga*MjgxMzM2OTYzLjE2ODM5NTAwNTI.*_ga_472CKYBRK3*MTY4NDIxNTQzNy44LjEuMTY4NDIxNTQ4OC4wLjAuMA..",
+        "termsOfUseUrl": "https://gptfy.ai/end-user-license-agreement/"
+    },
+    "icons": {
+        "color": "gptfy-color-icon.png",
+        "outline": "gptfy-outline-icon.png"
+    },
+    "name": {
+        "short": "GPTfy AI + Salesforce",
+        "full": "GPTfy AI - Salesforce Integration"
+    },
+    "description": {
+        "short": "AI-powered Salesforce assistant with LLM integration",
+        "full": "GPTfy AI for Salesforce: Access Your Salesforce Data Directly in Microsoft 365 Copilot\nGPTfy AI for Salesforce creates a secure, bidirectional connection between Microsoft 365 Copilot and your Salesforce data. This integration allows Sales & Service Teams, Financial Advisors, and Healthcare professionals to access, query, and interact with their Salesforce information without leaving Microsoft 365 applications.\nMain Features:\n- Salesforce Data Access: Query account details, contact information, opportunities, and other Salesforce records directly through Microsoft 365 Copilot in Microsoft Teams, Word, PowerPoint  and other Microsoft 365 applications\n- Problems Solved:\n- Eliminate context switching between Salesforce and Microsoft applications\n- Reduce manual data entry and repetitive tasks\n- Improve data accuracy in customer communications\n- Enhance customer intelligence through AI-powered insights\n- Streamline workflow for sales and service professionals\n- Simplify user authentication and security management across platforms for users working within Microsoft 365 who want to access their CRM data without switching applications.\nRequirements and Limitations:\n- Account Requirement: To use this app, users must have active Salesforce and Microsoft 365 Copilot subscriptions\n- Supported Languages: Currently available in English only\n- Setup Required: Organization administrator must install and configure GPTfy in their Salesforce environment\n- Data Access: Limited to Salesforce data the user has permission to access in their Salesforce organization\n- Authentication: Compatible with Microsoft Entra ID, Active Directory, SAML 2.0, OAuth 2.0, and other standard SSO protocols\nGPTfy transforms productivity by bringing your Salesforce data directly to your Microsoft 365 workspace, maintaining enterprise-grade security and compliance standards.\nGet started in under an hour with our pre-packaged prompts and no-code setup. Experience how GPTfy can help your team work smarter by accessing complete customer information wherever they work.\nGet Started:\n [Book a demo](https://gptfy.ai/book-a-demo/) or visit our website at [GPTfy](https://gptfy.ai) to learn more and set up GPTfy for your organization"
+    },
+    "accentColor": "#FFFFFF",
+    "copilotAgents": {
+        "declarativeAgents": [
+            {
+                "id": "declarativeAgent",
+                "file": "declarativeAgent.json"
+            }
+        ]
+    },
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": []
+}

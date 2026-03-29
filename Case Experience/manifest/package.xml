@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+    <!-- Apex -->
+    <types>
+        <members>CaseResolutionController</members>
+        <name>ApexClass</name>
+    </types>
+
+    <!-- LWC -->
+    <types>
+        <members>caseResolutionAssistant</members>
+        <name>LightningComponentBundle</name>
+    </types>
+
+    <!-- Flows -->
+    <types>
+        <members>Case_Resolution_RTF</members>
+        <name>Flow</name>
+    </types>
+
+    <version>66.0</version>
+</Package>

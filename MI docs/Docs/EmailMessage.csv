@@ -1,0 +1,3 @@
+Subject,TextBody,MessageDate,RelatedTo__r.External_Id__c,FromAddress,ToAddress
+"Re: Updated pricing proposal","Can you share a version with 3-year term?","2026-02-09T10:12:00Z",OPP-ACME-NEW,"sophia.lee@acme-analytics.com","ae@sandp-demo.com"
+"Renewal concerns","We might reduce seat count if adoption does not improve.","2026-02-07T18:03:00Z",OPP-ACME-REN,"sophia.lee@acme-analytics.com","csm@sandp-demo.com"

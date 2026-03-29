@@ -1,0 +1,5 @@
+External_Id__c,Opportunity__r.External_Id__c,Contact__r.External_Id__c,Role,IsPrimary
+OCR-ACME-NEW-1,OPP-ACME-NEW,CON-ACME-1,Economic Buyer,true
+OCR-ACME-NEW-2,OPP-ACME-NEW,CON-ACME-2,Technical Evaluator,false
+OCR-ACME-REN-1,OPP-ACME-REN,CON-ACME-1,Decision Maker,true
+OCR-NOVA-NEW-1,OPP-NOVA-NEW,CON-NOVA-1,Sponsor,true

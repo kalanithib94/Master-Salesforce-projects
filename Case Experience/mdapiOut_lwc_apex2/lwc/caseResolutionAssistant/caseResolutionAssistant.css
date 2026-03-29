@@ -1,0 +1,537 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Case Resolution Assistant — GPTfy Support Community Style
+   Matches the design shown in the support portal screenshots.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── State Visibility ── */
+.cra-state {
+    display: block;
+}
+
+.cra-state--hidden {
+    display: none !important;
+}
+
+/* ── Page wrapper ── */
+.cra-page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+    font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1b1b1b;
+}
+
+/* ── Page Header ── */
+.cra-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.cra-page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0e1e3d;
+    margin: 0 0 0.4rem;
+}
+
+.cra-page-subtitle {
+    font-size: 0.9rem;
+    color: #5c6f80;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Form Card ── */
+.cra-form-card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #dde3ea;
+    box-shadow: 0 1px 6px rgba(14, 30, 61, 0.07);
+    overflow: hidden;
+}
+
+.cra-form-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #dde3ea;
+    background: #f8f9fb;
+}
+
+.cra-form-card-icon {
+    background: #e8f0fe;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.cra-form-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0e1e3d;
+}
+
+/* ── Form Body ── */
+.cra-form-body {
+    padding: 1.25rem 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.cra-form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.cra-form-row-2col {
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.cra-form-row-2col > * {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Question Textarea ── */
+.cra-question-textarea textarea,
+.cra-question-textarea .slds-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ── Form Actions ── */
+.cra-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    border-top: 1px solid #eef1f5;
+    margin-top: 0.75rem;
+}
+
+.cra-btn-cancel {
+    background: transparent;
+    color: #3a4a5c;
+    border: 1.5px solid #c8d2de;
+    border-radius: 6px;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.cra-btn-cancel:hover {
+    background: #f3f5f8;
+    border-color: #99aabb;
+}
+
+.cra-btn-find-solution {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: #0066cc;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.55rem 1.35rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    box-shadow: 0 2px 6px rgba(0, 102, 204, 0.3);
+}
+
+.cra-btn-find-solution:hover:not(:disabled) {
+    background: #0052a3;
+    transform: translateY(-1px);
+}
+
+.cra-btn-find-solution:disabled {
+    background: #99bfdf;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.cra-search-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* ── Loading ── */
+.cra-loading-wrapper {
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    min-height: 180px;
+}
+
+.cra-loading-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0e1e3d;
+    margin: 1rem 0 0.25rem;
+}
+
+.cra-loading-sub {
+    font-size: 0.875rem;
+    color: #5c6f80;
+    margin: 0;
+}
+
+/* ── Result Wrapper ── */
+.cra-result-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* ── Knowledge Article Found Badge ── */
+.cra-ka-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #0e1e3d;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    width: fit-content;
+}
+
+.cra-ka-badge-star {
+    font-size: 0.85rem;
+    color: #f5c518;
+}
+
+/* ── Article Card ── */
+.cra-article-card {
+    background: #eaf3ff;
+    border: 1.5px solid #b8d4f5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cra-article-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #c9dff7;
+}
+
+.cra-article-icon {
+    background: #ffffff;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.cra-article-meta {
+    flex: 1;
+}
+
+.cra-article-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: #0052a3;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.cra-article-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0e1e3d;
+    margin: 0;
+    line-height: 1.35;
+}
+
+.cra-article-body {
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+.cra-article-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #2c3e50;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ── Feedback Section (Yes/No) ── */
+.cra-feedback-section {
+    background: #fffbea;
+    border: 1.5px solid #f0d060;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+}
+
+.cra-feedback-question {
+    display: flex;
+    align-items: center;
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: #3a3000;
+    margin: 0 0 0.9rem;
+}
+
+.cra-feedback-icon {
+    color: #c08000;
+}
+
+.cra-feedback-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.cra-btn-yes,
+.cra-btn-no {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.55rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.cra-btn-yes {
+    background: #1a6b3a;
+    color: #ffffff;
+}
+
+.cra-btn-yes:hover {
+    background: #155530;
+    transform: translateY(-1px);
+}
+
+.cra-btn-no {
+    background: #ffffff;
+    color: #3a4a5c;
+    border: 1.5px solid #c8d2de;
+}
+
+.cra-btn-no:hover {
+    background: #f3f5f8;
+    transform: translateY(-1px);
+}
+
+.cra-btn-check,
+.cra-btn-x {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+/* ── Case Logged Section ── */
+.cra-case-logged-section {
+    background: #e8f3ff;
+    border: 1.5px solid #b8d4f5;
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.cra-case-logged-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+}
+
+.cra-case-logged-icon {
+    color: #0066cc;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.cra-case-logged-content {
+    flex: 1;
+}
+
+.cra-case-logged-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0e1e3d;
+    margin: 0 0 0.3rem;
+}
+
+.cra-case-logged-msg {
+    font-size: 0.875rem;
+    color: #3a4a5c;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.cra-case-logged-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.75rem 1.25rem 1rem;
+    border-top: 1px solid #ccddef;
+}
+
+.cra-btn-done {
+    background: #0070d2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.cra-btn-done:hover {
+    background: #005fb2;
+}
+
+.cra-case-number-pill {
+    display: inline-block;
+    background: #0066cc;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.35rem 1rem;
+    border-radius: 6px;
+    width: fit-content;
+}
+
+/* ── Resolved Section ── */
+.cra-resolved-section {
+    background: #f0faf4;
+    border: 1.5px solid #a3d9b5;
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.cra-resolved-icon {
+    color: #1a6b3a;
+}
+
+.cra-resolved-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0e1e3d;
+    margin: 0;
+}
+
+.cra-resolved-msg {
+    font-size: 0.875rem;
+    color: #5c6f80;
+    margin: 0;
+}
+
+.cra-btn-new-question {
+    margin-top: 0.5rem;
+    background: transparent;
+    color: #0066cc;
+    border: 1.5px solid #0066cc;
+    border-radius: 6px;
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.cra-btn-new-question:hover {
+    background: #e8f3ff;
+}
+
+/* ── Error Banner ── */
+.cra-error-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #fef0ef;
+    border: 1px solid #f9bab5;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.cra-error-text {
+    flex: 1;
+    font-size: 0.875rem;
+    color: #8c1c14;
+}
+
+.cra-error-retry {
+    background: transparent;
+    color: #8c1c14;
+    border: 1px solid #f9bab5;
+    border-radius: 6px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ── Fade-in ── */
+@keyframes craFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.cra-fade-in {
+    animation: craFadeIn 0.3s ease-out both;
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+    .cra-form-row-2col {
+        flex-direction: column;
+    }
+
+    .cra-feedback-buttons {
+        flex-direction: column;
+    }
+
+    .cra-btn-yes,
+    .cra-btn-no {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cra-form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .cra-btn-cancel,
+    .cra-btn-find-solution {
+        width: 100%;
+        justify-content: center;
+    }
+}

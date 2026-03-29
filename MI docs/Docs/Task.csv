@@ -1,0 +1,4 @@
+Subject,Status,Priority,ActivityDate,What__r.External_Id__c,Who__r.External_Id__c
+"Follow up on pricing feedback","In Progress","High",2026-02-12,OPP-ACME-NEW,CON-ACME-1
+"Send legal redlines to customer","Not Started","Normal",2026-02-14,OPP-ACME-REN,CON-ACME-1
+"Confirm technical requirements","Completed","High",2026-02-03,OPP-ACME-NEW,CON-ACME-2

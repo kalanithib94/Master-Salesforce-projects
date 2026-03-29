@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <description>Login Flow: 6-digit email verification after every Salesforce login. 3 wrong attempts → dead-end screen with NO button (showFooter=false). On page refresh the flow restarts, detects the block, sets LoginFlow_FinishLocation=/secur/logout.jsp, shows a logout-notice screen (one OK click) → session destroyed.</description>
+    <interviewLabel>Verification Code Login Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Verification Code Login Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <start>
+        <locationX>182</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_User_Record</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+
+    <!-- ── Variables ─────────────────────────────────────────────────────── -->
+
+    <variables>
+        <name>LoginFlow_UserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <description>Auto-populated by the Login Flow engine with the authenticating user Id.</description>
+    </variables>
+    <variables>
+        <name>LoginFlow_FinishLocation</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>varErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varValidationStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varAttemptsRemaining</name>
+        <dataType>Number</dataType>
+        <scale>0</scale>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varGenerateSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varIsBlocked</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varUserEmail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varUserName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varBlockReason</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+
+    <!-- ── Record Lookup ──────────────────────────────────────────────────── -->
+
+    <recordLookups>
+        <name>Get_User_Record</name>
+        <label>Get User Record</label>
+        <locationX>182</locationX>
+        <locationY>120</locationY>
+        <connector>
+            <targetReference>Check_If_Blocked</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Assign_Block_System_Error</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LoginFlow_UserId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>varUserEmail</assignToReference>
+            <field>Email</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>varUserName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <storeOutputAutomatically>false</storeOutputAutomatically>
+    </recordLookups>
+
+    <!-- ── Action Calls ───────────────────────────────────────────────────── -->
+
+    <!-- Step 2: Check if user is in a blocked state BEFORE generating any new code.
+         This is what makes refresh route to the blocked screen instead of issuing a new code. -->
+    <actionCalls>
+        <name>Check_If_Blocked</name>
+        <label>Check If User Is Verification Blocked</label>
+        <locationX>182</locationX>
+        <locationY>240</locationY>
+        <actionName>VerificationCodeChecker</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Decision_Is_Blocked</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Check_User_Has_Email</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>userId</name>
+            <value>
+                <elementReference>LoginFlow_UserId</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>varIsBlocked</assignToReference>
+            <name>isBlocked</name>
+        </outputParameters>
+        <storeOutputAutomatically>false</storeOutputAutomatically>
+    </actionCalls>
+
+    <actionCalls>
+        <name>Generate_And_Send_Code</name>
+        <label>Generate and Send Verification Code</label>
+        <locationX>182</locationX>
+        <locationY>600</locationY>
+        <actionName>VerificationCodeGenerator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_Generate_Success</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Assign_Block_System_Error</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>userId</name>
+            <value>
+                <elementReference>LoginFlow_UserId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>userEmail</name>
+            <value>
+                <elementReference>varUserEmail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>userName</name>
+            <value>
+                <elementReference>varUserName</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>varGenerateSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
+        <storeOutputAutomatically>false</storeOutputAutomatically>
+    </actionCalls>
+
+    <actionCalls>
+        <name>Validate_Code</name>
+        <label>Validate Verification Code</label>
+        <locationX>182</locationX>
+        <locationY>960</locationY>
+        <actionName>VerificationCodeValidator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_Validation_Result</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Assign_Block_System_Error</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>userId</name>
+            <value>
+                <elementReference>LoginFlow_UserId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>enteredCode</name>
+            <value>
+                <elementReference>EnterCode_Input</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>varValidationStatus</assignToReference>
+            <name>status</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varAttemptsRemaining</assignToReference>
+            <name>attemptsRemaining</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>varErrorMessage</assignToReference>
+            <name>errorMessage</name>
+        </outputParameters>
+        <storeOutputAutomatically>false</storeOutputAutomatically>
+    </actionCalls>
+
+    <!-- ── Assignments ────────────────────────────────────────────────────── -->
+
+    <!-- REFRESH LOGOUT: user is already blocked (detected by Check_If_Blocked at flow start).
+         Sets LoginFlow_FinishLocation to /secur/logout.jsp so that when the terminal screen
+         completes, Salesforce destroys the session and redirects to the login page. -->
+    <assignments>
+        <name>Assign_Force_Logout_Refresh</name>
+        <label>Force Logout - Already Blocked (Refresh)</label>
+        <locationX>440</locationX>
+        <locationY>360</locationY>
+        <assignmentItems>
+            <assignToReference>LoginFlow_FinishLocation</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>/secur/logout.jsp</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Force_Logout</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- Set block reason for "no email on user account" -->
+    <assignments>
+        <name>Assign_Block_No_Email</name>
+        <label>Set Block - No Email</label>
+        <locationX>440</locationX>
+        <locationY>480</locationY>
+        <assignmentItems>
+            <assignToReference>LoginFlow_FinishLocation</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>/secur/logout.jsp</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBlockReason</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Your account does not have an email address on file. Salesforce cannot send a verification code. Please contact your system administrator.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Login_Blocked</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- Set block reason for "email send failed" -->
+    <assignments>
+        <name>Assign_Block_Send_Failed</name>
+        <label>Set Block - Email Send Failed</label>
+        <locationX>440</locationX>
+        <locationY>720</locationY>
+        <assignmentItems>
+            <assignToReference>LoginFlow_FinishLocation</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>/secur/logout.jsp</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBlockReason</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>We could not send your verification code. Please try logging in again. If the problem persists, contact your system administrator.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Login_Blocked</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- Set block reason for "max attempts exceeded" -->
+    <assignments>
+        <name>Assign_Block_Max_Attempts</name>
+        <label>Set Block - Max Attempts Exceeded</label>
+        <locationX>440</locationX>
+        <locationY>1080</locationY>
+        <assignmentItems>
+            <assignToReference>LoginFlow_FinishLocation</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>/secur/logout.jsp</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBlockReason</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>You have entered 3 incorrect verification codes. For your security, you are being logged out. Please log in again after 10 minutes.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Login_Blocked</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- Set block reason for unexpected system errors -->
+    <assignments>
+        <name>Assign_Block_System_Error</name>
+        <label>Set Block - System Error</label>
+        <locationX>700</locationX>
+        <locationY>480</locationY>
+        <assignmentItems>
+            <assignToReference>LoginFlow_FinishLocation</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>/secur/logout.jsp</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBlockReason</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>An unexpected error occurred during login verification. For your security, you are being logged out. Please try logging in again.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_Login_Blocked</targetReference>
+        </connector>
+    </assignments>
+
+    <!-- ── Decisions ──────────────────────────────────────────────────────── -->
+
+    <!-- Route to blocked dead-end if already blocked (catches refresh) -->
+    <decisions>
+        <name>Decision_Is_Blocked</name>
+        <label>Is User Already Blocked?</label>
+        <locationX>182</locationX>
+        <locationY>360</locationY>
+        <defaultConnector>
+            <targetReference>Check_User_Has_Email</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Blocked</defaultConnectorLabel>
+        <rules>
+            <name>Rule_Is_Blocked</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varIsBlocked</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Force_Logout_Refresh</targetReference>
+            </connector>
+            <label>Blocked</label>
+        </rules>
+    </decisions>
+
+    <decisions>
+        <name>Check_User_Has_Email</name>
+        <label>User Has Email?</label>
+        <locationX>182</locationX>
+        <locationY>480</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Block_No_Email</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Email</defaultConnectorLabel>
+        <rules>
+            <name>Rule_Has_Email</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varUserEmail</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Generate_And_Send_Code</targetReference>
+            </connector>
+            <label>Has Email</label>
+        </rules>
+    </decisions>
+
+    <decisions>
+        <name>Check_Generate_Success</name>
+        <label>Code Generated Successfully?</label>
+        <locationX>182</locationX>
+        <locationY>720</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Block_Send_Failed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Failed</defaultConnectorLabel>
+        <rules>
+            <name>Rule_Generate_OK</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varGenerateSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Enter_Code</targetReference>
+            </connector>
+            <label>Success</label>
+        </rules>
+    </decisions>
+
+    <decisions>
+        <name>Check_Validation_Result</name>
+        <label>Validation Result</label>
+        <locationX>182</locationX>
+        <locationY>1080</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Block_System_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Error or Unknown</defaultConnectorLabel>
+        <rules>
+            <name>Rule_Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varValidationStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SUCCESS</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>End_Success</targetReference>
+            </connector>
+            <label>SUCCESS</label>
+        </rules>
+        <rules>
+            <name>Rule_Invalid</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varValidationStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>INVALID_CODE</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Enter_Code</targetReference>
+            </connector>
+            <label>INVALID_CODE</label>
+        </rules>
+        <rules>
+            <name>Rule_MaxAttempts</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varValidationStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>MAX_ATTEMPTS_EXCEEDED</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Block_Max_Attempts</targetReference>
+            </connector>
+            <label>MAX_ATTEMPTS_EXCEEDED</label>
+        </rules>
+        <rules>
+            <name>Rule_Expired</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varValidationStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>EXPIRED</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Generate_And_Send_Code</targetReference>
+            </connector>
+            <label>EXPIRED</label>
+        </rules>
+        <rules>
+            <name>Rule_NoPendingCode</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varValidationStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NO_PENDING_CODE</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Generate_And_Send_Code</targetReference>
+            </connector>
+            <label>NO_PENDING_CODE</label>
+        </rules>
+    </decisions>
+
+    <!-- ── Screens ────────────────────────────────────────────────────────── -->
+
+    <!-- Code entry screen -->
+    <screens>
+        <name>Screen_Enter_Code</name>
+        <label>Enter Verification Code</label>
+        <locationX>182</locationX>
+        <locationY>840</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Validate_Code</targetReference>
+        </connector>
+        <fields>
+            <name>EnterCode_Intro</name>
+            <fieldText>A 6-digit verification code has been sent to your email address. Please enter it below. The code expires in 5 minutes.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>EnterCode_ErrorMsg</name>
+            <fieldText>{!varErrorMessage}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>EnterCode_Input</name>
+            <dataType>String</dataType>
+            <fieldText>Verification Code</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <!-- BLOCKED screen.
+         LoginFlow_FinishLocation is already set to /secur/logout.jsp by whichever
+         assignment led here. When the user clicks Finish/OK, the flow completes and
+         Salesforce reads LoginFlow_FinishLocation → browser redirected to /secur/logout.jsp
+         → server-side session is destroyed regardless of whether showFooter works or not. -->
+    <screens>
+        <name>Screen_Login_Blocked</name>
+        <label>Login Blocked</label>
+        <locationX>440</locationX>
+        <locationY>1200</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>LoginBlocked_Heading</name>
+            <fieldText>Login Verification Failed</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>LoginBlocked_Reason</name>
+            <fieldText>{!varBlockReason}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>LoginBlocked_Instruction</name>
+            <fieldText>Click OK below. You will be logged out and returned to the login page.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <!-- REFRESH LOGOUT terminal screen.
+         Reached only when Check_If_Blocked returns true (i.e., the user refreshed while blocked).
+         LoginFlow_FinishLocation is already set to /secur/logout.jsp by Assign_Force_Logout_Refresh.
+         showFooter=true shows the OK button. When the user clicks OK the flow completes and
+         Salesforce reads LoginFlow_FinishLocation → browser is sent to /secur/logout.jsp →
+         server-side session is destroyed. -->
+    <screens>
+        <name>Screen_Force_Logout</name>
+        <label>Force Logout</label>
+        <locationX>440</locationX>
+        <locationY>480</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>ForceLogout_Heading</name>
+            <fieldText>Too Many Failed Verification Attempts</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ForceLogout_Body</name>
+            <fieldText>You have exceeded the maximum number of verification attempts. For your security, your session will be terminated. Click OK to be logged out.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+
+    <!-- Success screen: flow completes, org access is granted -->
+    <screens>
+        <name>End_Success</name>
+        <label>Verification Successful</label>
+        <locationX>182</locationX>
+        <locationY>1200</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Success_Body</name>
+            <fieldText>Identity verified. You are being logged in.</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+
+</Flow>

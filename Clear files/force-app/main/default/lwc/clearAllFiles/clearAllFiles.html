@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Files">
+        <div class="slds-p-horizontal_small slds-p-bottom_small">
+            <lightning-button
+                variant="destructive"
+                label="Clear All Attached Files"
+                onclick={handleClearFiles}
+                disabled={isWorking}
+            >
+            </lightning-button>
+        </div>
+    </lightning-card>
+</template>

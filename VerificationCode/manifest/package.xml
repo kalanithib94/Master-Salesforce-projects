@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+    <!-- Apex Classes -->
+    <types>
+        <members>VerificationCodeService</members>
+        <members>VerificationCodeGenerator</members>
+        <members>VerificationCodeValidator</members>
+        <members>VerificationCodeChecker</members>
+        <members>VerificationCodeCleanup</members>
+        <members>VerificationCodeServiceTest</members>
+        <members>VerificationCodeCheckerTest</members>
+        <members>VerificationCodeCleanupTest</members>
+        <name>ApexClass</name>
+    </types>
+
+    <!-- Custom Object (includes all fields automatically) -->
+    <types>
+        <members>Verification_Code__c</members>
+        <name>CustomObject</name>
+    </types>
+
+    <!-- Login Flow -->
+    <types>
+        <members>VerificationCodeLoginFlow</members>
+        <name>Flow</name>
+    </types>
+
+    <version>62.0</version>
+</Package>

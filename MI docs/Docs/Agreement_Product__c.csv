@@ -1,0 +1,4 @@
+External_Id__c,Name,Agreement__r.External_Id__c,Quantity__c,TotalPrice__c
+AGP-ACME-PLAT-1,DataFeed Platform Core,AGR-ACME-PLAT,1,150000
+AGP-ACME-PLAT-2,DataFeed APAC Add-on,AGR-ACME-PLAT,1,35000
+AGP-NOVA-RISK-1,Credit Risk Suite Enterprise,AGR-NOVA-RISK,1,420000

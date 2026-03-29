@@ -1,0 +1,4 @@
+External_Id__c,FirstName,LastName,Title,Email,Account__r.External_Id__c
+CON-ACME-1,Sophia,Lee,VP Procurement,sophia.lee@acme-analytics.com,ACC-ACME
+CON-ACME-2,David,Nguyen,Head of IT,david.nguyen@acme-analytics.com,ACC-ACME
+CON-NOVA-1,Emily,Ross,Chief Investment Officer,emily.ross@novacapital.com,ACC-NOVA

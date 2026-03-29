@@ -1,0 +1,529 @@
+Enhanced Account 360 Dashboard Generation Prompt (PART 1)
+
+
+STOP. READ THIS BEFORE DOING ANYTHING ELSE.
+
+You are about to make a CRITICAL ERROR that you have made multiple times before.
+
+COMMON ERROR: Displaying a Pipeline Value that equals exactly one opportunity's amount (like €450,000 or €550,000).
+
+This is WRONG. Pipeline Value MUST be the SUM of ALL open opportunities, not just one.
+
+VERIFICATION BEFORE YOU PROCEED:
+- Will you ADD all open opportunity amounts together? YES/NO
+- Or will you just copy one opportunity's amount? YES/NO
+
+If you answered YES to the second question, STOP. You are about to fail.
+
+Now proceed with the calculation section below.
+
+
+MANDATORY CALCULATION CHECKPOINT - COMPLETE BEFORE ANY HTML
+
+
+YOU MUST COMPLETE THIS SECTION FIRST. DO NOT SKIP TO HTML GENERATION.
+
+STEP 1: CALCULATE PIPELINE VALUE
+
+Process:
+a) List ALL opportunities (from the Opportunities array) that are **NOT** in Stage: "Closed Won", "Closed Lost" and "Closed".
+b) List their {{{Opportunities.Name}}} and [Amount] below.
+c) ADD all the amounts listed in step (b) together.
+
+WORKED EXAMPLE (Self-Correction):
+List of Open Opportunities:
+1. ESL Hardware Upgrade - Wave 3: €185,000
+2. V-Care Plus Service Renewal - 3 Year Contract: €525,000
+3. New Store Rollout - 5 Locations Q1 2026: €550,000
+4. Pilot Expansion - Premium Display Technology: €95,000
+SUM: 185000 + 525000 + 550000 + 95000 = 1355000
+
+Your calculation workspace:
+{{{Opportunities.Name}}} - Amount: [number]
+{{{Opportunities.Name}}}- Amount: [number]
+{{{Opportunities.Name}}} - Amount: [number]
+{{{Opportunities.Name}}} - Amount: [number]
+
+SUM: [number] + [number] + [number] + [number] = [TOTAL]
+
+FINAL PIPELINE VALUE: €[TOTAL] (Must be the sum of all 4 listed opportunities)
+
+
+STEP 2: CALCULATE REVENUE AT RISK
+
+Process:
+a) Identify the Current Date: {{{Opportunities.Currentdate__c}}} (2025-11-03).
+b) Calculate the 30-Day Cutoff Date (Current Date + 30 days): **2025-12-03**.
+c) List ALL opportunities where:
+    1. The Close Date is ON or BEFORE the 30-Day Cutoff Date (2025-12-03).
+    2. The Stage Name is **NOT** "Closed Won", "Closed Lost", or "Closed".
+d) List their [Opportunity Name], [CloseDate], and [Amount] below.
+e) ADD all the amounts listed in step (d) together.
+
+Your calculation workspace:
+Opportunity 1: ESL Hardware Upgrade - CloseDate: 2025-12-20 - Include? NO (Date is after 2025-12-03)
+Opportunity 2: V-Care Plus Renewal - CloseDate: 2025-11-30 - Include? YES
+Opportunity 3: New Store Rollout - CloseDate: 2026-01-15 - Include? NO
+Opportunity 4: Pilot Expansion - CloseDate: 2026-03-31 - Include? NO
+
+Opportunity(s) Included in R@R:
+1. V-Care Plus Service Renewal - CloseDate: 2025-11-30 - Amount: €525,000
+
+SUM of included amounts: 525000 = [TOTAL]
+
+FINAL REVENUE AT RISK: €[TOTAL] (Must be the sum of opportunities closing by 2025-12-03)
+
+
+
+STEP 3: COUNT ACTIVE OPPORTUNITIES
+
+Count opportunities where StageName is NOT "Closed Won", NOT "Closed Lost", NOT "Closed"
+
+Your count: [NUMBER]
+
+
+
+STEP 4: COUNT CRITICAL CASES
+
+Count cases where Priority__c = 'Critical' AND IsClosed = "false"
+
+Your count: [NUMBER]
+
+
+STEP 5: COUNT KEY STAKEHOLDERS
+
+Count unique ContactId values in OpportunityContactRoles
+
+Your count: [NUMBER]
+
+
+STEP 6: CALCULATE FORECAST CATEGORY BREAKDOWN
+
+Process:
+a) From the Opportunities array, group all OPEN opportunities by ForecastCategoryName
+b) For each forecast category, calculate:
+   - Count of opportunities in that category
+   - Sum of Amount for opportunities in that category
+c) Only include categories that have at least one opportunity
+
+Your calculation workspace:
+Forecast Categories (only show categories with opportunities):
+- [CategoryName]: [Count] opportunities, Total: €[Sum of Amounts]
+- [CategoryName]: [Count] opportunities, Total: €[Sum of Amounts]
+- [CategoryName]: [Count] opportunities, Total: €[Sum of Amounts]
+
+If ForecastCategoryName is null or empty, use "Omitted" as the category name.
+
+
+STEP 7: ANALYZE PRODUCT MIX
+
+Process:
+a) From OpportunityLineItems array within Opportunities, group products by Product2.Family
+b) For each product family, calculate:
+   - Total count of line items
+   - Sum of TotalPrice across all line items
+   - Percentage of total revenue
+c) Identify top product families by total revenue
+
+Your analysis workspace:
+Product Families (sorted by revenue, highest first):
+1. [Product2.Family]: [Count] items, €[Total Value], [Percentage]% of total
+2. [Product2.Family]: [Count] items, €[Total Value], [Percentage]% of total
+3. [Product2.Family]: [Count] items, €[Total Value], [Percentage]% of total
+
+If Product2.Family is null, use "Uncategorized" as the family name.
+
+Total Products Value: €[Sum of all TotalPrice]
+
+
+STEP 8: IDENTIFY CONTRACT RENEWALS
+
+Process:
+a) Identify the Current Date from {{{Opportunities.Currentdate__c}}}
+b) Calculate the 12-Month Cutoff Date (Current Date + 365 days)
+c) From the Contracts array, list all contracts where:
+   - EndDate is NOT null
+   - EndDate is ON or BEFORE the 12-Month Cutoff Date
+   - EndDate is AFTER Current Date (not already expired)
+d) For each qualifying contract, calculate days until expiration
+
+Your workspace:
+Current Date: [Date]
+12-Month Cutoff: [Date + 365 days]
+
+Contracts Ending in Next 12 Months:
+- Contract #[ContractNumber]: Ends [EndDate] - [Days until expiration] days - Status: [Status]
+- Contract #[ContractNumber]: Ends [EndDate] - [Days until expiration] days - Status: [Status]
+
+Total Contracts Expiring: [Count]
+
+If no contracts are expiring, state: "No contracts expiring in next 12 months"
+
+
+STEP 9: VALIDATE ACCOUNT TEAM
+
+Process:
+a) Count the number of members in AccountTeamMembers array
+b) If count = 0, set Alert = YES
+c) If count > 0, set Alert = NO and list team members
+
+Your workspace:
+Account Team Count: [Number]
+Alert Required: [YES/NO]
+
+Team Members (if any):
+- [User.Name] - [TeamMemberRole]
+- [User.Name] - [TeamMemberRole]
+- [User.Name] - [TeamMemberRole]
+
+
+END OF MANDATORY CALCULATIONS
+
+
+NOW you may proceed to generate HTML using the calculated values above.
+
+---
+
+CRITICAL INSTRUCTION - MUST BE COMPLETED BEFORE HTML GENERATION:
+
+Before you write ANY HTML output, you MUST first:
+1. Calculate Pipeline Value by ADDING all open opportunity amounts
+2. Calculate Revenue at Risk by ADDING opportunities closing within 30 days
+3. Count Active Opportunities
+4. Count Critical Cases
+5. Count Key Stakeholders
+6. Calculate Forecast Category Breakdown
+7. Analyze Product Mix by Family
+8. Identify Contract Renewals (12-month window)
+9. Validate Account Team
+
+ONLY AFTER completing these 9 calculations should you begin writing HTML.
+
+DO NOT skip to HTML generation. DO NOT use placeholder values. Calculate first, then render.
+
+---
+
+Create a comprehensive Account 360 dashboard by analyzing the provided JSON data.
+
+IMPORTANT:
+Return only clean HTML without any backticks, "html" tags, markdown formatting, escaped characters, or newlines. The HTML should be ready to use directly as a single continuous string. DO NOT add \n, line breaks, or any form of newlines in the output. Ensure ALL records are shown in the tables.
+
+MANDATORY OUTPUT FORMAT - CRITICAL RULE
+Your response must start IMMEDIATELY with: <div style="font-family: 'Montserrat';
+DO NOT include: html,
+
+CRITICAL LAYOUT REQUIREMENTS
+- Use proper HTML div containers for all sections
+- Flex layouts only; do not use CSS Grid for stakeholder or recommendation sections
+- Complete section rendering; ensure all content is properly displayed without cutoffs
+- Consistent card structures; all cards must use the same styling patterns
+- No broken layouts; test all flex containers to ensure proper alignment
+
+VERIFICATION REQUIRED: Double-check each calculation against source JSON data before displaying
+
+CONSISTENT Age formatting:
+- Date format for opportunities: Jan 1, 2000
+- Missing Data Protocol: When data is unavailable, display "N/A" instead of hallucinating values
+
+MANDATORY WORKING HYPERLINKS
+- Opportunities: Use HTML anchor tags linking to opportunity ID and name
+- Cases: Use HTML anchor tags linking to case ID and subject
+- Contacts: Use HTML anchor tags linking to contact ID and name
+- Contracts: Use HTML anchor tags linking to contract ID and number
+
+REQUIRED DASHBOARD SECTIONS (PART 1)
+
+1. Combined Account Header & Executive Summary (Single Section)
+- Must start with prominent Account Name as h1 header
+- Reduced header spacing
+- Single consolidated paragraph combining account description and executive summary
+- Include key business metrics with HTML bold financial figures
+- Highlight current relationship status and strategic opportunities
+- Use HTML bold tags for revenue, years in business, key characteristics, and strategic insights
+
+2. Account Team Validation Alert OR Account Team Summary
+- IF AccountTeamMembers count = 0: Show RED ALERT warning that team is empty and action is required
+- IF AccountTeamMembers count > 0: Show Account Team summary with member cards displaying User.Name and TeamMemberRole
+- Use prominent styling for alert (red background, warning icon)
+- Use card layout for team member display (flex layout, 3 columns responsive)
+
+3. Risk & Strength Assessment (Side-by-Side Layout)
+- Use proper flex container with two equal-width cards
+- Left side: Risk Assessment
+  Card styling
+  - Header with reduced spacing
+  - Exactly 3 total bullet points; no subsections
+  - Bullet points must be dynamically generated by analyzing the data provided, relevant and related to risk assessment, with strong tags for crucial aspects
+  - Do not use the provided HTML structure as output; the result must be dynamic and data driven
+- Right side: Strength Assessment
+  Card styling
+  - Header with reduced spacing
+  - Exactly 3 total bullet points; no subsections
+  - Bullet points must be dynamically generated by analyzing the data provided, relevant and related to strength assessment, with strong tags for crucial aspects
+  - Do not use the provided HTML structure as output; the result must be dynamic and data driven
+
+4. Enhanced Key Performance Indicators (All Side-by-Side)
+- Five metric cards in a single row with flex layout
+- Card titles and numeric values in bold
+- If data unavailable, show "N/A"
+- Accurate calculations needed for all the metrics
+- Card titles and content to reflect KPIs: Pipeline Value, Revenue at Risk, Active Opportunities, Critical Cases, Key Stakeholders
+
+5. Product Mix & Whitespace Analysis (NEW SECTION)
+- Section header: "Product Mix & Whitespace Analysis"
+- Display product families as cards showing:
+  - Product2.Family name
+  - Total value (sum of TotalPrice)
+  - Count of items
+  - Percentage of total revenue
+- Use flex layout for responsive cards
+- Add a "Whitespace Opportunities" callout box suggesting:
+  - Product families with low penetration
+  - Cross-sell opportunities based on customer profile
+  - Missing product categories that similar customers typically purchase
+- Style: Use yellow/amber callout box with lightbulb icon for whitespace section
+
+6. Forecast Category Pipeline Breakdown (NEW SECTION)
+- Section header: "Pipeline by Forecast Category"
+- Display forecast categories as cards showing:
+  - ForecastCategoryName (Pipeline, Best Case, Commit, Omitted, etc.)
+  - Total pipeline value for that category
+  - Count of opportunities in that category
+- Use flex layout for responsive cards
+- Only show categories that have opportunities (do not show empty categories)
+- Style: Use green accent for Commit, blue for Best Case, gray for Pipeline, orange for Omitted
+
+7. Contract Renewal Intelligence (NEW SECTION)
+- Section header: "Contract Renewals - Next 12 Months"
+- IF no contracts expiring: Show green success box stating "No contracts expiring in the next 12 months"
+- IF contracts are expiring: Show red alert box stating "[Count] Contract(s) Expiring Soon - Proactive renewal discussions recommended"
+- Display contract details in a table with columns:
+  - Contract Number (as hyperlink to contract record)
+  - End Date (formatted as Jan 1, 2000)
+  - Days Until Expiration (color-coded: red if < 90 days, orange if < 180 days, green if > 180 days)
+  - Status
+- Table should be responsive and follow same styling as Opportunity Pipeline table
+
+8. Opportunity Pipeline (Table Format - Required)
+- Table headers: Opportunity Name, Stage, Amount, Close Date, Age (Days)
+- Table rows must dynamically render based on data logic:
+- Overdue rows use the correct background color
+- Amounts greater than $1M use bold formatting
+- Date format for opportunities: Jan 1, 2000
+- If closed date is overdue, highlight in red and bold with "OVERDUE"
+- Use consistent font and vertical spacing throughout
+
+CRITICAL REQUIREMENTS
+- No hardcoded content; all data must be dynamically extracted from JSON
+- Accurate calculations for all financial and date-based metrics
+- Consistent conditional formatting across all tables
+- Professional executive presentation suitable for C-level review
+- Functional hyperlinks with proper styling
+
+MANDATORY : DO NOT add \n, line breaks, or any form of newlines in the output.
+
+For new line removing :
+ABSOLUTE REQUIREMENT: Output must be ONE CONTINUOUS HTML STRING with ZERO newlines, spaces between tags, or line breaks.
+
+**VALIDATION PROTOCOL:**
+Before sending response:
+1. Scan entire output for \n characters - if found, REMOVE ALL
+2. Scan for \r and \t characters - if found, REMOVE ALL  
+3. Replace all "> <" patterns with "><" (remove spaces between tags)
+4. Ensure output is ONE unbroken line of HTML
+5. Verify no whitespace exists between HTML tags
+
+**FINAL CHECK:** Your response must be readable as one continuous line without ANY line breaks when viewed in a text editor.
+
+Sample html output structure (COMPLETE SECTION ORDER):
+
+<!-- Container -->
+<div style="font-family: 'Montserrat', sans-serif; max-width: 100%; margin: 0 auto; padding: 1rem; background: #f8fafc; box-sizing: border-box;">
+  
+  <!-- 1. Combined Account Header & Executive Summary -->
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; box-sizing: border-box;">
+    <h1 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin: 0 0 1rem 0; word-wrap: break-word;">[Account Name]</h1>
+    <div style="font-size: 0.9rem; line-height: 1.6; color: #475569; word-wrap: break-word;">
+      [Dynamic account description with <strong>€[AnnualRevenue]</strong> in annual revenue and over <strong>[Years in Business]</strong> years in business. Business overview including specializations and strategic partnerships. Current relationship status with <strong>€[Pipeline Value]</strong> in pipeline value and key strategic opportunities requiring attention.]
+    </div>
+  </div>
+
+  <!-- 2. Account Team Validation Alert OR Account Team Summary -->
+  <!-- IF team is empty, show this alert: -->
+  <div style="background: #fef2f2; border-left: 4px solid #dc2626; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; box-sizing: border-box;">
+    <div style="font-weight: 700; color: #991b1b; margin-bottom: 0.5rem; font-size: 1rem;">⚠️ Action Required: Account Team Empty</div>
+    <div style="font-size: 0.875rem; color: #7f1d1d;">This account has no team members assigned. Please add team members to ensure proper account coverage and collaboration.</div>
+  </div>
+  
+  <!-- OR IF team exists, show this summary: -->
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; box-sizing: border-box;">
+    <h3 style="color: #1e293b; font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem 0;">Account Team ([Count] Members)</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+      <!-- Dynamically generate for each team member -->
+      <div style="flex: 1; min-width: 200px; background: #f8fafc; border-radius: 8px; padding: 1rem; border-left: 3px solid #8b5cf6; box-sizing: border-box;">
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 0.25rem;">[User.Name]</div>
+        <div style="font-size: 0.875rem; color: #64748b;">[TeamMemberRole]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Risk & Strength Assessment -->
+  <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.5rem;">
+    <!-- Risk Assessment Card -->
+    <div style="flex: 1; min-width: 300px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; border-left: 4px solid #ef4444; box-sizing: border-box;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; color: #dc2626; margin: 0 0 1rem 0; word-wrap: break-word;">Risk Assessment</h2>
+      <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.6; color: #475569;">
+        <li style="margin-bottom: 0.5rem;">[Dynamic risk point 1 with <strong>financial exposure</strong> or impact]</li>
+        <li style="margin-bottom: 0.5rem;"><strong>[Risk factor 2]</strong> affecting business area and stakeholder group</li>
+        <li style="margin-bottom: 0.5rem;"><strong>[Risk factor 3]</strong> and market condition impacting business outcome</li>
+      </ul>
+    </div>
+
+    <!-- Strength Assessment Card -->
+    <div style="flex: 1; min-width: 300px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; border-left: 4px solid #10b981; box-sizing: border-box;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; color: #059669; margin: 0 0 1rem 0; word-wrap: break-word;">Strength Assessment</h2>
+      <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.6; color: #475569;">
+        <li style="margin-bottom: 0.5rem;">[Strength area 1] with <strong>[Number] key stakeholders</strong> actively engaged</li>
+        <li style="margin-bottom: 0.5rem;">Strong business metric of <strong>€[Revenue Amount]</strong> with growth characteristics</li>
+        <li style="margin-bottom: 0.5rem;"><strong>[Innovation/competitive advantage]</strong> in business area and market position</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. Key Performance Indicators -->
+  <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+    <div style="flex: 1; min-width: 180px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.25rem; border-left: 4px solid #3b82f6; box-sizing: border-box;">
+      <div style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem;">Pipeline Value</div>
+      <div style="font-size: 1.75rem; font-weight: 700; color: #3b82f6; margin-bottom: 0.25rem;">€[Calculated Total]</div>
+      <div style="font-size: 0.8rem; color: #94a3b8;">Active opportunities total</div>
+    </div>
+
+    <div style="flex: 1; min-width: 180px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.25rem; border-left: 4px solid #ef4444; box-sizing: border-box;">
+      <div style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem;">Revenue at Risk</div>
+      <div style="font-size: 1.75rem; font-weight: 700; color: #ef4444; margin-bottom: 0.25rem;">€[Calculated Total]</div>
+      <div style="font-size: 0.8rem; color: #94a3b8;">Closing within 30 days</div>
+    </div>
+
+    <div style="flex: 1; min-width: 180px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.25rem; border-left: 4px solid #8b5cf6; box-sizing: border-box;">
+      <div style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem;">Active Opportunities</div>
+      <div style="font-size: 1.75rem; font-weight: 700; color: #8b5cf6; margin-bottom: 0.25rem;">[Count]</div>
+      <div style="font-size: 0.8rem; color: #94a3b8;">Open deals in pipeline</div>
+    </div>
+
+    <div style="flex: 1; min-width: 180px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.25rem; border-left: 4px solid #f59e0b; box-sizing: border-box;">
+      <div style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem;">Critical Cases</div>
+      <div style="font-size: 1.75rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.25rem;">[Count]</div>
+      <div style="font-size: 0.8rem; color: #94a3b8;">Critical priority open cases</div>
+    </div>
+
+    <div style="flex: 1; min-width: 180px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.25rem; border-left: 4px solid #10b981; box-sizing: border-box;">
+      <div style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem;">Key Stakeholders</div>
+      <div style="font-size: 1.75rem; font-weight: 700; color: #10b981; margin-bottom: 0.25rem;">[Count]</div>
+      <div style="font-size: 0.8rem; color: #94a3b8;">Unique stakeholder contacts</div>
+    </div>
+  </div>
+
+  <!-- 5. Product Mix & Whitespace Analysis (NEW) -->
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; box-sizing: border-box;">
+    <h3 style="color: #1e293b; font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem 0;">Product Mix & Whitespace Analysis</h3>
+    
+    <!-- Product Family Distribution -->
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+      <!-- Dynamically generate for each product family from Step 7 calculations -->
+      <div style="flex: 1; min-width: 200px; background: #f8fafc; border-radius: 8px; padding: 1rem; border-left: 3px solid #3b82f6; box-sizing: border-box;">
+        <div style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.25rem;">[Product2.Family]</div>
+        <div style="font-size: 1.5rem; font-weight: 700; color: #1e293b;">€[Total Value]</div>
+        <div style="font-size: 0.8rem; color: #94a3b8;">[Count] items • [Percentage]% of revenue</div>
+      </div>
+    </div>
+    
+    <!-- Whitespace Opportunities Callout -->
+    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 8px; box-sizing: border-box;">
+      <div style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">💡 Whitespace Opportunities</div>
+      <div style="font-size: 0.875rem; color: #78350f;">
+        [Dynamically identify product families with low penetration or suggest cross-sell opportunities based on customer profile and missing categories]
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Forecast Category Pipeline Breakdown (NEW) -->
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; box-sizing: border-box;">
+    <h3 style="color: #1e293b; font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem 0;">Pipeline by Forecast Category</h3>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+      <!-- Dynamically generate for each forecast category from Step 6 calculations -->
+      <!-- Use color coding: Commit=green, Best Case=blue, Pipeline=purple, Omitted=orange -->
+      <div style="flex: 1; min-width: 180px; background: #f8fafc; border-radius: 8px; padding: 1rem; border-left: 3px solid #10b981; box-sizing: border-box;">
+        <div style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.25rem;">[ForecastCategoryName]</div>
+        <div style="font-size: 1.5rem; font-weight: 700; color: #1e293b;">€[Category Total]</div>
+        <div style="font-size: 0.8rem; color: #94a3b8;">[Count] opportunities</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Contract Renewal Intelligence (NEW) -->
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; box-sizing: border-box;">
+    <h3 style="color: #1e293b; font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem 0;">Contract Renewals - Next 12 Months</h3>
+    
+    <!-- IF no contracts expiring (from Step 8), show green success message -->
+    <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; box-sizing: border-box;">
+      <div style="font-size: 0.875rem; color: #166534;">✓ No contracts expiring in the next 12 months</div>
+    </div>
+    
+    <!-- OR IF contracts are expiring, show red alert and table -->
+    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; box-sizing: border-box;">
+      <div style="font-weight: 600; color: #991b1b; margin-bottom: 0.5rem;">⚠️ [Count] Contract(s) Expiring Soon</div>
+      <div style="font-size: 0.875rem; color: #7f1d1d;">Proactive renewal discussions recommended</div>
+    </div>
+    
+    <!-- Contract Details Table -->
+    <table style="width: 100%; border-collapse: collapse; background: #fff; font-size: 0.875rem;">
+      <thead>
+        <tr style="background-color: #f1f5f9;">
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Contract Number</th>
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">End Date</th>
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Days Until Expiration</th>
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamically generate rows for each contract from Step 8 -->
+        <tr style="background-color: #fefefe;">
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem;"><a href="[ContractId]" style="color: #3b82f6; text-decoration: none;">[ContractNumber]</a></td>
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem;">[EndDate formatted as Jan 1, 2000]</td>
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem; font-weight: 600; color: [#dc2626 if < 90 days, #f59e0b if < 180 days, #10b981 otherwise];">[Days]</td>
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem;">[Status]</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 8. Opportunity Pipeline Table -->
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1rem; box-sizing: border-box; overflow-x: auto;">
+    <h3 style="color: #1e293b; font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem 0;">Opportunity Pipeline</h3>
+    
+    <table style="width: 100%; border-collapse: collapse; background: #fff; font-size: 0.875rem;">
+      <thead>
+        <tr style="background-color: #f1f5f9;">
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Opportunity Name</th>
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Stage</th>
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Amount</th>
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Close Date</th>
+          <th style="border: 1px solid #cbd5e1; padding: 0.75rem; text-align: left; font-weight: 600; color: #475569;">Age (Days)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamically generate rows for each opportunity -->
+        <tr style="background-color: [#fef2f2 if overdue, #fefefe otherwise];">
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem;"><a href="[OpportunityId]" style="color: #3b82f6; text-decoration: none;">[Opportunity Name]</a></td>
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem;">[StageName]</td>
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem; [font-weight: 700 if Amount > 1000000];">€[Amount]</td>
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem; [color: #dc2626; font-weight: 700 if overdue];">[CloseDate formatted as Jan 1, 2000] [OVERDUE if past due]</td>
+          <td style="border: 1px solid #cbd5e1; padding: 0.75rem;">[Age in Days]</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+

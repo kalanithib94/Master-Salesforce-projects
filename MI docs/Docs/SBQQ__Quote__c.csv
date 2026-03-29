@@ -1,0 +1,4 @@
+External_Id__c,Name,SBQQ__Opportunity2__r.External_Id__c,SBQQ__Status__c,SBQQ__ExpirationDate__c
+Q-ACME-NEW-1,Acme - New Business Quote v1,OPP-ACME-NEW,Draft,2026-03-10
+Q-ACME-NEW-2,Acme - New Business Quote v2 (Discounted),OPP-ACME-NEW,Presented,2026-03-15
+Q-ACME-REN-1,Acme - Renewal Quote v1,OPP-ACME-REN,Presented,2026-03-20
