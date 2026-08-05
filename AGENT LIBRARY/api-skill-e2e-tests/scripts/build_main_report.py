@@ -143,111 +143,111 @@ def next_step_for_skill(skill: str, category: str, response: str) -> str | None:
     # --- Features / packages to enable or install ---
     if "cpq" in sk or "sbqq" in resp:
         return (
-            "Next step: Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses "
+            "Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses "
             "and object permissions; re-run this skill after SBQQ__Quote__c is available."
         )
     if "quote" in sk and ("quote" in resp or "enable quotes" in resp or "not available" in resp or category == "fail_data"):
         if "missing" in resp and "quoteid" in resp.replace("_", ""):
             return (
-                "Next step: Enable Salesforce Quotes "
+                "Enable Salesforce Quotes "
                 "(Setup → Feature Settings → Sales → Quotes → Enable Quotes), "
                 "create a seed Quote (with Pricebook and optional line items), then re-run."
             )
         return (
-            "Next step: Enable Salesforce Quotes in Setup, then create at least one Quote "
+            "Enable Salesforce Quotes in Setup, then create at least one Quote "
             "(and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run."
         )
     if "knowledge" in sk or "casearticle" in resp or ("knowledge" in resp and "not" in resp):
         return (
-            "Next step: Enable Lightning Knowledge (Setup → Knowledge Settings), "
+            "Enable Lightning Knowledge (Setup → Knowledge Settings), "
             "create a published article, assign Knowledge user permissions, then re-run."
         )
     if "opportunity_team" in sk or "team selling" in resp or "opportunityteammember" in resp:
         return (
-            "Next step: Enable Team Selling "
+            "Enable Team Selling "
             "(Setup → Opportunity Team Settings / Team Selling), "
             "ensure OpportunityTeamMember is creatable, then re-run."
         )
     if "service_appointment" in sk or "service_resource" in sk or "serviceappointment" in resp or "serviceresource" in resp:
         return (
-            "Next step: Install/enable Field Service (FSL) and make ServiceAppointment / "
+            "Install/enable Field Service (FSL) and make ServiceAppointment / "
             "ServiceResource available with licenses; create at least one resource, then re-run."
         )
     if "financial_account" in sk or "finserv" in resp or "financialaccount" in resp:
         return (
-            "Next step: Install Financial Services Cloud (or enable FinServ pack) so "
+            "Install Financial Services Cloud (or enable FinServ pack) so "
             "FinServ__FinancialAccount__c exists; assign FSC permissions and re-run."
         )
     if "care_plan" in sk or "care plan" in resp:
         return (
-            "Next step: Enable Care Plans / Health Cloud (or the Care Plan object pack) "
+            "Enable Care Plans / Health Cloud (or the Care Plan object pack) "
             "in Setup, assign permissions, create a sample Care Plan, then re-run."
         )
     if "account_plan" in sk or "account plan" in resp:
         return (
-            "Next step: Enable Account Plans (or install the pack that provides Account Plan) "
+            "Enable Account Plans (or install the pack that provides Account Plan) "
             "and grant CRUD; create a sample Account Plan and re-run."
         )
     if "subscription" in sk or "subscription" in resp:
         return (
-            "Next step: Install/enable the Subscription product model used by this skill "
+            "Install/enable the Subscription product model used by this skill "
             "(standard or CPQ/industry object); create a seed Subscription and re-run."
         )
     if "entitlement" in sk or "milestone" in sk:
         if "not available" in resp or "not enabled" in resp:
             return (
-                "Next step: Enable Entitlement Management and Case milestones "
+                "Enable Entitlement Management and Case milestones "
                 "(Setup → Entitlement Settings), assign a Milestone process to the Case, then re-run."
             )
 
     # --- Data / ownership / team ---
     if "duplicate" in resp or "already on the team" in resp:
         return (
-            "Next step: Remove the existing CaseTeamMember for that user/case "
+            "Remove the existing CaseTeamMember for that user/case "
             "(or pick a different User), then re-run — use retry_failed_skills / seed remediation."
         )
     if "already owned" in resp or "already owned by that user" in resp:
         return (
-            "Next step: Ensure the seed record is owned by a different user first, "
+            "Ensure the seed record is owned by a different user first, "
             "then transfer to the target user (org needs ≥2 users). Re-run seed_retry_remediation + skill."
         )
     if "missing" in resp and ("parameter" in resp or "required" in resp):
         return (
-            "Next step: Provide the missing parameter in the Prompt Command / invoke payload "
+            "Provide the missing parameter in the Prompt Command / invoke payload "
             "(prefer CaseNumber, Name, or parent Name). Update seed.apex/Prompt Command if the schema is wrong, re-seed, re-run."
         )
     if "no " in resp and "found" in resp:
         return (
-            "Next step: Create or reseed the referenced record in the org "
+            "Create or reseed the referenced record in the org "
             "(E2E seed data / natural key match), then re-run with CaseNumber/Name instead of guessing Ids."
         )
     if "not linked" in resp or category == "fail_missing_class":
         return (
-            "Next step: Link the skill prompt to the agent (AI Agent Skill), "
+            "Link the skill prompt to the agent (AI Agent Skill), "
             "confirm Agentic Function Class is deployed, then re-run getAgentSkills + invoke."
         )
     if category == "fail_api":
         return (
-            "Next step: Check GPTfy package version, agent API name, and user permissions; "
+            "Check GPTfy package version, agent API name, and user permissions; "
             "re-auth CLI org and re-run inventory."
         )
     if category == "fail_missing_feature":
         return (
-            "Next step: Enable or install the Salesforce feature/package this skill depends on "
+            "Enable or install the Salesforce feature/package this skill depends on "
             "(see response message), assign licenses/permissions, create minimal seed data, then re-run."
         )
     if category == "fail_data":
         return (
-            "Next step: Fix seed/fixture data for this skill (missing parent Id/Name, wrong status, empty required field), "
+            "Fix seed/fixture data for this skill (missing parent Id/Name, wrong status, empty required field), "
             "run seed_org_data or a targeted Apex seed, then re-run the skill."
         )
     if category == "fail_business":
         return (
-            "Next step: Read the Apex error in the response; adjust seed state or handler/prompt if needed, "
+            "Read the Apex error in the response; adjust seed state or handler/prompt if needed, "
             "then re-run. Use retry_failed_skills.py for data + optional --deploy-handlers for Apex fixes."
         )
     return (
-        "Next step: Review the response, fix org feature/data or product code as appropriate, "
+        "Review the response, fix org feature/data or product code as appropriate, "
         "then re-invoke and refresh MAIN_REPORT."
     )
 

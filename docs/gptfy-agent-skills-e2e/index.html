@@ -38,14 +38,14 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
 </style></head><body><div class="wrap">
 <header class="hero">
   <h1>GPTfy Agent Skills — E2E request / response report</h1>
-  <p class="muted">2026-08-05 21:18:40 India Standard Time · 2026-08-05 15:48:40 UTC</p>
+  <p class="muted">2026-08-05 21:19:30 India Standard Time · 2026-08-05 15:49:30 UTC</p>
   <p class="muted">Org <b>Master Dev</b> · Agent <code>IT_Helpdesk_Assistant05/08/2026, 11:47</code></p>
   <div class="banner">MAIN report — always overwritten with the latest full run. Dated snapshots live under AGENT LIBRARY/Reports/archive/.</div>
-  <p class="muted" style="margin-top:.65rem">This MAIN file is overwritten on every run. Snapshot: 2026-08-05_211840_next-steps-on-failures.html</p>
+  <p class="muted" style="margin-top:.65rem">This MAIN file is overwritten on every run. Snapshot: 2026-08-05_211930_next-steps-clean.html</p>
 </header>
 <section class="intro">
   <h2 style="margin:0 0 .5rem;font-size:1rem">Why this update</h2>
-  <ul><li>Add Next step on each failed skill (enable feature / seed data / fix schema)\nPublic MAIN always latest</li></ul>
+  <ul><li>Per-failed-skill Next step for missing features to enable\nBoss-facing MAIN always latest with consolidated counts</li></ul>
   <h2 style="margin:1rem 0 .4rem;font-size:1rem">Consolidated results</h2>
   <div class="consolidated"><span class="cnt total"><b>110</b> skills</span><span class="cnt ok"><b>82</b> pass</span><span class="cnt warn"><b>3</b> fail_data</span><span class="cnt mute"><b>25</b> fail_missing_feature</span></div>
   <p class="muted" style="margin:.35rem 0 0">Failed skills include a <b>Next step</b> (enable feature / seed data / fix prompt or Apex).</p>
@@ -79,7 +79,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;0B6QH000000150r0AA&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Case Team Member Added Case #: 00001026 👉 View Team Member&quot;
-}</pre></div></div></article><article class="card mute" id="add_cpq_quote_line"><header><h2><code>add_cpq_quote_line</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{}</pre></div><div class="col"><h3>Response</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="add_cpq_quote_line"><header><h2><code>add_cpq_quote_line</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{}</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;⚠️ Could not add CPQ quote line Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
 }</pre></div></div></article><article class="card ok" id="add_opportunity_contact_role"><header><h2><code>add_opportunity_contact_role</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
@@ -108,7 +108,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;00IQH000002Hy0D2AS&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Opportunity Partner Added Opportunity: 006QH00000Kz3yLYAR Partner Account: 001QH00002FpcuTYAR 👉 View Partner Role&quot;
-}</pre></div></div></article><article class="card mute" id="add_opportunity_team_member"><header><h2><code>add_opportunity_team_member</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Team Selling (Setup → Opportunity Team Settings / Team Selling), ensure OpportunityTeamMember is creatable, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="add_opportunity_team_member"><header><h2><code>add_opportunity_team_member</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Team Selling (Setup → Opportunity Team Settings / Team Selling), ensure OpportunityTeamMember is creatable, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
   &quot;opportunity_id&quot;: &quot;006QH00000Kz3yLYAR&quot;,
   &quot;UserId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
@@ -128,7 +128,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;802QH00000OlbzDYAR&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Order Item Added Quantity: 1 Unit Price: 25 👉 View Order Item&quot;
-}</pre></div></div></article><article class="card warn" id="add_quote_line_item"><header><h2><code>add_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Salesforce Quotes (Setup → Feature Settings → Sales → Quotes → Enable Quotes), create a seed Quote (with Pricebook and optional line items), then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card warn" id="add_quote_line_item"><header><h2><code>add_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes (Setup → Feature Settings → Sales → Quotes → Enable Quotes), create a seed Quote (with Pricebook and optional line items), then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Quantity&quot;: 1,
   &quot;UnitPrice&quot;: 10,
   &quot;PricebookEntryId&quot;: &quot;01uQH000003sGBCYA2&quot;
@@ -149,7 +149,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;500QH00000VaKWEYA3&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Assigned to Queue 00001026 OwnerId: 00GQH000006KGhu2AG → 00GQH000006KGhu2AG 👉 View Record&quot;
-}</pre></div></div></article><article class="card mute" id="calculate_cpq_quote"><header><h2><code>calculate_cpq_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="calculate_cpq_quote"><header><h2><code>calculate_cpq_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
@@ -232,7 +232,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;800QH00000Va9PZYAZ&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Contract Created Contract #: Status: Draft Start Date: 2026-08-05 👉 View Contract&quot;
-}</pre></div></div></article><article class="card mute" id="create_cpq_quote"><header><h2><code>create_cpq_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="create_cpq_quote"><header><h2><code>create_cpq_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
@@ -283,7 +283,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;801QH00002FpbIeYAJ&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Order Created Status: Draft Effective Date: 2026-08-05 👉 View Order&quot;
-}</pre></div></div></article><article class="card mute" id="create_quote"><header><h2><code>create_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="create_quote"><header><h2><code>create_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Name&quot;: &quot;E2E Quote&quot;,
   &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
@@ -307,7 +307,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;0WOQH000006HZfR4AW&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Work Order Created Subject: E2E Work Order 👉 View Work Order&quot;
-}</pre></div></div></article><article class="card mute" id="fetch_account_plan"><header><h2><code>fetch_account_plan</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Account Plans (or install the pack that provides Account Plan) and grant CRUD; create a sample Account Plan and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_account_plan"><header><h2><code>fetch_account_plan</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Account Plans (or install the pack that provides Account Plan) and grant CRUD; create a sample Account Plan and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;Account Plan is not available in this org.&quot;,
@@ -452,7 +452,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;count&quot;: 2,
   &quot;CampaignId&quot;: &quot;701QH00002FpbTlYAJ&quot;,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="fetch_care_plan"><header><h2><code>fetch_care_plan</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Care Plans / Health Cloud (or the Care Plan object pack) in Setup, assign permissions, create a sample Care Plan, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_care_plan"><header><h2><code>fetch_care_plan</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Care Plans / Health Cloud (or the Care Plan object pack) in Setup, assign permissions, create a sample Care Plan, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;Care Plan object is not available in this org.&quot;,
@@ -566,19 +566,19 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;ContractNumber&quot;: &quot;00000104&quot;,
   &quot;Id&quot;: &quot;800QH00000VaOQ9YAN&quot;,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="fetch_cpq_quote_details"><header><h2><code>fetch_cpq_quote_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_cpq_quote_details"><header><h2><code>fetch_cpq_quote_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;,
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
-}</pre></div></div></article><article class="card mute" id="fetch_financial_account"><header><h2><code>fetch_financial_account</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Financial Services Cloud (or enable FinServ pack) so FinServ__FinancialAccount__c exists; assign FSC permissions and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_financial_account"><header><h2><code>fetch_financial_account</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Financial Services Cloud (or enable FinServ pack) so FinServ__FinancialAccount__c exists; assign FSC permissions and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;Financial Account object (FinServ__FinancialAccount__c) is not available in this org.&quot;,
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;Financial Account object (FinServ__FinancialAccount__c) is not available in this org.&quot;
-}</pre></div></div></article><article class="card mute" id="fetch_knowledge_article"><header><h2><code>fetch_knowledge_article</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_knowledge_article"><header><h2><code>fetch_knowledge_article</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: true,
@@ -1034,7 +1034,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;count&quot;: 4,
   &quot;opportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="fetch_opportunity_team"><header><h2><code>fetch_opportunity_team</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Team Selling (Setup → Opportunity Team Settings / Team Selling), ensure OpportunityTeamMember is creatable, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_opportunity_team"><header><h2><code>fetch_opportunity_team</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Team Selling (Setup → Opportunity Team Settings / Team Selling), ensure OpportunityTeamMember is creatable, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
   &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
@@ -1451,7 +1451,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;count&quot;: 0,
   &quot;queueId&quot;: &quot;00GQH000006KGhu2AG&quot;,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="fetch_quote_details"><header><h2><code>fetch_quote_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_quote_details"><header><h2><code>fetch_quote_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;Quote is not available or accessible in this org (enable Quotes).&quot;,
@@ -1473,13 +1473,13 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;ownerId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
   &quot;count&quot;: 0,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="fetch_service_appointment"><header><h2><code>fetch_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_service_appointment"><header><h2><code>fetch_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;ServiceAppointment object is not available in this org.&quot;,
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;ServiceAppointment object is not available in this org.&quot;
-}</pre></div></div></article><article class="card mute" id="fetch_service_resource_availability"><header><h2><code>fetch_service_resource_availability</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_service_resource_availability"><header><h2><code>fetch_service_resource_availability</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;ServiceResource object is not available in this org.&quot;,
@@ -1648,7 +1648,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;scopedToCurrentUser&quot;: true,
   &quot;staleDefinition&quot;: &quot;Open opportunities with CloseDate before today&quot;,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="fetch_subscription_details"><header><h2><code>fetch_subscription_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install/enable the Subscription product model used by this skill (standard or CPQ/industry object); create a seed Subscription and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fetch_subscription_details"><header><h2><code>fetch_subscription_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable the Subscription product model used by this skill (standard or CPQ/industry object); create a seed Subscription and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;Subscription object is not available in this org.&quot;,
@@ -2082,14 +2082,14 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;totalFound&quot;: 9,
   &quot;status&quot;: &quot;found&quot;,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="fuzzy_search_quotes"><header><h2><code>fuzzy_search_quotes</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="fuzzy_search_quotes"><header><h2><code>fuzzy_search_quotes</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;searchTerm&quot;: &quot;Quote&quot;,
   &quot;search_term&quot;: &quot;Quote&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;error&quot;: &quot;Quote is not available or accessible in this org (enable Quotes).&quot;,
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;Quote is not available or accessible in this org (enable Quotes).&quot;
-}</pre></div></div></article><article class="card mute" id="link_knowledge_article_to_case"><header><h2><code>link_knowledge_article_to_case</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="link_knowledge_article_to_case"><header><h2><code>link_knowledge_article_to_case</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
   &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
   &quot;KnowledgeArticleId&quot;: &quot;500QH00000VaKWEYA3&quot;,
@@ -2120,12 +2120,12 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
   &quot;status&quot;: &quot;success&quot;,
   &quot;message&quot;: null
-}</pre></div></div></article><article class="card mute" id="schedule_service_appointment"><header><h2><code>schedule_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="schedule_service_appointment"><header><h2><code>schedule_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;⚠️ Could not schedule appointment ServiceAppointment is not available or creatable in this org.&quot;
-}</pre></div></div></article><article class="card mute" id="search_knowledge_articles"><header><h2><code>search_knowledge_articles</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="search_knowledge_articles"><header><h2><code>search_knowledge_articles</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;search_term&quot;: &quot;test&quot;,
   &quot;searchTerm&quot;: &quot;test&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
@@ -2175,7 +2175,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;00vQH00000IZ9NpYAL&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Campaign Member Status Updated Rose E2EContact Status: Sent → Responded 👉 View Member&quot;
-}</pre></div></div></article><article class="card mute" id="update_care_plan_fields"><header><h2><code>update_care_plan_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Care Plans / Health Cloud (or the Care Plan object pack) in Setup, assign permissions, create a sample Care Plan, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="update_care_plan_fields"><header><h2><code>update_care_plan_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Care Plans / Health Cloud (or the Care Plan object pack) in Setup, assign permissions, create a sample Care Plan, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
@@ -2208,12 +2208,12 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;800QH00000VaOQ9YAN&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Contract Updated 00000104 Description: (none) → E2E contract 👉 View Contract&quot;
-}</pre></div></div></article><article class="card mute" id="update_cpq_quote_fields"><header><h2><code>update_cpq_quote_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="update_cpq_quote_fields"><header><h2><code>update_cpq_quote_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;⚠️ Could not update CPQ quote Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
-}</pre></div></div></article><article class="card mute" id="update_cpq_quote_line"><header><h2><code>update_cpq_quote_line</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="update_cpq_quote_line"><header><h2><code>update_cpq_quote_line</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Salesforce CPQ (SteelBrick / SBQQ) and grant CPQ licenses and object permissions; re-run this skill after SBQQ__Quote__c is available.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
@@ -2225,7 +2225,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;00UQH0000076NcD2AU&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Event Updated E2E Skill Test Event Description: E2E event update → E2E event update 👉 View Event&quot;
-}</pre></div></div></article><article class="card mute" id="update_financial_account_fields"><header><h2><code>update_financial_account_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install Financial Services Cloud (or enable FinServ pack) so FinServ__FinancialAccount__c exists; assign FSC permissions and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="update_financial_account_fields"><header><h2><code>update_financial_account_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Financial Services Cloud (or enable FinServ pack) so FinServ__FinancialAccount__c exists; assign FSC permissions and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
@@ -2285,7 +2285,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;recordId&quot;: &quot;802QH00000Olf3VYAR&quot;,
   &quot;success&quot;: true,
   &quot;message&quot;: &quot;✅ Order Item Updated 0000000004 (1.00 @ 50.00) Quantity: 1.00 → 2.00 UnitPrice: 50.00 → 55.00 👉 View Order Item&quot;
-}</pre></div></div></article><article class="card warn" id="update_quote_fields"><header><h2><code>update_quote_fields</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Salesforce Quotes (Setup → Feature Settings → Sales → Quotes → Enable Quotes), create a seed Quote (with Pricebook and optional line items), then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card warn" id="update_quote_fields"><header><h2><code>update_quote_fields</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes (Setup → Feature Settings → Sales → Quotes → Enable Quotes), create a seed Quote (with Pricebook and optional line items), then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Description&quot;: &quot;E2E&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;status&quot;: &quot;Success&quot;,
@@ -2294,7 +2294,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
     &quot;message&quot;: &quot;⚠️ Could not update quote Missing parameter: quote_id&quot;,
     &quot;success&quot;: false
   }
-}</pre></div></div></article><article class="card warn" id="update_quote_line_item"><header><h2><code>update_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Next step: Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card warn" id="update_quote_line_item"><header><h2><code>update_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Quantity&quot;: 2
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;status&quot;: &quot;Success&quot;,
@@ -2303,12 +2303,12 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
     &quot;message&quot;: &quot;⚠️ Could not update quote line item Missing parameter: line_item_id&quot;,
     &quot;success&quot;: false
   }
-}</pre></div></div></article><article class="card mute" id="update_service_appointment"><header><h2><code>update_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="update_service_appointment"><header><h2><code>update_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
   &quot;message&quot;: &quot;⚠️ Could not update appointment ServiceAppointment is not updateable in this org.&quot;
-}</pre></div></div></article><article class="card mute" id="update_subscription_fields"><header><h2><code>update_subscription_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Next step: Install/enable the Subscription product model used by this skill (standard or CPQ/industry object); create a seed Subscription and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card mute" id="update_subscription_fields"><header><h2><code>update_subscription_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable the Subscription product model used by this skill (standard or CPQ/industry object); create a seed Subscription and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: false,
