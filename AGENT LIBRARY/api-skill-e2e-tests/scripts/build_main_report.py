@@ -2,6 +2,7 @@
 """
 Build MAIN_REPORT.html (always latest, public share) + dated archive copy.
 
+Lives in AGENT LIBRARY/Reports/ (separate from api-skill-e2e-tests harness).
 Detail-first: every skill Request + Response. Minimal header (no scoreboards).
 """
 from __future__ import annotations
@@ -13,14 +14,16 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-REPORTS = ROOT / "reports"
+ROOT = Path(__file__).resolve().parents[1]  # api-skill-e2e-tests
+LIBRARY = ROOT.parent  # AGENT LIBRARY
+# Dedicated reports folder (not under the e2e harness)
+REPORTS = LIBRARY / "Reports"
 ARCHIVE = REPORTS / "archive"
 # Project_SFDC/docs/gptfy-agent-skills-e2e → GitHub Pages public URL
-PUBLIC_DOCS = ROOT.parents[1] / "docs" / "gptfy-agent-skills-e2e"
+PUBLIC_DOCS = LIBRARY.parent / "docs" / "gptfy-agent-skills-e2e"
 
 MAIN_NAME = "MAIN_REPORT.html"
-MAIN_PATH = ROOT / MAIN_NAME
+MAIN_PATH = REPORTS / MAIN_NAME
 SEEDED_JSON = Path(__file__).resolve().parent / "results" / "matrix_report_seeded.json"
 SEEDED_HTML = ROOT / "SKILL_INVOKE_TRANSCRIPT_SEEDED.html"
 
@@ -147,7 +150,7 @@ def write_detail_html(
 
     banner = (
         "MAIN report — always overwritten with the latest full run. "
-        "Dated snapshots live under reports/archive/."
+        "Dated snapshots live under AGENT LIBRARY/Reports/archive/."
         if report_kind == "main"
         else "Archived dated run (immutable snapshot)."
     )
@@ -193,7 +196,9 @@ header h2{{font-size:1.1rem;margin:0}} .toc a{{color:#5eb1ff;text-decoration:non
 </section>
 {"".join(cards)}
 <footer class="muted" style="margin-top:1.5rem;font-size:.84rem">
-  Each card shows the full invoke request and response. Public main link: MAIN_REPORT.html (always latest).
+  Each card shows the full invoke request and response.
+  Main: AGENT LIBRARY/Reports/MAIN_REPORT.html (always latest).
+  Archives: AGENT LIBRARY/Reports/archive/
 </footer>
 </div></body></html>
 """

@@ -38,7 +38,15 @@ api-skill-e2e-tests/
     run_smoke_matrix.py    # optional batch invoke (read-only first)
   fixtures/
     smoke_payloads.json    # sample data per skill (Id placeholders)
-  results/                 # inventory + invoke JSON outputs (local)
+  results/                 # inventory + invoke JSON outputs (local, gitignored)
+
+Reports live **outside** this folder:
+
+```
+AGENT LIBRARY/Reports/
+  MAIN_REPORT.html         # always latest (public share)
+  archive/                 # dated snapshots per update
+```
 ```
 
 ## Typical workflow

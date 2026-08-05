@@ -1,38 +1,41 @@
 ---
-description: Main always-latest E2E HTML report + dated archive for every skill/handler update; public share path
+description: Main always-latest E2E HTML report + dated archive live in AGENT LIBRARY/Reports/
 alwaysApply: true
 ---
 
 # Main report + dated archive (public verification)
 
-## Report layout (required)
+## Where reports live (not inside the e2e harness)
 
-After any handler/skill test run:
-
-1. **MAIN report (always overwritten)**  
-   `AGENT LIBRARY/api-skill-e2e-tests/MAIN_REPORT.html`  
-   Also synced to: `docs/gptfy-agent-skills-e2e/index.html` (GitHub Pages / public link)
-
-2. **Dated archive (never overwrite)**  
-   `AGENT LIBRARY/api-skill-e2e-tests/reports/archive/YYYY-MM-DD_HHMMSS_<slug>.html`
-
-## Report content (detail first)
-
-- Full **Request** + full **Response** for every skill under test
-- Date/time + short **why this update**
-- No large scoreboards / number dumps
-
-## Generate
-
-```bash
-# Full matrix → MAIN + archive
-python build_main_report.py
-
-# Handler change → MAIN + archive
-python regression_handler.py CaseAgenticSkillsHandler --reason "..."
+```
+AGENT LIBRARY/Reports/
+  MAIN_REPORT.html              ← always latest (overwrite)
+  archive/
+    YYYY-MM-DD_HHMMSS_*.html    ← one dated file per update
+  README.md
 ```
 
-## Share with boss
+Public Pages sync (for boss):
 
-- Prefer the **public Pages URL** for `docs/gptfy-agent-skills-e2e/` after push
-- Or MAIN file on `main` branch in the public GitHub repo
+```
+docs/gptfy-agent-skills-e2e/index.html
+docs/gptfy-agent-skills-e2e/archive/
+```
+
+Harness code stays in `api-skill-e2e-tests/` only (scripts, package, config). Do **not** write reports back under `api-skill-e2e-tests/reports/`.
+
+## After any skill/handler change
+
+1. Deploy + retest every skill on that handler
+2. Write **Request + Response** detail (no scoreboard dumps)
+3. Overwrite `Reports/MAIN_REPORT.html`
+4. Add `Reports/archive/<timestamp>_….html`
+5. Tell user both paths + public Pages URL when pushed
+
+## Commands
+
+```bash
+cd "AGENT LIBRARY/api-skill-e2e-tests/scripts"
+python build_main_report.py
+python regression_handler.py CaseAgenticSkillsHandler --reason "Why this change"
+```

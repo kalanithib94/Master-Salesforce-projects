@@ -2,10 +2,10 @@
 """
 Regression: invoke EVERY skill belonging to a handler (or all handlers if base changes).
 
-Always writes a dated HTML report under api-skill-e2e-tests/reports/ with:
-  - date/time
-  - need for update (--reason)
-  - request + response per skill
+Always writes reports under AGENT LIBRARY/Reports/ (not the e2e harness folder):
+  - MAIN_REPORT.html (always latest)
+  - archive/YYYY-MM-DD_HHMMSS_*.html (one per update)
+  - date/time, need for update (--reason), request + response per skill
 
 Usage:
   python regression_handler.py CaseAgenticSkillsHandler --reason "..."
@@ -37,8 +37,9 @@ from run_seeded_matrix import (  # noqa: E402
 from sf_rest import load_config, rest_json, session  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-DELIVERABLES = ROOT.parent / "Deliverables" / "force-app" / "main" / "default" / "classes"
-REPORTS = ROOT / "reports"
+LIBRARY = ROOT.parent
+DELIVERABLES = LIBRARY / "Deliverables" / "force-app" / "main" / "default" / "classes"
+REPORTS = LIBRARY / "Reports"
 ARCHIVE = REPORTS / "archive"
 OUT = Path(__file__).resolve().parent / "results"
 REPORTS.mkdir(parents=True, exist_ok=True)
