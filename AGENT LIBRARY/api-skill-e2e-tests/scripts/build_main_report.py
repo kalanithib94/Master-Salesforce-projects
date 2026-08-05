@@ -145,6 +145,38 @@ def write_detail_html(
     need_items = [ln.strip("- ").strip() for ln in need.splitlines() if ln.strip()]
     need_html = "".join(f"<li>{H.escape(x)}</li>" for x in need_items) or "<li>—</li>"
 
+    from collections import Counter
+
+    counts = Counter((r.get("category") or "unknown") for r in rows)
+    total = sum(counts.values())
+    # Order: pass first, then residual, then N/A features
+    order = [
+        "pass",
+        "fail_business",
+        "fail_data",
+        "fail_api",
+        "fail_missing_feature",
+        "fail_missing_class",
+        "unknown",
+    ]
+    count_bits = []
+    for key in order:
+        if counts.get(key):
+            count_bits.append(
+                f'<span class="cnt {pill_cls(key)}"><b>{counts[key]}</b> {H.escape(key)}</span>'
+            )
+    for key, n in sorted(counts.items()):
+        if key not in order:
+            count_bits.append(
+                f'<span class="cnt {pill_cls(key)}"><b>{n}</b> {H.escape(key)}</span>'
+            )
+    consolidated = (
+        f'<div class="consolidated">'
+        f'<span class="cnt total"><b>{total}</b> skills</span>'
+        + "".join(count_bits)
+        + "</div>"
+    )
+
     toc = "".join(
         f'<li><a href="#{H.escape(r["skill"])}">{H.escape(r["skill"])}</a> '
         f'<span class="pill {pill_cls(r["category"])}">{H.escape(r["category"])}</span></li>'
@@ -200,6 +232,15 @@ pre{{background:#0d1218;padding:.75rem .85rem;border-radius:8px;white-space:pre-
 code{{color:#b8e0ff}} header{{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}}
 header h2{{font-size:1.1rem;margin:0}} .toc a{{color:#5eb1ff;text-decoration:none}}
 .toc{{columns:2}} @media(max-width:700px){{.toc{{columns:1}}}} ul{{margin:.35rem 0 .2rem 1.15rem}}
+.consolidated{{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 .25rem;align-items:center}}
+.cnt{{display:inline-block;padding:.35rem .7rem;border-radius:8px;font-size:.88rem;
+  background:#243044;border:1px solid #2e3f56;color:#c5d4e8}}
+.cnt b{{font-size:1.05rem;margin-right:.2rem}}
+.cnt.total{{background:#1a2f4a;border-color:#3a5a80;color:#b8e0ff}}
+.cnt.ok{{background:#14352a;border-color:#2a5c44;color:#3dd68c}}
+.cnt.warn{{background:#3a2e0e;border-color:#6a5020;color:#f0b429}}
+.cnt.bad{{background:#3a1518;border-color:#6a3030;color:#f07178}}
+.cnt.mute{{background:#2a3340;border-color:#3a4555;color:#9db0c9}}
 </style></head><body><div class="wrap">
 <header class="hero">
   <h1>{H.escape(title)}</h1>
@@ -211,6 +252,8 @@ header h2{{font-size:1.1rem;margin:0}} .toc a{{color:#5eb1ff;text-decoration:non
 <section class="intro">
   <h2 style="margin:0 0 .5rem;font-size:1rem">Why this update</h2>
   <ul>{need_html}</ul>
+  <h2 style="margin:1rem 0 .4rem;font-size:1rem">Consolidated results</h2>
+  {consolidated}
   <h2 style="margin:1rem 0 .5rem;font-size:1rem">Skills in this report</h2>
   <ul class="toc">{toc or "<li>—</li>"}</ul>
 </section>
