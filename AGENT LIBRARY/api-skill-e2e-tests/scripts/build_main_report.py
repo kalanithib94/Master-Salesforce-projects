@@ -43,16 +43,36 @@ def parse_seeded_html(path: Path) -> list[dict]:
     if not path.exists():
         return []
     text = path.read_text(encoding="utf-8")
-    pattern = re.compile(
+    rows = []
+    # Format A: data-cat on article (legacy transcript)
+    pattern_a = re.compile(
         r'data-cat="([^"]+)".*?<code>([^<]+)</code>.*?<span class="pill[^"]*">([^<]+)</span>'
         r".*?Request</h3><pre>(.*?)</pre>.*?Response</h3><pre>(.*?)</pre>",
         re.S,
     )
-    rows = []
-    for cat, skill, pill, req, resp in pattern.findall(text):
+    for cat, skill, pill, req, resp in pattern_a.findall(text):
         rows.append(
             {
                 "category": cat,
+                "skill": skill,
+                "request": _unescape(req),
+                "response": _unescape(resp),
+            }
+        )
+    if rows:
+        return rows
+    # Format B: MAIN_REPORT cards id=skill + pill text as category
+    pattern_b = re.compile(
+        r'<article class="card[^"]*" id="([^"]+)">.*?'
+        r'<span class="pill[^"]*">([^<]+)</span>.*?'
+        r"Request</h3><pre>(.*?)</pre>.*?"
+        r"Response</h3><pre>(.*?)</pre>",
+        re.S,
+    )
+    for skill, cat, req, resp in pattern_b.findall(text):
+        rows.append(
+            {
+                "category": cat.strip(),
                 "skill": skill,
                 "request": _unescape(req),
                 "response": _unescape(resp),

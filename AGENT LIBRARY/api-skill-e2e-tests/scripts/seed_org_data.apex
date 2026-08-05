@@ -191,15 +191,21 @@ Id queueId = null;
 List<Group> queues = [SELECT Id, Name FROM Group WHERE Type = 'Queue' LIMIT 1];
 if (!queues.isEmpty()) queueId = queues[0].Id;
 
-// --- User ---
+// --- User (second user may be Automated Process on single-Standard-user orgs) ---
 Id userId = UserInfo.getUserId();
 Id otherUserId = null;
-List<User> others = [
-    SELECT Id FROM User
-    WHERE IsActive = true AND Id != :userId AND UserType = 'Standard'
-    LIMIT 1
+List<User> peers = [
+    SELECT Id, UserType FROM User WHERE IsActive = true AND Id != :userId LIMIT 10
 ];
-if (!others.isEmpty()) otherUserId = others[0].Id;
+for (User u : peers) {
+    if (u.UserType == 'Standard') { otherUserId = u.Id; break; }
+}
+if (otherUserId == null) {
+    for (User u : peers) {
+        if (u.UserType != 'CloudIntegrationUser') { otherUserId = u.Id; break; }
+    }
+}
+if (otherUserId == null && !peers.isEmpty()) otherUserId = peers[0].Id;
 
 // --- Second Contact (for add_campaign_member without duplicate) ---
 Contact con2;
@@ -322,7 +328,7 @@ if (Schema.getGlobalDescribe().containsKey('WorkOrder')
     }
 }
 
-// --- Case Team Role ---
+// --- Case Team Role + clear prior E2E team memberships so add_case_team_member isn't DUPLICATE ---
 Id caseTeamRoleId = null;
 if (Schema.sObjectType.CaseTeamRole.isAccessible()) {
     List<CaseTeamRole> roles = [SELECT Id FROM CaseTeamRole WITH USER_MODE LIMIT 1];
@@ -337,6 +343,12 @@ if (Schema.sObjectType.CaseTeamRole.isAccessible()) {
     } else if (!roles.isEmpty()) {
         caseTeamRoleId = roles[0].Id;
     }
+}
+if (Schema.sObjectType.CaseTeamMember.isDeletable()) {
+    List<CaseTeamMember> priorTeam = [
+        SELECT Id FROM CaseTeamMember WHERE ParentId = :cs.Id
+    ];
+    if (!priorTeam.isEmpty()) delete priorTeam;
 }
 
 System.debug('===E2E_SEED_START===');

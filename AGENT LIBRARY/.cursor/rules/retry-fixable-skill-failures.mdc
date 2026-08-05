@@ -1,0 +1,48 @@
+---
+description: On fail_data/fail_business, analyze org, seed/fix data, retry skills — do not leave fixable failures as final
+alwaysApply: true
+---
+
+# Fixable skill failures → analyze org → seed/fix → retry
+
+## Mindset
+
+`fail_missing_feature` / package not installed → leave as N/A (document only).
+
+`fail_data` / `fail_business` that look **data or org state** related → **fix, then re-test**. Do not stop at the first red pill.
+
+## When this applies
+
+Examples (same class as the screenshot):
+
+| Symptom | Likely need | Fix |
+|---------|-------------|-----|
+| DUPLICATE_VALUE / already on the team | Member already linked | Remove existing `CaseTeamMember`, or use a different User |
+| already owned by that user | Same OwnerId | Seed: set Owner to User A, transfer to User B |
+| Missing parameter / no QuoteId | Feature off or no seed record | Enable feature when possible, or create seed Quote |
+| No X found / required missing | Fixture wrong | Reseed natural key / create record / reopen Case |
+| Already closed | Case closed before close_case | Seed an open Case; re-open Status then close |
+
+## Required process
+
+1. **Collect** all `fail_data` + `fail_business` from the latest report (skip pure missing-feature).
+2. **Analyze** each response for Salesforce error type (duplicate, ownership, missing fields, already closed).
+3. **Prepare org** via Apex/CLI seed or targeted DML (delete duplicates, create second user ownership, open case, etc.).
+4. **Retry** those skills with improved payloads (same `invokeAgentSkill` path).
+5. **Merge** outcomes into MAIN report + write a **dated archive** of the retry (`Reports/archive/..._retry-....html`).
+6. If still failing after one good remediation: document residual as real limitation (feature, permissions, single-user org).
+
+## Runner
+
+```bash
+cd "AGENT LIBRARY/api-skill-e2e-tests/scripts"
+python retry_failed_skills.py --from-main --org "Master Dev"
+```
+
+Optional: `--skills add_case_team_member,transfer_record_owner`
+
+## Do not
+
+- Treat DUPLICATE / already-owned as a permanent product failure without retry
+- Re-run the whole matrix only path when a small consolidate+retry fixes residual
+- Change product Apex to “swallow” data errors unless it is a real UX improvement (e.g. idempotent-by-design skill)
