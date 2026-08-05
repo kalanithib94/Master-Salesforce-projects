@@ -1,30 +1,37 @@
 # GPTfy Agent Skills — E2E Reports
 
-This folder is **only** for skill test reports (separate from the harness in `api-skill-e2e-tests/`).
+Reports only (not the test harness).
 
 ## Layout
 
 | Path | Purpose |
 |------|---------|
-| `MAIN_REPORT.html` | Always latest full request/response report (share this) |
-| `archive/YYYY-MM-DD_HHMMSS_*.html` | Immutable snapshot for each update |
-| `archive/*.json` | Optional machine detail for a dated run |
+| `MAIN_REPORT.html` | Always latest request/response report |
+| `archive/YYYY-MM-DD_HHMMSS_*.html` | One dated snapshot per update |
 
-## Public share
-
-GitHub Pages copy (synced on each build):
+## Public
 
 https://kalanithib94.github.io/Master-Salesforce-projects/gptfy-agent-skills-e2e/
 
-Repo file:
-
-`docs/gptfy-agent-skills-e2e/index.html`
-
-## How reports are generated
+## Fixable failures (any of: data / Prompt / Apex)
 
 ```bash
-cd "api-skill-e2e-tests/scripts"
-python build_main_report.py
-# or after a handler change:
-python regression_handler.py CaseAgenticSkillsHandler --reason "Why we changed this"
+cd "../api-skill-e2e-tests/scripts"
+
+# Org data fix + retry
+python retry_failed_skills.py --from-main --org "Master Dev"
+
+# After you fixed handlers under Deliverables/.../classes/
+python retry_failed_skills.py --skills add_case_team_member --deploy-handlers \
+  --reason "Apex: treat team add paths"
+
+# After you fixed Prompt Command packages, re-seed skill packages then:
+python retry_failed_skills.py --skills fetch_case_details \
+  --reason "Prompt: CaseNumber/Subject preferred"
+```
+
+Handlers change → also retest full handler:
+
+```bash
+python regression_handler.py CaseAgenticSkillsHandler --reason "..." --deploy
 ```

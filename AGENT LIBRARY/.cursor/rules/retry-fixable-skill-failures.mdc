@@ -1,48 +1,77 @@
 ---
-description: On fail_data/fail_business, analyze org, seed/fix data, retry skills — do not leave fixable failures as final
+description: On skill failures, fix org data AND/OR Prompt Command AND/OR Apex handlers, deploy if needed, then retry
 alwaysApply: true
 ---
 
-# Fixable skill failures → analyze org → seed/fix → retry
+# Fixable failures → analyze → fix (data / prompt / Apex) → retry
 
 ## Mindset
 
-`fail_missing_feature` / package not installed → leave as N/A (document only).
+Do **not** stop at the first red result when the failure is actionable.
 
-`fail_data` / `fail_business` that look **data or org state** related → **fix, then re-test**. Do not stop at the first red pill.
+| Category | Action |
+|----------|--------|
+| `fail_missing_feature` | Package/cloud not in org → leave N/A (document only) |
+| `fail_data` / `fail_business` | **Fix something**, then **retry the skill(s)** |
 
-## When this applies
+## Three fix layers (use any combination)
 
-Examples (same class as the screenshot):
+### 1. Org / seed data
+- DUPLICATE team member → delete existing `CaseTeamMember` or pick another User  
+- Already owned → re-own seed record then transfer  
+- Case closed → seed open case / re-open  
+- Missing parent → create Account/Contact by Name  
 
-| Symptom | Likely need | Fix |
-|---------|-------------|-----|
-| DUPLICATE_VALUE / already on the team | Member already linked | Remove existing `CaseTeamMember`, or use a different User |
-| already owned by that user | Same OwnerId | Seed: set Owner to User A, transfer to User B |
-| Missing parameter / no QuoteId | Feature off or no seed record | Enable feature when possible, or create seed Quote |
-| No X found / required missing | Fixture wrong | Reseed natural key / create record / reopen Case |
-| Already closed | Case closed before close_case | Seed an open Case; re-open Status then close |
+### 2. Prompt Command (schema the agent sees)
+Fix when the model is steered wrong or params are Id-only / too strict:
+
+- Wrong `required` keys (e.g. forced Salesforce Id)  
+- Missing human keys (`CaseNumber`, `Subject`, `AccountName`)  
+- Bad descriptions that make agents pass Ids users never have  
+- Path: `Deliverables/kb-catalog/packages/<skill>/seed.apex` and/or `Deliverables/scripts/Part*.apex`  
+- Re-seed Prompt Command on org (prefer **command-only** update when DEM cannot change)  
+
+### 3. Apex handler logic
+Fix when the org+payload are fair but handler is wrong:
+
+- Does not resolve natural keys (Name / CaseNumber)  
+- Wrong param keys / aliases  
+- Idempotent-friendly cases (e.g. “already on team” → success or clear message)  
+- Null/DESCRIBE bugs, wrong SOQL  
+- Path: `Deliverables/force-app/.../*AgenticSkillsHandler.cls`, `AgenticSkillsBase.cls`  
+- **Deploy** handlers to the target org, then retry  
+
+Prefer product UX improvements when users would hit the same error (e.g. accept names; treat true-idempotent add as OK).  
+Do **not** hide real permission or feature gaps.
 
 ## Required process
 
-1. **Collect** all `fail_data` + `fail_business` from the latest report (skip pure missing-feature).
-2. **Analyze** each response for Salesforce error type (duplicate, ownership, missing fields, already closed).
-3. **Prepare org** via Apex/CLI seed or targeted DML (delete duplicates, create second user ownership, open case, etc.).
-4. **Retry** those skills with improved payloads (same `invokeAgentSkill` path).
-5. **Merge** outcomes into MAIN report + write a **dated archive** of the retry (`Reports/archive/..._retry-....html`).
-6. If still failing after one good remediation: document residual as real limitation (feature, permissions, single-user org).
+1. **Collect** failed skills from MAIN (`fail_data` / `fail_business`)  
+2. **Classify root cause:** data vs prompt schema vs Apex vs true N/A  
+3. **Apply fix:** seed DML and/or prompt package and/or handler code  
+4. **Deploy** Apex when handlers changed; **re-seed** prompts when schemas changed  
+5. **Retry** only the affected skill(s) via `invokeAgentSkill` with realistic payloads (names/numbers preferred)  
+6. If a **handler** changed: also retest **every skill on that handler** (full handler regression) after the hot fix  
+7. Update **MAIN** + dated **archive** under `AGENT LIBRARY/Reports/`  
+8. If still failing after honest fix: document residual (license, Quotes off, single Standard user, etc.)
 
-## Runner
+## Runner + manual fix loop
 
 ```bash
 cd "AGENT LIBRARY/api-skill-e2e-tests/scripts"
+
+# Data remediation + retry (built-in)
 python retry_failed_skills.py --from-main --org "Master Dev"
+
+# After you fixed Apex/prompt files:
+# deploy handlers → optionally re-seed skill packages → retry
+python retry_failed_skills.py --skills add_case_team_member --org "Master Dev"
+python regression_handler.py CaseAgenticSkillsHandler --reason "Handler fix for ..." --deploy
 ```
 
-Optional: `--skills add_case_team_member,transfer_record_owner`
+## Report “Why this update” should name the fix layer
 
-## Do not
-
-- Treat DUPLICATE / already-owned as a permanent product failure without retry
-- Re-run the whole matrix only path when a small consolidate+retry fixes residual
-- Change product Apex to “swallow” data errors unless it is a real UX improvement (e.g. idempotent-by-design skill)
+Examples:
+- “Cleared CaseTeamMembers; retested add_case_team_member”  
+- “Prompt Command: CaseNumber/Subject preferred over Id”  
+- “Apex: resolve ParentId by CaseNumber; deploy CaseAgenticSkillsHandler”

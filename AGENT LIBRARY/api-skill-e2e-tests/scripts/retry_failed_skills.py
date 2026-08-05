@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-Consolidate fail_data / fail_business from MAIN (or skills list),
-remediate org data, then re-invoke those skills with better payloads.
+Consolidate fail_data / fail_business from MAIN (or skills list), remediate, re-invoke.
 
-Does NOT retest fail_missing_feature (package/feature N/A).
+Fix layers (any combination during the same retry cycle):
+  1. Org data / seed (default Apex remediation)
+  2. Prompt Command — edit seed.apex / Part scripts, re-seed, then re-run this
+  3. Apex handlers — edit *AgenticSkillsHandler / AgenticSkillsBase, --deploy-handlers, then re-run
+
+Does NOT treat fail_missing_feature (package N/A) as fixable.
 
 Usage:
   python retry_failed_skills.py --from-main --org "Master Dev"
-  python retry_failed_skills.py --skills add_case_team_member,transfer_record_owner
+  python retry_failed_skills.py --skills add_case_team_member --deploy-handlers
+  python retry_failed_skills.py --from-main --reason "Apex natural-key fix for Case"
 """
 from __future__ import annotations
 
@@ -32,6 +37,8 @@ MAIN = REPORTS / "MAIN_REPORT.html"
 SEED_JSON = Path(__file__).resolve().parent / "results" / "e2e_seed_ids.json"
 REMEDY_APEX = Path(__file__).resolve().parent / "seed_retry_remediation.apex"
 OUT = Path(__file__).resolve().parent / "results"
+STAGE_FORCE = ROOT / "package" / "force-app"
+SRC_CLASSES = LIBRARY / "Deliverables" / "force-app" / "main" / "default" / "classes"
 
 
 def run_shell(cmd: str) -> tuple[int, str]:
@@ -125,12 +132,42 @@ def improved_payload(skill: str, seed: dict, remedy: dict, prior_req: dict | Non
         return prior_req or {}
 
 
+def stage_and_deploy_handlers(org: str) -> None:
+    """Copy Deliverables handlers into package staging and deploy to org."""
+    stage = STAGE_FORCE / "main" / "default" / "classes"
+    stage.mkdir(parents=True, exist_ok=True)
+    if SRC_CLASSES.exists():
+        for p in SRC_CLASSES.glob("*AgenticSkills*.cls*"):
+            dest = stage / p.name
+            dest.write_bytes(p.read_bytes())
+        print(f"Staged handlers from {SRC_CLASSES} → {stage}")
+    print("=== Deploy handlers ===")
+    rc, out = run_shell(
+        f'sf project deploy start --source-dir "{STAGE_FORCE}" --target-org "{org}" --wait 20'
+    )
+    print(out[-2000:])
+    if rc != 0 and "Succeeded" not in out:
+        print("WARN: deploy may have failed — retry still continues with current org Apex")
+
+
 def main() -> int:
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(
+        description="Retry fixable skills after data / prompt / Apex fixes"
+    )
     ap.add_argument("--org", default=None)
     ap.add_argument("--from-main", action="store_true", help="Pick fail_data + fail_business from MAIN_REPORT")
     ap.add_argument("--skills", default=None, help="Comma list to force retry")
-    ap.add_argument("--skip-remedy", action="store_true")
+    ap.add_argument("--skip-remedy", action="store_true", help="Skip default org-data Apex")
+    ap.add_argument(
+        "--deploy-handlers",
+        action="store_true",
+        help="After editing Deliverables Apex: stage + deploy handlers before invoke",
+    )
+    ap.add_argument(
+        "--reason",
+        default="",
+        help="Why this retry (shown in MAIN). e.g. 'Apex: natural keys' | 'Prompt: CaseNumber required'",
+    )
     args = ap.parse_args()
 
     cfg = load_config()
@@ -151,9 +188,15 @@ def main() -> int:
 
     if not target_skills:
         print("No fixable failed skills to retry (fail_data / fail_business).")
+        print("Tip: edit Prompt/Apex first if needed, then --skills name1,name2 --deploy-handlers")
         return 0
 
     print("Retry targets:", ", ".join(target_skills))
+    fix_layers = []
+
+    if args.deploy_handlers:
+        stage_and_deploy_handlers(org)
+        fix_layers.append("Apex handlers deployed from Deliverables")
 
     remedy = {}
     if not args.skip_remedy:
@@ -161,11 +204,14 @@ def main() -> int:
         rc, out = run_shell(f'sf apex run --file "{REMEDY_APEX}" --target-org "{org}"')
         print(out[-2500:])
         remedy = parse_seed_debug(out)
-        # merge into seed file for subsequent fixtures
         seed.update(remedy)
         SEED_JSON.parent.mkdir(parents=True, exist_ok=True)
         SEED_JSON.write_text(json.dumps(seed, indent=2), encoding="utf-8")
         print("Remedy ids:", remedy)
+        fix_layers.append("Org seed / data remediation")
+
+    if args.reason:
+        fix_layers.append(args.reason.strip())
 
     token, base = session(org)
     inv = OUT / "org_inventory.json"
@@ -204,7 +250,6 @@ def main() -> int:
             prior_req = {}
         payload = improved_payload(name, seed, remedy, prior_req)
         live = parse_prompt_command(meta.get("promptCommand"))
-        # merge live required if empty
         if not payload and live:
             payload = build_payload(name, live, seed)
 
@@ -226,13 +271,12 @@ def main() -> int:
                 "category": cat,
                 "request": json.dumps(payload, indent=2, ensure_ascii=False),
                 "response": full,
-                "handler": "retry_pass",
+                "handler": "retry",
             }
         )
         print(f"  {name}: {cat} ({elapsed}s)")
         time.sleep(0.15)
 
-    # Merge: start from MAIN rows, replace retried skills
     merged: dict[str, dict] = {}
     for r in rows_main:
         merged[r["skill"]] = {
@@ -245,11 +289,13 @@ def main() -> int:
         merged[r["skill"]] = r
 
     rows = [merged[k] for k in sorted(merged.keys())]
-    need = (
-        "Retry fixable failures after org remediation\n"
-        "Cleared duplicate CaseTeamMembers; seeded open case; set Account owner for transfer_record_owner\n"
-        f"Retried: {', '.join(target_skills)}"
+    need_lines = fix_layers or ["Retry fixable failures"]
+    need_lines.append(f"Retried skills: {', '.join(target_skills)}")
+    need_lines.append(
+        "Fix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy"
     )
+    need = "\n".join(need_lines)
+
     main_p, arch_p = publish_main_and_archive(
         rows,
         need=need,
@@ -261,6 +307,7 @@ def main() -> int:
         json.dumps(
             {
                 "targets": target_skills,
+                "fixLayers": fix_layers,
                 "remedy": remedy,
                 "results": retry_results,
                 "when": datetime.now(timezone.utc).isoformat(),
@@ -271,6 +318,7 @@ def main() -> int:
     )
     print("\nMAIN:", main_p)
     print("ARCHIVE:", arch_p)
+    print("Fix layers:", fix_layers)
     return 0
 
 
