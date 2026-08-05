@@ -1,0 +1,17 @@
+{
+  "packageVersion": "1.1.0",
+  "sourceApiVersion": "66.0",
+  "skill": "update_cpq_quote_fields",
+  "handler": "CpqAgenticSkillsHandler",
+  "classes": [
+    "AgenticSkillsBase",
+    "CpqAgenticSkillsHandler"
+  ],
+  "tests": [
+    "AgenticSkillsBaseTest",
+    "CpqAgenticSkillsHandlerTest"
+  ],
+  "requires": [
+    "GPTfy (ccai) managed package"
+  ]
+}

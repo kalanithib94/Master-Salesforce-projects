@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-fuzzy_search_contacts",
+  "sourceApiVersion": "66.0"
+}

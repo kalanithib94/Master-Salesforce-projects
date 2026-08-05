@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-fetch_my_open_opportunities",
+  "sourceApiVersion": "66.0"
+}

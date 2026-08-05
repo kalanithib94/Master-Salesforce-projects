@@ -1,0 +1,17 @@
+{
+  "packageVersion": "1.1.0",
+  "sourceApiVersion": "66.0",
+  "skill": "fuzzy_search_cases",
+  "handler": "CaseAgenticSkillsHandler",
+  "classes": [
+    "AgenticSkillsBase",
+    "CaseAgenticSkillsHandler"
+  ],
+  "tests": [
+    "AgenticSkillsBaseTest",
+    "CaseAgenticSkillsHandlerTest"
+  ],
+  "requires": [
+    "GPTfy (ccai) managed package"
+  ]
+}

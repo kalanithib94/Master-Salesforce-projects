@@ -1,0 +1,15 @@
+{
+  "_comment": "Placeholder payloads. Replace Ids after querying the target org. Prefer read-only / search skills first.",
+  "fuzzy_search_contacts": { "search_term": "Test" },
+  "fuzzy_search_accounts": { "searchTerm": "Acme" },
+  "fetch_account_details": { "Name": "Test" },
+  "log_activity": {
+    "Subject": "E2E smoke note — ignore",
+    "WhatId": "REPLACE_ACCOUNT_ID"
+  },
+  "create_account": { "Name": "E2E Smoke Account DO NOT USE" },
+  "update_account_fields": {
+    "Id": "REPLACE_ACCOUNT_ID",
+    "Description": "e2e smoke"
+  }
+}

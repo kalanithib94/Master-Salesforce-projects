@@ -1,0 +1,3021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>110 Skill Invoke Transcript — Master Dev</title>
+<style>
+:root {
+  --bg:#0f1419; --panel:#1a2332; --border:#2e3f56; --text:#e7eef8; --muted:#9db0c9;
+  --ok:#3dd68c; --warn:#f0b429; --bad:#f07178; --accent:#5eb1ff;
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family:Segoe UI,system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.45; }
+.wrap { max-width:1100px; margin:0 auto; padding:1.5rem 1rem 3rem; }
+h1 { margin:0 0 .4rem; font-size:1.45rem; }
+.sub { color:var(--muted); margin:0 0 1rem; font-size:.92rem; }
+.filters { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.25rem; position:sticky; top:0;
+  background:rgba(15,20,25,.94); padding:.6rem 0; z-index:5; }
+.filters button {
+  background:var(--panel); border:1px solid var(--border); color:var(--text);
+  border-radius:999px; padding:.4rem .85rem; cursor:pointer; font-size:.85rem;
+}
+.filters button.active { border-color:var(--accent); color:var(--accent); }
+.card {
+  background:var(--panel); border:1px solid var(--border); border-radius:12px;
+  padding:1rem 1.1rem; margin-bottom:.85rem; border-left:4px solid var(--border);
+}
+.card.ok { border-left-color:var(--ok); }
+.card.warn { border-left-color:var(--warn); }
+.card.bad { border-left-color:var(--bad); }
+.card.hidden { display:none; }
+.card header { display:flex; flex-wrap:wrap; align-items:baseline; gap:.5rem .75rem; margin-bottom:.65rem; }
+.card h2 { margin:0; font-size:1.05rem; flex:1; min-width:12rem; }
+.card .n { color:var(--muted); font-size:.85rem; }
+.meta { color:var(--muted); font-size:.8rem; width:100%; }
+.pill { font-size:.72rem; font-weight:700; text-transform:uppercase; padding:.15rem .5rem; border-radius:999px; }
+.pill.ok { background:#14352a; color:var(--ok); }
+.pill.warn { background:#3a2e0e; color:var(--warn); }
+.pill.bad { background:#3a1518; color:var(--bad); }
+.pair { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+@media (max-width:800px) { .pair { grid-template-columns:1fr; } }
+.pair h3 { margin:0 0 .35rem; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+pre {
+  margin:0; background:#0d1218; border:1px solid var(--border); border-radius:8px;
+  padding:.65rem .75rem; font-size:.78rem; white-space:pre-wrap; word-break:break-word;
+  max-height:22rem; overflow:auto; font-family:ui-monospace,Consolas,monospace;
+}
+code { color:#b8e0ff; }
+.toc { columns:2; font-size:.85rem; margin-bottom:1.5rem; }
+.toc a { color:var(--accent); text-decoration:none; }
+.toc li { break-inside:avoid; margin:.15rem 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>110 Skill Invoke Transcript</h1>
+  <p class="sub">
+    Org: <strong>Master Dev</strong> ·
+    Agent: <code>IT_Helpdesk_Assistant05/08/2026, 11:47</code><br/>
+    Method: <strong>invokeAgentSkill</strong> (JSON parameters → Apex). Not free-text chat.<br/>
+    Mix: handler_ok=19,
+    handler_error=69,
+    api_fail=22.
+  </p>
+  <div class="filters">
+    <button type="button" data-f="all" class="active">All 110</button>
+    <button type="button" data-f="handler_ok">handler_ok 19</button>
+    <button type="button" data-f="handler_error">handler_error 69</button>
+    <button type="button" data-f="api_fail">api_fail 22</button>
+  </div>
+  <details>
+    <summary>Jump to skill</summary>
+    <ol class="toc"><li><a href="#add_campaign_member"><code>add_campaign_member</code></a> · handler_error</li>
+<li><a href="#add_case_comment"><code>add_case_comment</code></a> · handler_ok</li>
+<li><a href="#add_case_team_member"><code>add_case_team_member</code></a> · handler_error</li>
+<li><a href="#add_cpq_quote_line"><code>add_cpq_quote_line</code></a> · handler_error</li>
+<li><a href="#add_opportunity_contact_role"><code>add_opportunity_contact_role</code></a> · api_fail</li>
+<li><a href="#add_opportunity_line_item"><code>add_opportunity_line_item</code></a> · api_fail</li>
+<li><a href="#add_opportunity_partner"><code>add_opportunity_partner</code></a> · api_fail</li>
+<li><a href="#add_opportunity_team_member"><code>add_opportunity_team_member</code></a> · api_fail</li>
+<li><a href="#add_order_item"><code>add_order_item</code></a> · handler_error</li>
+<li><a href="#add_quote_line_item"><code>add_quote_line_item</code></a> · api_fail</li>
+<li><a href="#assign_to_queue"><code>assign_to_queue</code></a> · handler_error</li>
+<li><a href="#calculate_cpq_quote"><code>calculate_cpq_quote</code></a> · handler_error</li>
+<li><a href="#clone_opportunity"><code>clone_opportunity</code></a> · api_fail</li>
+<li><a href="#close_case"><code>close_case</code></a> · handler_error</li>
+<li><a href="#complete_task"><code>complete_task</code></a> · handler_error</li>
+<li><a href="#convert_lead"><code>convert_lead</code></a> · handler_error</li>
+<li><a href="#create_account"><code>create_account</code></a> · handler_ok</li>
+<li><a href="#create_campaign"><code>create_campaign</code></a> · handler_ok</li>
+<li><a href="#create_care_task"><code>create_care_task</code></a> · handler_ok</li>
+<li><a href="#create_case"><code>create_case</code></a> · handler_error</li>
+<li><a href="#create_contact"><code>create_contact</code></a> · handler_error</li>
+<li><a href="#create_contract"><code>create_contract</code></a> · handler_error</li>
+<li><a href="#create_cpq_quote"><code>create_cpq_quote</code></a> · handler_error</li>
+<li><a href="#create_event"><code>create_event</code></a> · handler_error</li>
+<li><a href="#create_lead"><code>create_lead</code></a> · handler_error</li>
+<li><a href="#create_opportunity"><code>create_opportunity</code></a> · api_fail</li>
+<li><a href="#create_order"><code>create_order</code></a> · handler_error</li>
+<li><a href="#create_quote"><code>create_quote</code></a> · api_fail</li>
+<li><a href="#create_task"><code>create_task</code></a> · handler_error</li>
+<li><a href="#create_work_order"><code>create_work_order</code></a> · handler_error</li>
+<li><a href="#fetch_account_plan"><code>fetch_account_plan</code></a> · handler_error</li>
+<li><a href="#fetch_account_related_lists"><code>fetch_account_related_lists</code></a> · handler_ok</li>
+<li><a href="#fetch_asset_details"><code>fetch_asset_details</code></a> · handler_error</li>
+<li><a href="#fetch_campaign_details"><code>fetch_campaign_details</code></a> · handler_error</li>
+<li><a href="#fetch_campaign_members"><code>fetch_campaign_members</code></a> · handler_ok</li>
+<li><a href="#fetch_care_plan"><code>fetch_care_plan</code></a> · handler_error</li>
+<li><a href="#fetch_case_details"><code>fetch_case_details</code></a> · handler_error</li>
+<li><a href="#fetch_case_entitlements"><code>fetch_case_entitlements</code></a> · handler_error</li>
+<li><a href="#fetch_case_milestones"><code>fetch_case_milestones</code></a> · handler_error</li>
+<li><a href="#fetch_case_team"><code>fetch_case_team</code></a> · handler_error</li>
+<li><a href="#fetch_contact_details"><code>fetch_contact_details</code></a> · handler_error</li>
+<li><a href="#fetch_contact_engagement_history"><code>fetch_contact_engagement_history</code></a> · handler_error</li>
+<li><a href="#fetch_contract_details"><code>fetch_contract_details</code></a> · handler_error</li>
+<li><a href="#fetch_cpq_quote_details"><code>fetch_cpq_quote_details</code></a> · handler_error</li>
+<li><a href="#fetch_financial_account"><code>fetch_financial_account</code></a> · handler_error</li>
+<li><a href="#fetch_knowledge_article"><code>fetch_knowledge_article</code></a> · handler_ok</li>
+<li><a href="#fetch_lead_details"><code>fetch_lead_details</code></a> · handler_error</li>
+<li><a href="#fetch_my_open_opportunities"><code>fetch_my_open_opportunities</code></a> · handler_ok</li>
+<li><a href="#fetch_my_open_tasks"><code>fetch_my_open_tasks</code></a> · handler_ok</li>
+<li><a href="#fetch_opportunity_contact_roles"><code>fetch_opportunity_contact_roles</code></a> · api_fail</li>
+<li><a href="#fetch_opportunity_details"><code>fetch_opportunity_details</code></a> · api_fail</li>
+<li><a href="#fetch_opportunity_partners"><code>fetch_opportunity_partners</code></a> · api_fail</li>
+<li><a href="#fetch_opportunity_team"><code>fetch_opportunity_team</code></a> · api_fail</li>
+<li><a href="#fetch_order_details"><code>fetch_order_details</code></a> · handler_error</li>
+<li><a href="#fetch_partner_account"><code>fetch_partner_account</code></a> · api_fail</li>
+<li><a href="#fetch_picklist_values"><code>fetch_picklist_values</code></a> · handler_error</li>
+<li><a href="#fetch_pricebook_entries"><code>fetch_pricebook_entries</code></a> · handler_ok</li>
+<li><a href="#fetch_product_details"><code>fetch_product_details</code></a> · handler_error</li>
+<li><a href="#fetch_queue_cases"><code>fetch_queue_cases</code></a> · handler_error</li>
+<li><a href="#fetch_quote_details"><code>fetch_quote_details</code></a> · api_fail</li>
+<li><a href="#fetch_record_approvals"><code>fetch_record_approvals</code></a> · handler_ok</li>
+<li><a href="#fetch_renewal_opportunities"><code>fetch_renewal_opportunities</code></a> · handler_ok</li>
+<li><a href="#fetch_service_appointment"><code>fetch_service_appointment</code></a> · handler_error</li>
+<li><a href="#fetch_service_resource_availability"><code>fetch_service_resource_availability</code></a> · handler_error</li>
+<li><a href="#fetch_session_context"><code>fetch_session_context</code></a> · handler_ok</li>
+<li><a href="#fetch_stale_opportunities"><code>fetch_stale_opportunities</code></a> · handler_ok</li>
+<li><a href="#fetch_subscription_details"><code>fetch_subscription_details</code></a> · handler_error</li>
+<li><a href="#fetch_upcoming_renewals"><code>fetch_upcoming_renewals</code></a> · handler_ok</li>
+<li><a href="#fetch_work_order_details"><code>fetch_work_order_details</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_accounts"><code>fuzzy_search_accounts</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_assets"><code>fuzzy_search_assets</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_campaigns"><code>fuzzy_search_campaigns</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_cases"><code>fuzzy_search_cases</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_contacts"><code>fuzzy_search_contacts</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_leads"><code>fuzzy_search_leads</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_opportunities"><code>fuzzy_search_opportunities</code></a> · api_fail</li>
+<li><a href="#fuzzy_search_partners"><code>fuzzy_search_partners</code></a> · api_fail</li>
+<li><a href="#fuzzy_search_products"><code>fuzzy_search_products</code></a> · handler_error</li>
+<li><a href="#fuzzy_search_quotes"><code>fuzzy_search_quotes</code></a> · api_fail</li>
+<li><a href="#link_knowledge_article_to_case"><code>link_knowledge_article_to_case</code></a> · handler_error</li>
+<li><a href="#log_activity"><code>log_activity</code></a> · handler_ok</li>
+<li><a href="#remove_campaign_member"><code>remove_campaign_member</code></a> · handler_error</li>
+<li><a href="#run_internal_prompt"><code>run_internal_prompt</code></a> · handler_ok</li>
+<li><a href="#schedule_service_appointment"><code>schedule_service_appointment</code></a> · handler_error</li>
+<li><a href="#search_knowledge_articles"><code>search_knowledge_articles</code></a> · handler_error</li>
+<li><a href="#transfer_record_owner"><code>transfer_record_owner</code></a> · handler_error</li>
+<li><a href="#update_account_fields"><code>update_account_fields</code></a> · handler_ok</li>
+<li><a href="#update_asset_fields"><code>update_asset_fields</code></a> · handler_error</li>
+<li><a href="#update_campaign_fields"><code>update_campaign_fields</code></a> · handler_error</li>
+<li><a href="#update_campaign_member_status"><code>update_campaign_member_status</code></a> · handler_error</li>
+<li><a href="#update_care_plan_fields"><code>update_care_plan_fields</code></a> · handler_error</li>
+<li><a href="#update_case_fields"><code>update_case_fields</code></a> · handler_error</li>
+<li><a href="#update_contact_fields"><code>update_contact_fields</code></a> · handler_ok</li>
+<li><a href="#update_contract_fields"><code>update_contract_fields</code></a> · handler_error</li>
+<li><a href="#update_cpq_quote_fields"><code>update_cpq_quote_fields</code></a> · handler_error</li>
+<li><a href="#update_cpq_quote_line"><code>update_cpq_quote_line</code></a> · handler_error</li>
+<li><a href="#update_event"><code>update_event</code></a> · handler_error</li>
+<li><a href="#update_financial_account_fields"><code>update_financial_account_fields</code></a> · handler_error</li>
+<li><a href="#update_lead_fields"><code>update_lead_fields</code></a> · handler_error</li>
+<li><a href="#update_opportunity_contact_role"><code>update_opportunity_contact_role</code></a> · api_fail</li>
+<li><a href="#update_opportunity_fields"><code>update_opportunity_fields</code></a> · api_fail</li>
+<li><a href="#update_opportunity_line_item"><code>update_opportunity_line_item</code></a> · api_fail</li>
+<li><a href="#update_order_fields"><code>update_order_fields</code></a> · handler_error</li>
+<li><a href="#update_order_item"><code>update_order_item</code></a> · handler_error</li>
+<li><a href="#update_quote_fields"><code>update_quote_fields</code></a> · api_fail</li>
+<li><a href="#update_quote_line_item"><code>update_quote_line_item</code></a> · api_fail</li>
+<li><a href="#update_service_appointment"><code>update_service_appointment</code></a> · handler_error</li>
+<li><a href="#update_subscription_fields"><code>update_subscription_fields</code></a> · handler_error</li>
+<li><a href="#update_task"><code>update_task</code></a> · handler_error</li>
+<li><a href="#update_work_order_fields"><code>update_work_order_fields</code></a> · handler_error</li></ol>
+  </details>
+  
+    <article class="card warn" data-cat="handler_error" id="add_campaign_member">
+      <header>
+        <span class="n">#1</span>
+        <h2><code>add_campaign_member</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.16s · promptId a0KQH00000HcyUP2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;CampaignId&quot;: &quot;701QH00002FoaPOYAZ&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not add campaign member
+Provide ContactId or LeadId (CampaignMember relationship fields).</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="add_case_comment">
+      <header>
+        <span class="n">#2</span>
+        <h2><code>add_case_comment</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.4s · promptId a0KQH00000HcyW12AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;ParentId&quot;: &quot;500QH00000VZf8JYAT&quot;,
+  &quot;CommentBody&quot;: &quot;E2E comment body — ignore&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>✅ Case Comment AddedCase #: 00001000
+Comment: E2E comment body &amp;mdash; ignore
+
+👉 View Case</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="add_case_team_member">
+      <header>
+        <span class="n">#3</span>
+        <h2><code>add_case_team_member</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.4s · promptId a0KQH00000Hcx5L2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;CaseId&quot;: &quot;500QH00000VZf8JYAT&quot;,
+  &quot;UserId&quot;: &quot;005QH00000AhYIQYA3&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not add case team member
+Missing parameter: case_id</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="add_cpq_quote_line">
+      <header>
+        <span class="n">#4</span>
+        <h2><code>add_cpq_quote_line</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.89s · promptId a0KQH00000HcyXd2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;SBQQ__Quote__c&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not add CPQ quote line
+Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="add_opportunity_contact_role">
+      <header>
+        <span class="n">#5</span>
+        <h2><code>add_opportunity_contact_role</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.35s · promptId a0KQH00000HcyZF2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;,
+  &quot;ContactId&quot;: &quot;003QH00000RXZdnYAH&quot;,
+  &quot;Role&quot;: &quot;Decision Maker&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="add_opportunity_line_item">
+      <header>
+        <span class="n">#6</span>
+        <h2><code>add_opportunity_line_item</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.3s · promptId a0KQH00000Hcyar2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;,
+  &quot;Quantity&quot;: 1,
+  &quot;UnitPrice&quot;: 1
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="add_opportunity_partner">
+      <header>
+        <span class="n">#7</span>
+        <h2><code>add_opportunity_partner</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.36s · promptId a0KQH00000Hcy1R2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="add_opportunity_team_member">
+      <header>
+        <span class="n">#8</span>
+        <h2><code>add_opportunity_team_member</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.31s · promptId a0KQH00000HcyCh2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;,
+  &quot;UserId&quot;: &quot;005QH00000AhYIQYA3&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="add_order_item">
+      <header>
+        <span class="n">#9</span>
+        <h2><code>add_order_item</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.32s · promptId a0KQH00000HcyRC2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OrderId&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not add order item
+Missing parameter: OrderId</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="add_quote_line_item">
+      <header>
+        <span class="n">#10</span>
+        <h2><code>add_quote_line_item</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.91s · promptId a0KQH00000HcycT2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;QuoteId&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="assign_to_queue">
+      <header>
+        <span class="n">#11</span>
+        <h2><code>assign_to_queue</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.33s · promptId a0KQH00000Hcye52AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;OwnerId&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not assign to queue
+Invalid record_id or queue_id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="calculate_cpq_quote">
+      <header>
+        <span class="n">#12</span>
+        <h2><code>calculate_cpq_quote</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 2.8s · promptId a0KQH00000HcpNw2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not calculate CPQ quote
+Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="clone_opportunity">
+      <header>
+        <span class="n">#13</span>
+        <h2><code>clone_opportunity</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.34s · promptId a0KQH00000HcyhJ2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="close_case">
+      <header>
+        <span class="n">#14</span>
+        <h2><code>close_case</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.29s · promptId a0KQH00000Hcyiv2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not close case
+No case found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="complete_task">
+      <header>
+        <span class="n">#15</span>
+        <h2><code>complete_task</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.36s · promptId a0KQH00000HcykX2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not complete task
+No task found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="convert_lead">
+      <header>
+        <span class="n">#16</span>
+        <h2><code>convert_lead</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.49s · promptId a0KQH00000Hcym92AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not convert lead
+No lead found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="create_account">
+      <header>
+        <span class="n">#17</span>
+        <h2><code>create_account</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 1.69s · promptId a0KQH00000Hcs432AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Name&quot;: &quot;E2E Smoke Account DO NOT USE&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>✅ Account CreatedName: E2E Smoke Account DO NOT USE
+
+👉 View Account</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="create_campaign">
+      <header>
+        <span class="n">#18</span>
+        <h2><code>create_campaign</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.52s · promptId a0KQH00000Hcynl2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Name&quot;: &quot;Edge&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>✅ Campaign CreatedName: Edge
+
+👉 View Campaign</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="create_care_task">
+      <header>
+        <span class="n">#19</span>
+        <h2><code>create_care_task</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 1.7s · promptId a0KQH00000HcpNx2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;WhatId&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;Subject&quot;: &quot;E2E smoke — ignore&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>✅ Care Task CreatedSubject: E2E smoke &amp;mdash; ignore
+WhatId: 001QH00002FoLakYAF
+
+👉 View Task</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_case">
+      <header>
+        <span class="n">#20</span>
+        <h2><code>create_case</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.67s · promptId a0KQH00000HcypN2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create case
+Subject is required.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_contact">
+      <header>
+        <span class="n">#21</span>
+        <h2><code>create_contact</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.71s · promptId a0KQH00000Hctg12AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create contact
+LastName is required.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_contract">
+      <header>
+        <span class="n">#22</span>
+        <h2><code>create_contract</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.33s · promptId a0KQH00000Hcyqz2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;AccountId&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create contract
+Status is required.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_cpq_quote">
+      <header>
+        <span class="n">#23</span>
+        <h2><code>create_cpq_quote</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.76s · promptId a0KQH00000Hcye62AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create CPQ quote
+Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_event">
+      <header>
+        <span class="n">#24</span>
+        <h2><code>create_event</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.34s · promptId a0KQH00000Hcysb2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create event
+Subject is required.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_lead">
+      <header>
+        <span class="n">#25</span>
+        <h2><code>create_lead</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.36s · promptId a0KQH00000HcyuD2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create lead
+LastName is required.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="create_opportunity">
+      <header>
+        <span class="n">#26</span>
+        <h2><code>create_opportunity</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.35s · promptId a0KQH00000Hcyvp2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_order">
+      <header>
+        <span class="n">#27</span>
+        <h2><code>create_order</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.4s · promptId a0KQH00000HcyxR2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;AccountId&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;Status&quot;: &quot;Closed&quot;,
+  &quot;EffectiveDate&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create order
+Insert failed. First exception on row 0; first error: INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST, Status: bad value for restricted picklist field: Closed: [Status]</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="create_quote">
+      <header>
+        <span class="n">#28</span>
+        <h2><code>create_quote</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.34s · promptId a0KQH00000Hcyz32AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Name&quot;: &quot;Edge&quot;,
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_task">
+      <header>
+        <span class="n">#29</span>
+        <h2><code>create_task</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.45s · promptId a0KQH00000HcypO2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create task
+Subject is required.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="create_work_order">
+      <header>
+        <span class="n">#30</span>
+        <h2><code>create_work_order</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.41s · promptId a0KQH00000Hcz0f2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not create work order
+Subject is required.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_account_plan">
+      <header>
+        <span class="n">#31</span>
+        <h2><code>fetch_account_plan</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.47s · promptId a0KQH00000Hcz2H2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Account Plan is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_account_related_lists">
+      <header>
+        <span class="n">#32</span>
+        <h2><code>fetch_account_related_lists</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.6s · promptId a0KQH00000Hcz5V2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;cases&quot;: [
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Case&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Case/500QH00000VZf8JYAT&quot;
+      },
+      &quot;Id&quot;: &quot;500QH00000VZf8JYAT&quot;,
+      &quot;CaseNumber&quot;: &quot;00001000&quot;,
+      &quot;Subject&quot;: &quot;Starting generator after electrical failure&quot;,
+      &quot;Status&quot;: &quot;Closed&quot;,
+      &quot;Priority&quot;: &quot;High&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Case&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Case/500QH00000VZf8ZYAT&quot;
+      },
+      &quot;Id&quot;: &quot;500QH00000VZf8ZYAT&quot;,
+      &quot;CaseNumber&quot;: &quot;00001018&quot;,
+      &quot;Subject&quot;: &quot;Cannot start generator after electrical failure&quot;,
+      &quot;Status&quot;: &quot;Closed&quot;,
+      &quot;Priority&quot;: &quot;Medium&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Case&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Case/500QH00000VZf8bYAD&quot;
+      },
+      &quot;Id&quot;: &quot;500QH00000VZf8bYAD&quot;,
+      &quot;CaseNumber&quot;: &quot;00001017&quot;,
+      &quot;Subject&quot;: &quot;Shutting down of generator&quot;,
+      &quot;Status&quot;: &quot;Closed&quot;,
+      &quot;Priority&quot;: &quot;Medium&quot;
+    }
+  ],
+  &quot;opportunities&quot;: [
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Opportunity&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Opportunity/006QH00000KydkYYAR&quot;
+      },
+      &quot;Id&quot;: &quot;006QH00000KydkYYAR&quot;,
+      &quot;Name&quot;: &quot;Edge SLA&quot;,
+      &quot;StageName&quot;: &quot;Closed Won&quot;,
+      &quot;Amount&quot;: 60000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Opportunity&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Opportunity/006QH00000KydkvYAB&quot;
+      },
+      &quot;Id&quot;: &quot;006QH00000KydkvYAB&quot;,
+      &quot;Name&quot;: &quot;Edge Emergency Generator&quot;,
+      &quot;StageName&quot;: &quot;Closed Won&quot;,
+      &quot;Amount&quot;: 75000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Opportunity&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Opportunity/006QH00000KydkwYAB&quot;
+      },
+      &quot;Id&quot;: &quot;006QH00000KydkwYAB&quot;,
+      &quot;Name&quot;: &quot;Edge Emergency Generator&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Amount&quot;: 35000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Opportunity&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Opportunity/006QH00000KydkyYAB&quot;
+      },
+      &quot;Id&quot;: &quot;006QH00000KydkyYAB&quot;,
+      &quot;Name&quot;: &quot;Edge Installation&quot;,
+      &quot;StageName&quot;: &quot;Closed Won&quot;,
+      &quot;Amount&quot;: 50000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;
+    }
+  ],
+  &quot;contacts&quot;: [
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Contact&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Contact/003QH00000RXZdnYAH&quot;
+      },
+      &quot;Id&quot;: &quot;003QH00000RXZdnYAH&quot;,
+      &quot;Name&quot;: &quot;Rose Gonzalez&quot;,
+      &quot;Email&quot;: &quot;rose@edge.com&quot;,
+      &quot;Phone&quot;: &quot;(512) 757-6000&quot;,
+      &quot;Title&quot;: &quot;SVP, Procurement&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Contact&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Contact/003QH00000RXZdoYAH&quot;
+      },
+      &quot;Id&quot;: &quot;003QH00000RXZdoYAH&quot;,
+      &quot;Name&quot;: &quot;Sean Forbes&quot;,
+      &quot;Email&quot;: &quot;sean@edge.com&quot;,
+      &quot;Phone&quot;: &quot;(512) 757-6000&quot;,
+      &quot;Title&quot;: &quot;CFO&quot;
+    }
+  ],
+  &quot;Name&quot;: &quot;Edge Communications&quot;,
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_asset_details">
+      <header>
+        <span class="n">#33</span>
+        <h2><code>fetch_asset_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.31s · promptId a0KQH00000Hcz772AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Unsupported skill: fetch_asset_details</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_campaign_details">
+      <header>
+        <span class="n">#34</span>
+        <h2><code>fetch_campaign_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.8s · promptId a0KQH00000Hcz8j2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No campaign found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_campaign_members">
+      <header>
+        <span class="n">#35</span>
+        <h2><code>fetch_campaign_members</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.39s · promptId a0KQH00000HczAL2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;CampaignId&quot;: &quot;701QH00002FoaPOYAZ&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;members&quot;: [],
+  &quot;count&quot;: 0,
+  &quot;CampaignId&quot;: &quot;701QH00002FoaPOYAZ&quot;
+}</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_care_plan">
+      <header>
+        <span class="n">#36</span>
+        <h2><code>fetch_care_plan</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.43s · promptId a0KQH00000HczBx2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Care Plan object is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_case_details">
+      <header>
+        <span class="n">#37</span>
+        <h2><code>fetch_case_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.36s · promptId a0KQH00000HczDZ2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No case found for provided Id/Number.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_case_entitlements">
+      <header>
+        <span class="n">#38</span>
+        <h2><code>fetch_case_entitlements</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.79s · promptId a0KQH00000HczFB2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;CaseId&quot;: &quot;500QH00000VZf8JYAT&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: case_id</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_case_milestones">
+      <header>
+        <span class="n">#39</span>
+        <h2><code>fetch_case_milestones</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.38s · promptId a0KQH00000HctjG2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;CaseId&quot;: &quot;500QH00000VZf8JYAT&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: case_id</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_case_team">
+      <header>
+        <span class="n">#40</span>
+        <h2><code>fetch_case_team</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.37s · promptId a0KQH00000HczGn2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;CaseId&quot;: &quot;500QH00000VZf8JYAT&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: case_id</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_contact_details">
+      <header>
+        <span class="n">#41</span>
+        <h2><code>fetch_contact_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.49s · promptId a0KQH00000HczIP2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: Id (Contact Id).</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_contact_engagement_history">
+      <header>
+        <span class="n">#42</span>
+        <h2><code>fetch_contact_engagement_history</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.38s · promptId a0KQH00000HczK12AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No contact found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_contract_details">
+      <header>
+        <span class="n">#43</span>
+        <h2><code>fetch_contract_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.82s · promptId a0KQH00000Hcz782AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: Id (Contract Id).</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_cpq_quote_details">
+      <header>
+        <span class="n">#44</span>
+        <h2><code>fetch_cpq_quote_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.57s · promptId a0KQH00000HczLd2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_financial_account">
+      <header>
+        <span class="n">#45</span>
+        <h2><code>fetch_financial_account</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.43s · promptId a0KQH00000HczNF2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Financial Account object (FinServ__FinancialAccount__c) is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_knowledge_article">
+      <header>
+        <span class="n">#46</span>
+        <h2><code>fetch_knowledge_article</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.47s · promptId a0KQH00000HczOr2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Knowledge is not enabled in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_lead_details">
+      <header>
+        <span class="n">#47</span>
+        <h2><code>fetch_lead_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.38s · promptId a0KQH00000HczQT2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No lead found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_my_open_opportunities">
+      <header>
+        <span class="n">#48</span>
+        <h2><code>fetch_my_open_opportunities</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.44s · promptId a0KQH00000HczS52AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;opportunities&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkZYAR/view&quot;,
+      &quot;Account&quot;: &quot;Grand Hotels &amp; Resorts Ltd&quot;,
+      &quot;Amount&quot;: 15000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Grand Hotels Kitchen Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkZYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkbYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;Amount&quot;: 80000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Value Proposition&quot;,
+      &quot;Name&quot;: &quot;Express Logistics Portable Truck Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkbYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkcYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;Amount&quot;: 120000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Perception Analysis&quot;,
+      &quot;Name&quot;: &quot;Express Logistics SLA&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkcYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkfYAB/view&quot;,
+      &quot;Account&quot;: &quot;University of Arizona&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;University of AZ Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkfYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkjYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkjYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkkYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 125000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Office Portable Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkkYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkpYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;United Oil Refinery Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkpYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkqYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 675000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Needs Analysis&quot;,
+      &quot;Name&quot;: &quot;United Oil Plant Standby Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkqYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydktYAB/view&quot;,
+      &quot;Account&quot;: &quot;GenePoint&quot;,
+      &quot;Amount&quot;: 60000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;GenePoint Lab Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydktYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkwYAB/view&quot;,
+      &quot;Account&quot;: &quot;Edge Communications&quot;,
+      &quot;Amount&quot;: 35000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Edge Emergency Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkwYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkzYAB/view&quot;,
+      &quot;Account&quot;: &quot;Pyramid Construction Inc.&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;Pyramid Emergency Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkzYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl0YAB/view&quot;,
+      &quot;Account&quot;: &quot;Dickenson plc&quot;,
+      &quot;Amount&quot;: 15000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Qualification&quot;,
+      &quot;Name&quot;: &quot;Dickenson Mobile Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kydl0YAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl2YAB/view&quot;,
+      &quot;Account&quot;: &quot;Grand Hotels &amp; Resorts Ltd&quot;,
+      &quot;Amount&quot;: 250000.0,
+      &quot;CloseDate</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_my_open_tasks">
+      <header>
+        <span class="n">#49</span>
+        <h2><code>fetch_my_open_tasks</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.38s · promptId a0KQH00000HczTh2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;tasks&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPKPV2A5/view&quot;,
+      &quot;WhoId&quot;: null,
+      &quot;WhatId&quot;: &quot;001QH00002FoLakYAF&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E smoke — ignore&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPKPV2A5&quot;
+    }
+  ],
+  &quot;count&quot;: 1
+}</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fetch_opportunity_contact_roles">
+      <header>
+        <span class="n">#50</span>
+        <h2><code>fetch_opportunity_contact_roles</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.36s · promptId a0KQH00000HczVJ2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fetch_opportunity_details">
+      <header>
+        <span class="n">#51</span>
+        <h2><code>fetch_opportunity_details</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.32s · promptId a0KQH00000HcuSQ2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fetch_opportunity_partners">
+      <header>
+        <span class="n">#52</span>
+        <h2><code>fetch_opportunity_partners</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.34s · promptId a0KQH00000HczWv2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fetch_opportunity_team">
+      <header>
+        <span class="n">#53</span>
+        <h2><code>fetch_opportunity_team</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.44s · promptId a0KQH00000HczYX2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000KydkYYAR&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_order_details">
+      <header>
+        <span class="n">#54</span>
+        <h2><code>fetch_order_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.33s · promptId a0KQH00000HczNG2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No order found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fetch_partner_account">
+      <header>
+        <span class="n">#55</span>
+        <h2><code>fetch_partner_account</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.35s · promptId a0KQH00000Hcza92AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_picklist_values">
+      <header>
+        <span class="n">#56</span>
+        <h2><code>fetch_picklist_values</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.31s · promptId a0KQH00000Hczbl2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;objectApiName&quot;: &quot;E2E-smoke&quot;,
+  &quot;fieldApiName&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: object_api_name</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_pricebook_entries">
+      <header>
+        <span class="n">#57</span>
+        <h2><code>fetch_pricebook_entries</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.4s · promptId a0KQH00000HczdN2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;entries&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBKYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 100000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Diesel 1000kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GdYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBKYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBDYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 5000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Diesel 10kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GWYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBDYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBCYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 25000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Diesel 200kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GVYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBCYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBRYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 150000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Gasoline 2000kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GkYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBRYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBPYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 35000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Gasoline 300kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GiYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBPYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBMYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 75000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Gasoline 750kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GfYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBMYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBIYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 15000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Propane 100kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GbYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBIYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBJYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 120000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Propane 1500kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GcYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBJYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBGYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 50000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Propane 500kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GZYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBGYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBEYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 85000.0,
+      &quot;ProductName&quot;: &quot;Installation: Industrial - High&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GXYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBEYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBQYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 20000.0,
+      &quot;ProductName&quot;: &quot;Installation: Industrial - Low&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GjYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBQYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBSYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 50000.0,
+      &quot;ProductName&quot;: &quot;Installation: Industrial - Medium&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GlYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBSYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBNYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 5000.0,
+      &quot;ProductName&quot;: &quot;Installation: Portable&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GgYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBNYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBLYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 10000.0,
+      &quot;ProductName&quot;: &quot;SLA: Bronze&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GeYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBLYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBOYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 30000.0,
+      &quot;ProductName&quot;: &quot;SLA: Gold&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GhYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBOYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBHYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 40000.0,
+      &quot;ProductName&quot;: &quot;SLA: Platinum&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GaYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH00000</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_product_details">
+      <header>
+        <span class="n">#58</span>
+        <h2><code>fetch_product_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.4s · promptId a0KQH00000Hczez2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No product found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_queue_cases">
+      <header>
+        <span class="n">#59</span>
+        <h2><code>fetch_queue_cases</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.38s · promptId a0KQH00000Hcxba2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;OwnerId&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Invalid queue_id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fetch_quote_details">
+      <header>
+        <span class="n">#60</span>
+        <h2><code>fetch_quote_details</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.35s · promptId a0KQH00000Hczf02AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_record_approvals">
+      <header>
+        <span class="n">#61</span>
+        <h2><code>fetch_record_approvals</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.58s · promptId a0KQH00000HcyB52AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;approvals&quot;: [],
+  &quot;count&quot;: 0,
+  &quot;recordId&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_renewal_opportunities">
+      <header>
+        <span class="n">#62</span>
+        <h2><code>fetch_renewal_opportunities</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.4s · promptId a0KQH00000Hczgb2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [],
+  &quot;ownerId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;count&quot;: 0
+}</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_service_appointment">
+      <header>
+        <span class="n">#63</span>
+        <h2><code>fetch_service_appointment</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.43s · promptId a0KQH00000HcyW22AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>ServiceAppointment object is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_service_resource_availability">
+      <header>
+        <span class="n">#64</span>
+        <h2><code>fetch_service_resource_availability</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.5s · promptId a0KQH00000HczS62AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>ServiceResource object is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_session_context">
+      <header>
+        <span class="n">#65</span>
+        <h2><code>fetch_session_context</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.35s · promptId a0KQH00000HcziD2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>User Context Id: A-00008 | Record Id: none</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_stale_opportunities">
+      <header>
+        <span class="n">#66</span>
+        <h2><code>fetch_stale_opportunities</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.43s · promptId a0KQH00000HczAM2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;opportunities&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkZYAR/view&quot;,
+      &quot;Account&quot;: &quot;Grand Hotels &amp; Resorts Ltd&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 15000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Grand Hotels Kitchen Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkZYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkbYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 80000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Value Proposition&quot;,
+      &quot;Name&quot;: &quot;Express Logistics Portable Truck Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkbYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkcYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 120000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Perception Analysis&quot;,
+      &quot;Name&quot;: &quot;Express Logistics SLA&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkcYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkfYAB/view&quot;,
+      &quot;Account&quot;: &quot;University of Arizona&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;University of AZ Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkfYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkjYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkjYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkkYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 125000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Office Portable Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkkYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkpYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;United Oil Refinery Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkpYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkqYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 675000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Needs Analysis&quot;,
+      &quot;Name&quot;: &quot;United Oil Plant Standby Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkqYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydktYAB/view&quot;,
+      &quot;Account&quot;: &quot;GenePoint&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 60000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;GenePoint Lab Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydktYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkwYAB/view&quot;,
+      &quot;Account&quot;: &quot;Edge Communications&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 35000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Edge Emergency Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkwYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkzYAB/view&quot;,
+      &quot;Account&quot;: &quot;Pyramid Construction Inc.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;Pyramid Emergency Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkzYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;View Record&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.de</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_subscription_details">
+      <header>
+        <span class="n">#67</span>
+        <h2><code>fetch_subscription_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.52s · promptId a0KQH00000Hcxzm2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Subscription object is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="fetch_upcoming_renewals">
+      <header>
+        <span class="n">#68</span>
+        <h2><code>fetch_upcoming_renewals</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.6s · promptId a0KQH00000Hcynm2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [],
+  &quot;count&quot;: 0,
+  &quot;toDate&quot;: &quot;2026-11-03&quot;,
+  &quot;fromDate&quot;: &quot;2026-08-05&quot;,
+  &quot;daysAhead&quot;: 90
+}</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fetch_work_order_details">
+      <header>
+        <span class="n">#69</span>
+        <h2><code>fetch_work_order_details</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.45s · promptId a0KQH00000Hczjp2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No such column &#x27;ServiceTerritoryId&#x27; on entity &#x27;WorkOrder&#x27;. If you are attempting to use a custom field, be sure to append the &#x27;__c&#x27; after the custom field name. Please reference your WSDL or the describe call for the appropriate names.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fuzzy_search_accounts">
+      <header>
+        <span class="n">#70</span>
+        <h2><code>fuzzy_search_accounts</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.73s · promptId a0KQH00000HczlR2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Acme&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No account found matching &quot;Acme&quot;.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fuzzy_search_assets">
+      <header>
+        <span class="n">#71</span>
+        <h2><code>fuzzy_search_assets</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.65s · promptId a0KQH00000Hczn32AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Unsupported skill: fuzzy_search_assets</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fuzzy_search_campaigns">
+      <header>
+        <span class="n">#72</span>
+        <h2><code>fuzzy_search_campaigns</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.32s · promptId a0KQH00000Hcz3u2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: search_term</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fuzzy_search_cases">
+      <header>
+        <span class="n">#73</span>
+        <h2><code>fuzzy_search_cases</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.33s · promptId a0KQH00000Hczof2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: search_term</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fuzzy_search_contacts">
+      <header>
+        <span class="n">#74</span>
+        <h2><code>fuzzy_search_contacts</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.56s · promptId a0KQH00000HcrUY2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;search_term&quot;: &quot;Test&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>No contact found matching &quot;Test&quot;.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fuzzy_search_leads">
+      <header>
+        <span class="n">#75</span>
+        <h2><code>fuzzy_search_leads</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.34s · promptId a0KQH00000Hczrt2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: search_term</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fuzzy_search_opportunities">
+      <header>
+        <span class="n">#76</span>
+        <h2><code>fuzzy_search_opportunities</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.3s · promptId a0KQH00000HcztV2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fuzzy_search_partners">
+      <header>
+        <span class="n">#77</span>
+        <h2><code>fuzzy_search_partners</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.8s · promptId a0KQH00000Hczv72AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="fuzzy_search_products">
+      <header>
+        <span class="n">#78</span>
+        <h2><code>fuzzy_search_products</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.32s · promptId a0KQH00000Hczwj2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: search_term</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="fuzzy_search_quotes">
+      <header>
+        <span class="n">#79</span>
+        <h2><code>fuzzy_search_quotes</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.37s · promptId a0KQH00000HczyL2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="link_knowledge_article_to_case">
+      <header>
+        <span class="n">#80</span>
+        <h2><code>link_knowledge_article_to_case</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.4s · promptId a0KQH00000Hczwk2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;CaseId&quot;: &quot;500QH00000VZf8JYAT&quot;,
+  &quot;KnowledgeArticleId&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not link article
+Missing parameter: case_id</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="log_activity">
+      <header>
+        <span class="n">#81</span>
+        <h2><code>log_activity</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 1.97s · promptId a0KQH00000HctjF2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Subject&quot;: &quot;E2E smoke note — ignore&quot;,
+  &quot;WhatId&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;record_id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;activity_subject&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>✅ Activity Logged: E2E-smokeStatus: Completed
+Date: 2026-08-05
+
+👉 View Task</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="remove_campaign_member">
+      <header>
+        <span class="n">#82</span>
+        <h2><code>remove_campaign_member</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.68s · promptId a0KQH00000Hczzx2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not remove campaign member
+No campaign member found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="run_internal_prompt">
+      <header>
+        <span class="n">#83</span>
+        <h2><code>run_internal_prompt</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 1.66s · promptId a0KQH00000Hctkr2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;prompt_request_id&quot;: &quot;E2E-smoke&quot;,
+  &quot;record_id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>{
+  &quot;success&quot;: true,
+  &quot;recordId&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;message&quot;: null,
+  &quot;status&quot;: &quot;success&quot;
+}</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="schedule_service_appointment">
+      <header>
+        <span class="n">#84</span>
+        <h2><code>schedule_service_appointment</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.58s · promptId a0KQH00000Hd01Z2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not schedule appointment
+ServiceAppointment is not available or creatable in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="search_knowledge_articles">
+      <header>
+        <span class="n">#85</span>
+        <h2><code>search_knowledge_articles</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.32s · promptId a0KQH00000HczWw2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Missing required parameter: search_term</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="transfer_record_owner">
+      <header>
+        <span class="n">#86</span>
+        <h2><code>transfer_record_owner</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.31s · promptId a0KQH00000Hd09d2AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;OwnerId&quot;: &quot;E2E-smoke&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not transfer owner
+Invalid record_id or new_owner_id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="update_account_fields">
+      <header>
+        <span class="n">#87</span>
+        <h2><code>update_account_fields</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.63s · promptId a0KQH00000HctmT2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;Description&quot;: &quot;e2e smoke&quot;,
+  &quot;account_id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>✅ Account Updated
+Edge CommunicationsDescription: Edge, founded in 1998, is a start-up based in Austin, TX. The company designs and manufactures a device to convert music from one digital format to another. Edge sells its product through retailers and its own website. → e2e smoke
+
+👉 View Account</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_asset_fields">
+      <header>
+        <span class="n">#88</span>
+        <h2><code>update_asset_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 1.53s · promptId a0KQH00000Hd0BF2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>Unsupported skill: update_asset_fields</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_campaign_fields">
+      <header>
+        <span class="n">#89</span>
+        <h2><code>update_campaign_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.4s · promptId a0KQH00000Hd0Cr2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update campaign
+Missing parameter: at least one field to update</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_campaign_member_status">
+      <header>
+        <span class="n">#90</span>
+        <h2><code>update_campaign_member_status</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.54s · promptId a0KQH00000Hd0ET2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;Status&quot;: &quot;Closed&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update member status
+No campaign member found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_care_plan_fields">
+      <header>
+        <span class="n">#91</span>
+        <h2><code>update_care_plan_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.46s · promptId a0KQH00000Hd0G52AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update care plan
+Care Plan object is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_case_fields">
+      <header>
+        <span class="n">#92</span>
+        <h2><code>update_case_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.66s · promptId a0KQH00000Hd0Hh2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update case
+No case found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card ok" data-cat="handler_ok" id="update_contact_fields">
+      <header>
+        <span class="n">#93</span>
+        <h2><code>update_contact_fields</code></h2>
+        <span class="pill ok">handler_ok</span>
+        <span class="meta">HTTP 200 · API Success · 0.64s · promptId a0KQH00000Hcto52AB</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;contact_id&quot;: &quot;003QH00000RXZdnYAH&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>✅ Contact Updated
+Rose GonzalezDescription: (none) → E2E smoke field
+
+👉 View Contact</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_contract_fields">
+      <header>
+        <span class="n">#94</span>
+        <h2><code>update_contract_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.47s · promptId a0KQH00000Hd0JJ2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update contract
+Missing parameter: Id (Contract Id).</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_cpq_quote_fields">
+      <header>
+        <span class="n">#95</span>
+        <h2><code>update_cpq_quote_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.48s · promptId a0KQH00000HcyNz2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update CPQ quote
+Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_cpq_quote_line">
+      <header>
+        <span class="n">#96</span>
+        <h2><code>update_cpq_quote_line</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.64s · promptId a0KQH00000HczYY2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update CPQ quote line
+Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_event">
+      <header>
+        <span class="n">#97</span>
+        <h2><code>update_event</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.41s · promptId a0KQH00000Hd0Kv2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update event
+Missing parameter: at least one field to update</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_financial_account_fields">
+      <header>
+        <span class="n">#98</span>
+        <h2><code>update_financial_account_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.47s · promptId a0KQH00000Hd0MX2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update financial account
+FinServ__FinancialAccount__c is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_lead_fields">
+      <header>
+        <span class="n">#99</span>
+        <h2><code>update_lead_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.74s · promptId a0KQH00000Hd0O92AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update lead
+No lead found for provided Id.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="update_opportunity_contact_role">
+      <header>
+        <span class="n">#100</span>
+        <h2><code>update_opportunity_contact_role</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.35s · promptId a0KQH00000Hd0Pl2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="update_opportunity_fields">
+      <header>
+        <span class="n">#101</span>
+        <h2><code>update_opportunity_fields</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.32s · promptId a0KQH00000Hd0RN2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E smoke field&quot;
+  }
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="update_opportunity_line_item">
+      <header>
+        <span class="n">#102</span>
+        <h2><code>update_opportunity_line_item</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.33s · promptId a0KQH00000HcxQI2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_order_fields">
+      <header>
+        <span class="n">#103</span>
+        <h2><code>update_order_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.32s · promptId a0KQH00000Hd0Sz2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update order
+Missing parameter: at least one field to update</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_order_item">
+      <header>
+        <span class="n">#104</span>
+        <h2><code>update_order_item</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.47s · promptId a0KQH00000Hd0Ub2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update order item
+Missing parameter: at least one field to update</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="update_quote_fields">
+      <header>
+        <span class="n">#105</span>
+        <h2><code>update_quote_fields</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.33s · promptId a0KQH00000Hd0WD2AZ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card bad" data-cat="api_fail" id="update_quote_line_item">
+      <header>
+        <span class="n">#106</span>
+        <h2><code>update_quote_line_item</code></h2>
+        <span class="pill bad">api_fail</span>
+        <span class="meta">HTTP 200 · API Error · 0.75s · promptId a0KQH00000Hd0Kw2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>(empty)</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_service_appointment">
+      <header>
+        <span class="n">#107</span>
+        <h2><code>update_service_appointment</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.44s · promptId a0KQH00000HcycU2AR</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update appointment
+ServiceAppointment is not updateable in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_subscription_fields">
+      <header>
+        <span class="n">#108</span>
+        <h2><code>update_subscription_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.39s · promptId a0KQH00000Hd0Xp2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update subscription
+Subscription object is not available in this org.</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_task">
+      <header>
+        <span class="n">#109</span>
+        <h2><code>update_task</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.37s · promptId a0KQH00000Hd0Uc2AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update task
+Missing parameter: at least one field to update</pre>
+        </div>
+      </div>
+    </article>
+    <article class="card warn" data-cat="handler_error" id="update_work_order_fields">
+      <header>
+        <span class="n">#110</span>
+        <h2><code>update_work_order_fields</code></h2>
+        <span class="pill warn">handler_error</span>
+        <span class="meta">HTTP 200 · API Success · 0.66s · promptId a0KQH00000HczS72AJ</span>
+      </header>
+      <div class="pair">
+        <div>
+          <h3>Request (JSON params sent)</h3>
+          <pre>{
+  &quot;Id&quot;: &quot;001QH00002FoLakYAF&quot;
+}</pre>
+        </div>
+        <div>
+          <h3>Response (what came back)</h3>
+          <pre>⚠️ Could not update work order
+Missing parameter: at least one field to update</pre>
+        </div>
+      </div>
+    </article>
+</div>
+<script>
+document.querySelectorAll(".filters button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filters button").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    const f = btn.dataset.f;
+    document.querySelectorAll(".card").forEach((c) => {
+      if (f === "all") c.classList.remove("hidden");
+      else c.classList.toggle("hidden", c.dataset.cat !== f);
+    });
+  });
+});
+</script>
+</body>
+</html>

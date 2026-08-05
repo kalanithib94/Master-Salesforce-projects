@@ -1,0 +1,17 @@
+{
+  "packageVersion": "1.1.0",
+  "sourceApiVersion": "66.0",
+  "skill": "fetch_financial_account",
+  "handler": "IndustryAgenticSkillsHandler",
+  "classes": [
+    "AgenticSkillsBase",
+    "IndustryAgenticSkillsHandler"
+  ],
+  "tests": [
+    "AgenticSkillsBaseTest",
+    "IndustryAgenticSkillsHandlerTest"
+  ],
+  "requires": [
+    "GPTfy (ccai) managed package"
+  ]
+}

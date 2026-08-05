@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>D — Dual list transfer</title>
+  <style>
+    :root {
+      --bg: #f5f6f8; --panel: #fff; --ink: #1f2937; --muted: #6b7280;
+      --line: #d1d5db; --accent: #4f46e5; --soft: #eef2ff;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--ink); }
+    .banner { background: #ecfdf5; color: #065f46; text-align: center; padding: 0.45rem; font-size: 0.8rem; font-weight: 600; }
+    .page { max-width: 1000px; margin: 1.25rem auto; padding: 0 1rem 2rem; }
+    h1 { margin: 0 0 0.25rem; font-size: 1.2rem; }
+    .sub { margin: 0 0 1rem; color: var(--muted); font-size: 0.9rem; }
+    .board {
+      display: grid; grid-template-columns: 1fr 88px 1fr; gap: 0.75rem; align-items: stretch;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 1rem;
+      min-height: 480px;
+    }
+    .col { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    .col-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.65rem 0.8rem; background: #f9fafb; border-bottom: 1px solid var(--line); font-size: 0.8rem; font-weight: 700;
+    }
+    .col-head span { color: var(--muted); font-weight: 600; }
+    .col input[type=search] {
+      margin: 0.5rem 0.65rem 0; border: 1px solid var(--line); border-radius: 6px;
+      padding: 0.4rem 0.55rem; font: inherit; font-size: 0.8rem;
+    }
+    .select-box {
+      flex: 1; margin: 0.5rem; border: 1px solid var(--line); border-radius: 8px;
+      overflow: auto; background: #fff;
+    }
+    .opt {
+      padding: 0.55rem 0.65rem; border-bottom: 1px solid #f3f4f6; cursor: pointer; font-size: 0.8rem;
+    }
+    .opt:hover { background: #f9fafb; }
+    .opt.selected { background: var(--soft); outline: 1px solid #c7d2fe; }
+    .opt strong { display: block; font-size: 0.82rem; }
+    .opt em { font-style: normal; color: var(--muted); font-size: 0.75rem; }
+    .mid {
+      display: flex; flex-direction: column; justify-content: center; gap: 0.45rem; align-items: stretch;
+    }
+    .mid button {
+      border: 1px solid var(--line); background: #fff; border-radius: 8px;
+      padding: 0.55rem 0.4rem; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    }
+    .mid button:hover { background: var(--soft); border-color: var(--accent); color: var(--accent); }
+    .mid button:disabled { opacity: 0.35; cursor: not-allowed; }
+    .foot {
+      display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;
+    }
+    .foot button {
+      border: 0; background: var(--accent); color: #fff; border-radius: 8px;
+      padding: 0.65rem 1.1rem; font: inherit; font-weight: 700; cursor: pointer;
+    }
+    .foot button:disabled { opacity: 0.4; cursor: not-allowed; }
+    @media (max-width: 800px) {
+      .board { grid-template-columns: 1fr; }
+      .mid { flex-direction: row; }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">CONCEPT D — Dual list: Available ← → Selected · move skills between columns (classic admin UI)</div>
+  <div class="page">
+    <h1>Build agent package</h1>
+    <p class="sub">Select skills on the left, then move them into the package on the right.</p>
+    <div class="board">
+      <div class="col">
+        <div class="col-head">Available <span id="availCount">0</span></div>
+        <input type="search" id="availSearch" placeholder="Filter available…" />
+        <div class="select-box" id="avail"></div>
+      </div>
+      <div class="mid">
+        <button type="button" id="add" title="Add selected">Add →</button>
+        <button type="button" id="addAll">Add all →</button>
+        <button type="button" id="remove">← Remove</button>
+        <button type="button" id="removeAll">← Remove all</button>
+      </div>
+      <div class="col">
+        <div class="col-head">In package <span id="pkgCount">0</span></div>
+        <input type="search" id="pkgSearch" placeholder="Filter package…" />
+        <div class="select-box" id="pkg"></div>
+      </div>
+    </div>
+    <div class="foot">
+      <span style="color:var(--muted);font-size:.85rem" id="status">Nothing selected yet.</span>
+      <button type="button" id="dl" disabled>Download package</button>
+    </div>
+  </div>
+  <script>
+    const SKILLS = [
+      { id: 'run_internal_prompt', title: 'Run a GPTfy prompt', desc: 'Run a GPTfy prompt on record data.' },
+      { id: 'fuzzy_search_accounts', title: 'Search Accounts', desc: 'Find accounts by partial name.' },
+      { id: 'fetch_account_plan', title: 'Get Account Plan', desc: 'Get plan and objectives for one account.' },
+      { id: 'create_case', title: 'Create Case', desc: 'Create a new support case.' },
+      { id: 'close_case', title: 'Close Case', desc: 'Close a case.' },
+      { id: 'fetch_upcoming_renewals', title: 'Get Upcoming Renewals', desc: 'List renewals due soon.' },
+      { id: 'log_activity', title: 'Log Activity', desc: 'Log a completed call, email, or note.' },
+      { id: 'transfer_record_owner', title: 'Transfer Record Owner', desc: 'Change the owner of a record.' },
+    ];
+    let available = [...SKILLS];
+    let packageSkills = [];
+    let availSel = new Set();
+    let pkgSel = new Set();
+
+    function render() {
+      const af = document.getElementById('availSearch').value.toLowerCase();
+      const pf = document.getElementById('pkgSearch').value.toLowerCase();
+      const availEl = document.getElementById('avail');
+      const pkgEl = document.getElementById('pkg');
+      const filt = (arr, f) => arr.filter(s => !f || (s.title + s.desc + s.id).toLowerCase().includes(f));
+      const availF = filt(available, af);
+      const pkgF = filt(packageSkills, pf);
+      document.getElementById('availCount').textContent = available.length;
+      document.getElementById('pkgCount').textContent = packageSkills.length;
+      document.getElementById('status').textContent = packageSkills.length
+        ? packageSkills.length + ' skills in package'
+        : 'Nothing selected yet.';
+      document.getElementById('dl').disabled = packageSkills.length === 0;
+
+      availEl.innerHTML = availF.map(s => `
+        <div class="opt ${availSel.has(s.id) ? 'selected' : ''}" data-id="${s.id}" data-side="avail">
+          <strong>${s.title}</strong><em>${s.desc}</em>
+        </div>`).join('') || '<div class="opt"><em>No available skills match</em></div>';
+      pkgEl.innerHTML = pkgF.map(s => `
+        <div class="opt ${pkgSel.has(s.id) ? 'selected' : ''}" data-id="${s.id}" data-side="pkg">
+          <strong>${s.title}</strong><em>${s.desc}</em>
+        </div>`).join('') || '<div class="opt"><em>Package is empty — add from the left</em></div>';
+
+      availEl.querySelectorAll('.opt[data-id]').forEach(o => {
+        o.onclick = e => {
+          if (!e.metaKey && !e.ctrlKey) availSel.clear();
+          if (availSel.has(o.dataset.id)) availSel.delete(o.dataset.id); else availSel.add(o.dataset.id);
+          pkgSel.clear();
+          render();
+        };
+      });
+      pkgEl.querySelectorAll('.opt[data-id]').forEach(o => {
+        o.onclick = e => {
+          if (!e.metaKey && !e.ctrlKey) pkgSel.clear();
+          if (pkgSel.has(o.dataset.id)) pkgSel.delete(o.dataset.id); else pkgSel.add(o.dataset.id);
+          availSel.clear();
+          render();
+        };
+      });
+    }
+
+    function move(ids, from, to) {
+      const set = new Set(ids);
+      const moving = from.filter(s => set.has(s.id));
+      from = from.filter(s => !set.has(s.id));
+      to = [...to, ...moving];
+      return [from, to];
+    }
+    document.getElementById('add').onclick = () => {
+      [available, packageSkills] = move([...availSel], available, packageSkills);
+      availSel.clear(); render();
+    };
+    document.getElementById('remove').onclick = () => {
+      [packageSkills, available] = move([...pkgSel], packageSkills, available);
+      pkgSel.clear(); render();
+    };
+    document.getElementById('addAll').onclick = () => {
+      packageSkills = [...packageSkills, ...available];
+      available = []; availSel.clear(); render();
+    };
+    document.getElementById('removeAll').onclick = () => {
+      available = [...available, ...packageSkills];
+      packageSkills = []; pkgSel.clear(); render();
+    };
+    document.getElementById('availSearch').oninput = render;
+    document.getElementById('pkgSearch').oninput = render;
+    render();
+  </script>
+</body>
+</html>

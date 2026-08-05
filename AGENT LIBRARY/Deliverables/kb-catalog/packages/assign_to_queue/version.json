@@ -1,0 +1,17 @@
+{
+  "packageVersion": "1.1.0",
+  "sourceApiVersion": "66.0",
+  "skill": "assign_to_queue",
+  "handler": "UtilityAgenticSkillsHandler",
+  "classes": [
+    "AgenticSkillsBase",
+    "UtilityAgenticSkillsHandler"
+  ],
+  "tests": [
+    "AgenticSkillsBaseTest",
+    "UtilityAgenticSkillsHandlerTest"
+  ],
+  "requires": [
+    "GPTfy (ccai) managed package"
+  ]
+}

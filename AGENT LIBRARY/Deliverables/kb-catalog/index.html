@@ -1,0 +1,2538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GPTfy Agentic Skills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      /* GPTfy.ai brand tokens */
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --ink: #1a1a2e;
+      --muted: #6b7280;
+      --line: #e7e0f6;
+      --brand: #7c3aed;
+      --brand-soft: #ede9fe;
+      --brand-lighter: #f5f3ff;
+      --brand-dark: #5b21b6;
+      --brand-deep: #4c1d95;
+      --brand-purple: #6b21a8;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --accent-dark: #d97706;
+      --radius: 12px;
+      --shadow: 0 1px 2px rgba(26,26,46,.04), 0 8px 20px rgba(124,58,237,.08);
+      --font: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      font-feature-settings: "ss01" on, "cv11" on;
+      color: var(--ink);
+      background: #ffffff;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    .alert-modal,
+    .alert-modal input,
+    .alert-modal button,
+    .alert-modal pre {
+      font-family: var(--font);
+    }
+    .alert-shell h2 {
+      letter-spacing: -0.03em;
+      font-weight: 750;
+    }
+    .config-form input {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 16px 16px 12px; }
+    .topbar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 8px 16px; margin-bottom: 10px;
+    }
+    .brand {
+      display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; min-width: 0;
+    }
+    .brand h1 {
+      margin: 0; font-size: 1.15rem; font-weight: 750; letter-spacing: -.02em; color: var(--ink);
+    }
+    .brand h1 span { color: var(--brand); }
+    .brand .meta { font-size: .8rem; color: var(--muted); }
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      background: rgba(255,255,255,.94); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 8px 10px; box-shadow: var(--shadow); position: sticky; top: 8px; z-index: 20; margin-bottom: 12px;
+      backdrop-filter: blur(8px);
+    }
+    .search {
+      flex: 1 1 240px; min-width: 180px; border: 1px solid var(--line); border-radius: 9px;
+      padding: 8px 11px; font: inherit; font-size: .9rem; background: #fff;
+    }
+    .search:focus { outline: 2px solid #c4b5fd; border-color: var(--brand); }
+    .btn {
+      appearance: none; border: 1px solid var(--line); background: #fff; color: var(--ink);
+      border-radius: 9px; padding: 8px 11px; font: inherit; font-size: .85rem; font-weight: 650; cursor: pointer;
+    }
+    .btn:hover { background: #f8fafc; }
+    .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+    .btn.primary:hover { filter: brightness(1.05); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .count-pill {
+      font-size: .82rem; color: var(--muted); background: #f8fafc; border: 1px solid var(--line);
+      border-radius: 999px; padding: 6px 10px; white-space: nowrap;
+    }
+    .status { font-size: .82rem; color: var(--muted); min-height: 1.2em; }
+
+    .featured-band { margin: 0 0 10px; }
+    .sec-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .sec-panel[hidden] { display: none !important; }
+    .sec-panel.featured {
+      display: block;
+      width: 100%;
+      margin: 0;
+      border-color: #ddd6fe;
+      background: #fff;
+      box-shadow: var(--shadow);
+      border-radius: 10px;
+    }
+    .sec-panel.featured > .sec-summary {
+      background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 55%, #5b21b6 100%);
+      color: #fff;
+      padding: 8px 12px;
+    }
+    .sec-panel.featured > .sec-summary:hover {
+      filter: brightness(1.03);
+      background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 55%, #5b21b6 100%);
+    }
+    .sec-panel.featured[open] > .sec-summary { border-bottom-color: rgba(255,255,255,.2); }
+    .sec-panel.featured .sec-title { color: #fff; font-size: .88rem; }
+    .sec-panel.featured .sec-sub { font-weight: 500; opacity: .85; font-size: .78rem; }
+    .sec-panel.featured .chev { border-color: rgba(255,255,255,.85); }
+    .sec-panel.featured .sec-body {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      padding: 8px;
+      background: #faf8ff;
+    }
+    .skill-featured {
+      border-color: #e7e0f6;
+      background: #fff;
+      padding: 7px 8px 7px 6px;
+      gap: 6px;
+      border-radius: 8px;
+      height: auto;
+    }
+    .skill-featured .skill-title { font-size: .82rem; color: var(--brand-purple); }
+    .skill-featured .desc {
+      font-size: .74rem; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .skill-featured .skill-check { width: 13px; height: 13px; margin-top: 1px; }
+    .rec-badge {
+      display: inline-flex; align-items: center; font-size: .6rem; font-weight: 800; letter-spacing: .03em;
+      text-transform: uppercase; color: var(--accent-dark); background: var(--accent-light); border: 1px solid #fde68a;
+      border-radius: 999px; padding: 0 5px;
+    }
+    .skill-featured .core-badge { font-size: .6rem; padding: 0 5px; }
+    @media (max-width: 980px) {
+      .sec-panel.featured .sec-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .sec-panel.featured .sec-body { grid-template-columns: 1fr; }
+    }
+
+    /* Category tiles — click opens popup (keeps 3-col grid stable) */
+    .catalog-grid {
+      column-count: 3;
+      column-gap: 12px;
+    }
+    .sec-tile {
+      break-inside: avoid;
+      display: inline-block;
+      width: 100%;
+      margin: 0 0 10px;
+      vertical-align: top;
+    }
+    .sec-tile[hidden] { display: none !important; }
+    .sec-open {
+      width: 100%;
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 13px 14px;
+      text-align: left;
+      font: inherit;
+      color: var(--ink);
+      transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+    }
+    .sec-open:hover {
+      border-color: #c4b5fd;
+      background: var(--brand-lighter);
+      box-shadow: 0 2px 12px rgba(124,58,237,.12);
+    }
+    .sec-open:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 2px; }
+    .sec-title {
+      font-size: .92rem;
+      font-weight: 750;
+      letter-spacing: -.01em;
+    }
+    .sec-meta { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .sec-count {
+      font-size: .72rem; font-weight: 700; color: var(--brand);
+      background: #fff; border: 1px solid #ddd6fe; border-radius: 999px;
+      min-width: 1.5rem; height: 1.5rem; display: inline-flex; align-items: center; justify-content: center;
+      padding: 0 5px;
+    }
+    .sec-selected {
+      font-size: .68rem; font-weight: 750; color: #fff;
+      background: var(--brand); border-radius: 999px;
+      padding: 3px 8px; white-space: nowrap;
+    }
+    .sec-selected[hidden] { display: none !important; }
+    .sec-tile.has-selection .sec-open {
+      border-color: #c4b5fd;
+      background: var(--brand-soft);
+    }
+    .chev {
+      width: 7px; height: 7px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+      transform: rotate(45deg); transition: transform .15s ease; margin-top: -2px;
+    }
+    .sec-panel[open] .chev,
+    .guide-box[open] .chev,
+    .request-box[open] .chev { transform: rotate(225deg); margin-top: 2px; }
+    .sec-panel .sec-summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; padding: 12px 14px; user-select: none;
+    }
+    .sec-panel .sec-summary::-webkit-details-marker { display: none; }
+    .sec-tools {
+      display: flex; justify-content: flex-end; padding: 6px 12px 0; background: var(--brand-lighter);
+    }
+    .linkish {
+      appearance: none; border: 0; background: none; color: var(--brand); font: inherit;
+      font-size: .78rem; font-weight: 650; cursor: pointer; padding: 2px 0;
+    }
+    .linkish:hover { text-decoration: underline; }
+    .sec-body {
+      padding: 8px 10px 10px;
+      display: grid;
+      gap: 8px;
+      background: var(--brand-lighter);
+    }
+
+    .modal {
+      border: 0; padding: 0; border-radius: 16px; width: min(760px, calc(100vw - 24px));
+      max-height: min(82vh, 720px); box-shadow: 0 24px 60px rgba(26,26,46,.28);
+      background: #fff; color: var(--ink);
+    }
+    .modal::backdrop { background: rgba(26,26,46,.45); backdrop-filter: blur(2px); }
+    .modal-shell { display: flex; flex-direction: column; max-height: min(82vh, 720px); }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 14px 16px; border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 55%, #5b21b6 100%);
+      color: #fff;
+    }
+    .modal-head h2 { margin: 0; font-size: 1.05rem; font-weight: 750; }
+    .modal-x {
+      appearance: none; border: 0; background: rgba(255,255,255,.16); color: #fff;
+      width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; line-height: 1;
+    }
+    .modal-x:hover { background: rgba(255,255,255,.28); }
+    .modal-tools {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
+      padding: 8px 16px; border-bottom: 1px solid var(--line); background: var(--brand-lighter);
+    }
+    .modal-tools .hintish { font-size: .78rem; color: var(--muted); }
+    .modal-body {
+      padding: 12px 14px; overflow: auto; display: grid; gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      background: #faf8ff;
+    }
+    .modal-foot {
+      display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px;
+      border-top: 1px solid var(--line); background: #fff;
+    }
+    .alert-modal {
+      border: 0; padding: 0; border-radius: 14px; width: min(420px, calc(100vw - 24px));
+      box-shadow: 0 24px 60px rgba(26,26,46,.28); background: #fff; color: var(--ink);
+    }
+    .alert-modal.config-modal,
+    .alert-modal.success-modal { width: min(560px, calc(100vw - 24px)); }
+    .alert-modal::backdrop { background: rgba(26,26,46,.4); }
+    .alert-shell { padding: 18px 18px 14px; display: grid; gap: 10px; }
+    .alert-shell h2 { margin: 0; font-size: 1.02rem; font-weight: 750; color: var(--brand-purple); }
+    .alert-shell p { margin: 0; font-size: .9rem; color: #4b5563; line-height: 1.45; }
+    .alert-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+    .config-form { display: grid; gap: 10px; }
+    .config-form label { display: grid; gap: 4px; font-size: .78rem; font-weight: 650; color: #344054; }
+    .config-form input {
+      font: inherit; font-size: .88rem; border: 1px solid var(--line); border-radius: 8px;
+      padding: 8px 10px; background: #fff; color: var(--ink);
+    }
+    .config-form input:focus { outline: 2px solid #c4b5fd; border-color: var(--brand); }
+    .config-form .hint { font-size: .75rem; font-weight: 500; color: var(--muted); }
+    .config-form .check-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .84rem; font-weight: 600; color: #344054;
+      border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+      background: #faf8ff;
+    }
+    .config-form .check-row input { width: auto; margin-top: 2px; flex-shrink: 0; }
+    .config-form .check-row .check-copy { display: grid; gap: 3px; }
+    .config-form .check-row .check-copy strong { font-size: .86rem; color: var(--brand-purple); }
+    .config-form .check-row .check-copy span { font-size: .75rem; font-weight: 500; color: var(--muted); line-height: 1.35; }
+    .config-error {
+      display: none; font-size: .8rem; color: #b42318; background: #fef3f2;
+      border: 1px solid #fecdca; border-radius: 8px; padding: 8px 10px;
+    }
+    .config-error.show { display: block; }
+    .cmd-box { display: none; grid-gap: 8px; }
+    .cmd-box.show { display: grid; }
+    .cmd-row {
+      border: 1px solid var(--line); border-radius: 10px; background: #f8fafc; overflow: hidden;
+    }
+    .cmd-row header {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 6px 10px; border-bottom: 1px solid var(--line); background: #fff;
+    }
+    .cmd-row header span { font-size: .75rem; font-weight: 700; color: #344054; }
+    .cmd-row pre {
+      margin: 0; padding: 10px; font-size: .76rem; line-height: 1.4; overflow: auto;
+      white-space: pre-wrap; word-break: break-word; color: #1a1a2e;
+    }
+    .copy-cmd {
+      appearance: none; border: 1px solid var(--line); background: #fff; border-radius: 7px;
+      padding: 4px 8px; font: inherit; font-size: .72rem; font-weight: 650; cursor: pointer; color: var(--brand);
+    }
+    .copy-cmd:hover { background: var(--brand-lighter); }
+
+    .skill {
+      border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 10px 10px 10px 8px;
+      display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; cursor: pointer;
+    }
+    .skill:hover { border-color: #ddd6fe; background: var(--brand-lighter); }
+    .skill:has(.skill-check:checked) { border-color: #c4b5fd; background: var(--brand-soft); }
+    .skill[hidden] { display: none !important; }
+    .skill-check { width: 15px; height: 15px; margin-top: 2px; accent-color: var(--brand); }
+    .skill-body { display: grid; gap: 4px; min-width: 0; }
+    .skill-top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .skill-title { font-size: .9rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; }
+    .core-badge {
+      display: inline-flex; align-items: center; font-size: .66rem; font-weight: 800; letter-spacing: .04em;
+      text-transform: uppercase; color: #fff; background: var(--brand); border: 1px solid var(--brand-dark);
+      border-radius: 999px; padding: 1px 6px;
+    }
+    .desc { color: #4b5563; font-size: .82rem; line-height: 1.4; }
+
+    .guide-box,
+    .request-box {
+      margin-top: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .guide-box { margin-top: 14px; margin-bottom: 10px; border-color: #ddd6fe; }
+    .guide-box > summary,
+    .request-box > summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 11px 14px; user-select: none; background: #f8fafc;
+    }
+    .guide-box > summary { background: var(--brand-lighter); }
+    .guide-box > summary::-webkit-details-marker,
+    .request-box > summary::-webkit-details-marker { display: none; }
+    .guide-box > summary:hover,
+    .request-box > summary:hover { background: #f1f5f9; }
+    .guide-box[open] > summary,
+    .request-box[open] > summary { border-bottom: 1px solid var(--line); background: #fff; }
+    .guide-summary-text,
+    .request-summary-text { display: grid; gap: 2px; min-width: 0; }
+    .guide-summary-text strong,
+    .request-summary-text strong { font-size: .92rem; font-weight: 750; }
+    .guide-summary-text span,
+    .request-summary-text span { font-size: .8rem; color: var(--muted); }
+    .guide-body,
+    .request-body { padding: 12px 14px 14px; }
+    .guide-body { display: grid; gap: 12px; }
+    .guide-steps {
+      margin: 0; padding-left: 1.15rem; display: grid; gap: 8px; font-size: .86rem; color: #374151;
+    }
+    .guide-steps li { padding-left: 2px; }
+    .guide-steps code {
+      font-size: .78rem; background: #f3f0fa; border: 1px solid #e7e0f6; border-radius: 5px;
+      padding: 1px 5px; color: var(--brand-deep);
+    }
+    .guide-disclaimer {
+      border: 1px solid #fde68a; background: #fffbeb; border-radius: 10px; padding: 10px 12px;
+      font-size: .82rem; color: #78350f;
+    }
+    .guide-disclaimer strong { display: block; margin-bottom: 4px; color: #92400e; font-size: .8rem; letter-spacing: .02em; text-transform: uppercase; }
+    .guide-disclaimer ul { margin: 4px 0 0; padding-left: 1.1rem; display: grid; gap: 3px; }
+    .guide-note { font-size: .8rem; color: var(--muted); margin: 0; }
+    .request-form {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; max-width: 820px;
+    }
+    .request-form label { display: grid; gap: 3px; font-size: .76rem; font-weight: 650; color: #344054; }
+    .request-form .span-2 { grid-column: 1 / -1; }
+    .request-form input, .request-form textarea, .request-form select {
+      font: inherit; font-size: .85rem; border: 1px solid var(--line); border-radius: 8px;
+      padding: 7px 9px; background: #fff; color: var(--ink);
+    }
+    .request-form textarea { min-height: 64px; resize: vertical; }
+    .request-form input:focus, .request-form textarea:focus, .request-form select:focus {
+      outline: 2px solid #c4b5fd; border-color: var(--brand);
+    }
+    .request-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .request-note { font-size: .78rem; color: var(--muted); }
+    @media (max-width: 640px) {
+      .request-form { grid-template-columns: 1fr; }
+      .request-form .span-2 { grid-column: auto; }
+    }
+    .empty { display: none; color: var(--muted); font-size: .9rem; margin: 8px 0 14px; }
+    .empty.show { display: block; }
+
+    @media (max-width: 980px) {
+      .catalog-grid { column-count: 2; }
+    }
+    @media (max-width: 640px) {
+      .catalog-grid { column-count: 1; }
+      .toolbar { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <h1><span>GPTfy</span> Agentic Skills</h1>
+        <span class="meta">111 skills · pick &amp; download</span>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <input id="q" class="search" type="search" placeholder="Search skills, API names, or use cases…" />
+      <button type="button" class="btn" id="clearSel">Clear</button>
+      <span class="count-pill"><span id="selCount">0</span> selected · <span id="visCount">0</span> shown</span>
+      <button type="button" class="btn primary" id="downloadSel" disabled>Download selected</button>
+      <span class="status" id="status"></span>
+    </div>
+    <div class="empty" id="empty">No skills match your search.</div>
+
+    <div class="featured-band">
+    <details class="sec-panel featured" data-section="Top Picks" id="sec-recommended" open>
+      <summary class="sec-summary">
+        <span class="sec-title">Top Picks <span class="sec-sub">· GPTfy recommendations</span></span>
+        <span class="sec-meta">
+          <span class="chev" aria-hidden="true"></span>
+        </span>
+      </summary>
+      <div class="sec-body">
+      <label class="skill skill-featured" data-name="run_internal_prompt" data-display="Run a GPTfy prompt" data-section="Top Picks" data-search="run a gptfy prompt run_internal_prompt generate a 360, summary, meeting prep, or draft from record data. recommended core">
+        <input type="checkbox" class="skill-check" value="run_internal_prompt" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Run a GPTfy prompt</span><span class="core-badge" title="Recommended for every agent">Core</span></span>
+          <span class="desc">Generate a 360, summary, meeting prep, or draft from record data.</span>
+        </span>
+      </label>
+      <label class="skill skill-featured" data-name="fuzzy_search_accounts" data-display="Search Accounts" data-section="Top Picks" data-search="search accounts fuzzy_search_accounts locate a company when the user gives a partial or spoken name. recommended core">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_accounts" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Accounts</span><span class="rec-badge" title="GPTfy recommendation">Find company</span></span>
+          <span class="desc">Locate a company when the user gives a partial or spoken name.</span>
+        </span>
+      </label>
+      <label class="skill skill-featured" data-name="fuzzy_search_contacts" data-display="Search Contacts" data-section="Top Picks" data-search="search contacts fuzzy_search_contacts find a person by name or email when the salesforce id is unknown. recommended core">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_contacts" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Contacts</span><span class="rec-badge" title="GPTfy recommendation">Find person</span></span>
+          <span class="desc">Find a person by name or email when the Salesforce Id is unknown.</span>
+        </span>
+      </label>
+      <label class="skill skill-featured" data-name="log_activity" data-display="Log Activity" data-section="Top Picks" data-search="log activity log_activity record a completed call, email, or note against any crm record. recommended core">
+        <input type="checkbox" class="skill-check" value="log_activity" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Log Activity</span><span class="rec-badge" title="GPTfy recommendation">Capture</span></span>
+          <span class="desc">Record a completed call, email, or note against any CRM record.</span>
+        </span>
+      </label>
+      </div>
+    </details>
+    </div>
+
+    <div class="catalog-grid" id="catalog">
+    <div class="sec-tile" data-section="Accounts" id="sec-accounts">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Accounts</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">6</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="create_account" data-display="Create Account" data-section="Accounts" data-search="create account create_account open a new company record after the user confirms the name and key fields.">
+        <input type="checkbox" class="skill-check" value="create_account" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Account</span></span>
+          <span class="desc">Open a new company record after the user confirms the name and key fields.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_account_details" data-display="Get Account Details" data-section="Accounts" data-search="get account details fetch_account_details load key account fields plus related contact/opportunity/case counts.">
+        <input type="checkbox" class="skill-check" value="fetch_account_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Account Details</span></span>
+          <span class="desc">Load key account fields plus related contact/opportunity/case counts.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_account_plan" data-display="Get Account Plan" data-section="Accounts" data-search="get account plan fetch_account_plan load strategic plan and objectives for the account when the object exists.">
+        <input type="checkbox" class="skill-check" value="fetch_account_plan" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Account Plan</span></span>
+          <span class="desc">Load strategic plan and objectives for the account when the object exists.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_account_related_lists" data-display="Get Account Related Records" data-section="Accounts" data-search="get account related records fetch_account_related_lists see contacts, opportunities, cases, and other children on the account.">
+        <input type="checkbox" class="skill-check" value="fetch_account_related_lists" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Account Related Records</span></span>
+          <span class="desc">See contacts, opportunities, cases, and other children on the account.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_accounts" data-display="Search Accounts" data-section="Accounts" data-search="search accounts fuzzy_search_accounts locate a company when the user gives a partial or spoken name.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_accounts" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Accounts</span></span>
+          <span class="desc">Locate a company when the user gives a partial or spoken name.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_account_fields" data-display="Update Account" data-section="Accounts" data-search="update account update_account_fields change industry, address, phone, or other account data the user confirmed.">
+        <input type="checkbox" class="skill-check" value="update_account_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Account</span></span>
+          <span class="desc">Change industry, address, phone, or other account data the user confirmed.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Contacts" id="sec-contacts">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Contacts</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">5</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="create_contact" data-display="Create Contact" data-section="Contacts" data-search="create contact create_contact add a person to salesforce, usually under an existing account.">
+        <input type="checkbox" class="skill-check" value="create_contact" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Contact</span></span>
+          <span class="desc">Add a person to Salesforce, usually under an existing account.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_contact_details" data-display="Get Contact Details" data-section="Contacts" data-search="get contact details fetch_contact_details load contact profile, title, and account link for outreach or updates.">
+        <input type="checkbox" class="skill-check" value="fetch_contact_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Contact Details</span></span>
+          <span class="desc">Load contact profile, title, and account link for outreach or updates.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_contact_engagement_history" data-display="Get Contact Engagement History" data-section="Contacts" data-search="get contact engagement history fetch_contact_engagement_history timeline of recent tasks, meetings, and emails with the contact.">
+        <input type="checkbox" class="skill-check" value="fetch_contact_engagement_history" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Contact Engagement History</span></span>
+          <span class="desc">Timeline of recent tasks, meetings, and emails with the contact.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_contacts" data-display="Search Contacts" data-section="Contacts" data-search="search contacts fuzzy_search_contacts find a person by name or email when the salesforce id is unknown.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_contacts" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Contacts</span></span>
+          <span class="desc">Find a person by name or email when the Salesforce Id is unknown.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_contact_fields" data-display="Update Contact" data-section="Contacts" data-search="update contact update_contact_fields correct email, phone, title, or other contact details after confirmation.">
+        <input type="checkbox" class="skill-check" value="update_contact_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Contact</span></span>
+          <span class="desc">Correct email, phone, title, or other contact details after confirmation.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Leads" id="sec-leads">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Leads</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">5</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="convert_lead" data-display="Convert Lead" data-section="Leads" data-search="convert lead convert_lead turn a qualified lead into account, contact, and optional opportunity.">
+        <input type="checkbox" class="skill-check" value="convert_lead" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Convert Lead</span></span>
+          <span class="desc">Turn a qualified lead into account, contact, and optional opportunity.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_lead" data-display="Create Lead" data-section="Leads" data-search="create lead create_lead capture a new prospect when there is no matching account yet.">
+        <input type="checkbox" class="skill-check" value="create_lead" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Lead</span></span>
+          <span class="desc">Capture a new prospect when there is no matching account yet.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_lead_details" data-display="Get Lead Details" data-section="Leads" data-search="get lead details fetch_lead_details load lead status, source, and company context for follow-up.">
+        <input type="checkbox" class="skill-check" value="fetch_lead_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Lead Details</span></span>
+          <span class="desc">Load lead status, source, and company context for follow-up.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_leads" data-display="Search Leads" data-section="Leads" data-search="search leads fuzzy_search_leads find a prospect by name or company before qualifying or converting.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_leads" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Leads</span></span>
+          <span class="desc">Find a prospect by name or company before qualifying or converting.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_lead_fields" data-display="Update Lead" data-section="Leads" data-search="update lead update_lead_fields update lead status, score, or contact info during qualification.">
+        <input type="checkbox" class="skill-check" value="update_lead_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Lead</span></span>
+          <span class="desc">Update lead status, score, or contact info during qualification.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Opportunities" id="sec-opportunities">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Opportunities</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">16</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="add_opportunity_contact_role" data-display="Add Opportunity Contact Role" data-section="Opportunities" data-search="add opportunity contact role add_opportunity_contact_role link a contact to the deal with a role such as decision maker.">
+        <input type="checkbox" class="skill-check" value="add_opportunity_contact_role" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Opportunity Contact Role</span></span>
+          <span class="desc">Link a contact to the deal with a role such as Decision Maker.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="add_opportunity_partner" data-display="Add Opportunity Partner" data-section="Opportunities" data-search="add opportunity partner add_opportunity_partner associate a partner account with a deal and role.">
+        <input type="checkbox" class="skill-check" value="add_opportunity_partner" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Opportunity Partner</span></span>
+          <span class="desc">Associate a partner account with a deal and role.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="add_opportunity_line_item" data-display="Add Opportunity Product" data-section="Opportunities" data-search="add opportunity product add_opportunity_line_item attach a priced product from the price book to the deal.">
+        <input type="checkbox" class="skill-check" value="add_opportunity_line_item" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Opportunity Product</span></span>
+          <span class="desc">Attach a priced product from the price book to the deal.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="add_opportunity_team_member" data-display="Add Opportunity Team Member" data-section="Opportunities" data-search="add opportunity team member add_opportunity_team_member add a colleague to the deal with a team role.">
+        <input type="checkbox" class="skill-check" value="add_opportunity_team_member" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Opportunity Team Member</span></span>
+          <span class="desc">Add a colleague to the deal with a team role.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="clone_opportunity" data-display="Clone Opportunity" data-section="Opportunities" data-search="clone opportunity clone_opportunity duplicate a deal to start a related or renewal opportunity faster.">
+        <input type="checkbox" class="skill-check" value="clone_opportunity" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Clone Opportunity</span></span>
+          <span class="desc">Duplicate a deal to start a related or renewal opportunity faster.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_opportunity" data-display="Create Opportunity" data-section="Opportunities" data-search="create opportunity create_opportunity start a new deal with account, stage, and close date confirmed.">
+        <input type="checkbox" class="skill-check" value="create_opportunity" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Opportunity</span></span>
+          <span class="desc">Start a new deal with account, stage, and close date confirmed.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_my_open_opportunities" data-display="Get My Open Opportunities" data-section="Opportunities" data-search="get my open opportunities fetch_my_open_opportunities pipeline view of the current user&#x27;s open deals.">
+        <input type="checkbox" class="skill-check" value="fetch_my_open_opportunities" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get My Open Opportunities</span></span>
+          <span class="desc">Pipeline view of the current user&#x27;s open deals.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_opportunity_contact_roles" data-display="Get Opportunity Contact Roles" data-section="Opportunities" data-search="get opportunity contact roles fetch_opportunity_contact_roles see who on the buying committee is linked to the deal.">
+        <input type="checkbox" class="skill-check" value="fetch_opportunity_contact_roles" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Opportunity Contact Roles</span></span>
+          <span class="desc">See who on the buying committee is linked to the deal.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_opportunity_details" data-display="Get Opportunity Details" data-section="Opportunities" data-search="get opportunity details fetch_opportunity_details load stage, amount, close date, and deal context for review.">
+        <input type="checkbox" class="skill-check" value="fetch_opportunity_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Opportunity Details</span></span>
+          <span class="desc">Load stage, amount, close date, and deal context for review.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_opportunity_partners" data-display="Get Opportunity Partners" data-section="Opportunities" data-search="get opportunity partners fetch_opportunity_partners list partners already tied to the opportunity.">
+        <input type="checkbox" class="skill-check" value="fetch_opportunity_partners" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Opportunity Partners</span></span>
+          <span class="desc">List partners already tied to the opportunity.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_opportunity_team" data-display="Get Opportunity Team" data-section="Opportunities" data-search="get opportunity team fetch_opportunity_team list internal sellers and specialists on the deal team.">
+        <input type="checkbox" class="skill-check" value="fetch_opportunity_team" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Opportunity Team</span></span>
+          <span class="desc">List internal sellers and specialists on the deal team.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_stale_opportunities" data-display="Get Stale Opportunities" data-section="Opportunities" data-search="get stale opportunities fetch_stale_opportunities surface deals with little recent activity that may need attention.">
+        <input type="checkbox" class="skill-check" value="fetch_stale_opportunities" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Stale Opportunities</span></span>
+          <span class="desc">Surface deals with little recent activity that may need attention.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_opportunities" data-display="Search Opportunities" data-section="Opportunities" data-search="search opportunities fuzzy_search_opportunities find a deal by name when the user cannot provide the id.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_opportunities" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Opportunities</span></span>
+          <span class="desc">Find a deal by name when the user cannot provide the Id.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_opportunity_fields" data-display="Update Opportunity" data-section="Opportunities" data-search="update opportunity update_opportunity_fields move stage, change amount or close date, or edit other deal fields.">
+        <input type="checkbox" class="skill-check" value="update_opportunity_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Opportunity</span></span>
+          <span class="desc">Move stage, change amount or close date, or edit other deal fields.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_opportunity_contact_role" data-display="Update Opportunity Contact Role" data-section="Opportunities" data-search="update opportunity contact role update_opportunity_contact_role change role or primary flag for someone on the deal.">
+        <input type="checkbox" class="skill-check" value="update_opportunity_contact_role" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Opportunity Contact Role</span></span>
+          <span class="desc">Change role or primary flag for someone on the deal.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_opportunity_line_item" data-display="Update Opportunity Product" data-section="Opportunities" data-search="update opportunity product update_opportunity_line_item adjust quantity, price, or discount on an existing product line.">
+        <input type="checkbox" class="skill-check" value="update_opportunity_line_item" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Opportunity Product</span></span>
+          <span class="desc">Adjust quantity, price, or discount on an existing product line.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Cases" id="sec-cases">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Cases</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">9</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="add_case_comment" data-display="Add Case Comment" data-section="Cases" data-search="add case comment add_case_comment post an internal or public update on the case thread.">
+        <input type="checkbox" class="skill-check" value="add_case_comment" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Case Comment</span></span>
+          <span class="desc">Post an internal or public update on the case thread.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="add_case_team_member" data-display="Add Case Team Member" data-section="Cases" data-search="add case team member add_case_team_member bring another agent or specialist onto the case team.">
+        <input type="checkbox" class="skill-check" value="add_case_team_member" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Case Team Member</span></span>
+          <span class="desc">Bring another agent or specialist onto the case team.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="close_case" data-display="Close Case" data-section="Cases" data-search="close case close_case resolve and close a ticket after the customer issue is handled.">
+        <input type="checkbox" class="skill-check" value="close_case" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Close Case</span></span>
+          <span class="desc">Resolve and close a ticket after the customer issue is handled.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_case" data-display="Create Case" data-section="Cases" data-search="create case create_case open a support ticket linked to the right account or contact.">
+        <input type="checkbox" class="skill-check" value="create_case" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Case</span></span>
+          <span class="desc">Open a support ticket linked to the right account or contact.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_case_details" data-display="Get Case Details" data-section="Cases" data-search="get case details fetch_case_details load case status, priority, and customer context for support work.">
+        <input type="checkbox" class="skill-check" value="fetch_case_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Case Details</span></span>
+          <span class="desc">Load case status, priority, and customer context for support work.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_case_team" data-display="Get Case Team" data-section="Cases" data-search="get case team fetch_case_team see who is collaborating on the support case.">
+        <input type="checkbox" class="skill-check" value="fetch_case_team" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Case Team</span></span>
+          <span class="desc">See who is collaborating on the support case.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="link_knowledge_article_to_case" data-display="Link Knowledge Article to Case" data-section="Cases" data-search="link knowledge article to case link_knowledge_article_to_case attach a helpful article to the case for audit and deflection.">
+        <input type="checkbox" class="skill-check" value="link_knowledge_article_to_case" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Link Knowledge Article to Case</span></span>
+          <span class="desc">Attach a helpful article to the case for audit and deflection.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_cases" data-display="Search Cases" data-section="Cases" data-search="search cases fuzzy_search_cases find a ticket by subject or case number from chat.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_cases" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Cases</span></span>
+          <span class="desc">Find a ticket by subject or case number from chat.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_case_fields" data-display="Update Case" data-section="Cases" data-search="update case update_case_fields change status, priority, owner, or other case fields mid-work.">
+        <input type="checkbox" class="skill-check" value="update_case_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Case</span></span>
+          <span class="desc">Change status, priority, owner, or other case fields mid-work.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Activities &amp; Scheduling" id="sec-activities-scheduling">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Activities &amp; Scheduling</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">7</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="complete_task" data-display="Complete Task" data-section="Activities &amp; Scheduling" data-search="complete task complete_task mark a follow-up done after the work is finished.">
+        <input type="checkbox" class="skill-check" value="complete_task" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Complete Task</span></span>
+          <span class="desc">Mark a follow-up done after the work is finished.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_event" data-display="Create Event" data-section="Activities &amp; Scheduling" data-search="create event create_event book a meeting on the calendar linked to a person or record.">
+        <input type="checkbox" class="skill-check" value="create_event" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Event</span></span>
+          <span class="desc">Book a meeting on the calendar linked to a person or record.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_task" data-display="Create Task" data-section="Activities &amp; Scheduling" data-search="create task create_task schedule a follow-up to-do with due date and owner.">
+        <input type="checkbox" class="skill-check" value="create_task" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Task</span></span>
+          <span class="desc">Schedule a follow-up to-do with due date and owner.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_my_open_tasks" data-display="Get My Open Tasks" data-section="Activities &amp; Scheduling" data-search="get my open tasks fetch_my_open_tasks show the current user&#x27;s incomplete to-dos for the day or week.">
+        <input type="checkbox" class="skill-check" value="fetch_my_open_tasks" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get My Open Tasks</span></span>
+          <span class="desc">Show the current user&#x27;s incomplete to-dos for the day or week.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="log_activity" data-display="Log Activity" data-section="Activities &amp; Scheduling" data-search="log activity log_activity record a completed call, email, or note against any crm record.">
+        <input type="checkbox" class="skill-check" value="log_activity" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Log Activity</span></span>
+          <span class="desc">Record a completed call, email, or note against any CRM record.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_event" data-display="Update Event" data-section="Activities &amp; Scheduling" data-search="update event update_event reschedule or edit meeting time, location, or notes.">
+        <input type="checkbox" class="skill-check" value="update_event" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Event</span></span>
+          <span class="desc">Reschedule or edit meeting time, location, or notes.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_task" data-display="Update Task" data-section="Activities &amp; Scheduling" data-search="update task update_task reschedule, reassign, or edit an existing to-do.">
+        <input type="checkbox" class="skill-check" value="update_task" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Task</span></span>
+          <span class="desc">Reschedule, reassign, or edit an existing to-do.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Products &amp; Price Books" id="sec-products-price-books">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Products &amp; Price Books</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">3</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="fetch_pricebook_entries" data-display="Get Price Book Entries" data-section="Products &amp; Price Books" data-search="get price book entries fetch_pricebook_entries show list prices for products in a chosen or standard price book.">
+        <input type="checkbox" class="skill-check" value="fetch_pricebook_entries" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Price Book Entries</span></span>
+          <span class="desc">Show list prices for products in a chosen or standard price book.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_product_details" data-display="Get Product Details" data-section="Products &amp; Price Books" data-search="get product details fetch_product_details load product code, family, and description for configuration.">
+        <input type="checkbox" class="skill-check" value="fetch_product_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Product Details</span></span>
+          <span class="desc">Load product code, family, and description for configuration.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_products" data-display="Search Products" data-section="Products &amp; Price Books" data-search="search products fuzzy_search_products find a sku or product name before adding lines to a deal or quote.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_products" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Products</span></span>
+          <span class="desc">Find a SKU or product name before adding lines to a deal or quote.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Campaigns" id="sec-campaigns">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Campaigns</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">8</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="add_campaign_member" data-display="Add Campaign Member" data-section="Campaigns" data-search="add campaign member add_campaign_member enroll a lead or contact into the campaign.">
+        <input type="checkbox" class="skill-check" value="add_campaign_member" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Campaign Member</span></span>
+          <span class="desc">Enroll a lead or contact into the campaign.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_campaign" data-display="Create Campaign" data-section="Campaigns" data-search="create campaign create_campaign set up a new marketing campaign with name and schedule.">
+        <input type="checkbox" class="skill-check" value="create_campaign" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Campaign</span></span>
+          <span class="desc">Set up a new marketing campaign with name and schedule.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_campaign_details" data-display="Get Campaign Details" data-section="Campaigns" data-search="get campaign details fetch_campaign_details load campaign dates, type, status, and response counts.">
+        <input type="checkbox" class="skill-check" value="fetch_campaign_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Campaign Details</span></span>
+          <span class="desc">Load campaign dates, type, status, and response counts.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_campaign_members" data-display="Get Campaign Members" data-section="Campaigns" data-search="get campaign members fetch_campaign_members list who is already on the campaign and their status.">
+        <input type="checkbox" class="skill-check" value="fetch_campaign_members" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Campaign Members</span></span>
+          <span class="desc">List who is already on the campaign and their status.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="remove_campaign_member" data-display="Remove Campaign Member" data-section="Campaigns" data-search="remove campaign member remove_campaign_member take a lead or contact off a campaign membership.">
+        <input type="checkbox" class="skill-check" value="remove_campaign_member" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Remove Campaign Member</span></span>
+          <span class="desc">Take a lead or contact off a campaign membership.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_campaigns" data-display="Search Campaigns" data-section="Campaigns" data-search="search campaigns fuzzy_search_campaigns find a marketing campaign by name for member or status work.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_campaigns" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Campaigns</span></span>
+          <span class="desc">Find a marketing campaign by name for member or status work.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_campaign_fields" data-display="Update Campaign" data-section="Campaigns" data-search="update campaign update_campaign_fields change campaign status, dates, or type after launch planning.">
+        <input type="checkbox" class="skill-check" value="update_campaign_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Campaign</span></span>
+          <span class="desc">Change campaign status, dates, or type after launch planning.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_campaign_member_status" data-display="Update Campaign Member Status" data-section="Campaigns" data-search="update campaign member status update_campaign_member_status mark someone as sent, responded, or another member status.">
+        <input type="checkbox" class="skill-check" value="update_campaign_member_status" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Campaign Member Status</span></span>
+          <span class="desc">Mark someone as Sent, Responded, or another member status.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Quotes" id="sec-quotes">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Quotes</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">6</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="add_quote_line_item" data-display="Add Quote Line Item" data-section="Quotes" data-search="add quote line item add_quote_line_item add a priced product line to the quote.">
+        <input type="checkbox" class="skill-check" value="add_quote_line_item" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Quote Line Item</span></span>
+          <span class="desc">Add a priced product line to the quote.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_quote" data-display="Create Quote" data-section="Quotes" data-search="create quote create_quote create a standard quote for an opportunity.">
+        <input type="checkbox" class="skill-check" value="create_quote" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Quote</span></span>
+          <span class="desc">Create a standard quote for an opportunity.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_quote_details" data-display="Get Quote Details" data-section="Quotes" data-search="get quote details fetch_quote_details load quote header, status, and totals for review.">
+        <input type="checkbox" class="skill-check" value="fetch_quote_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Quote Details</span></span>
+          <span class="desc">Load quote header, status, and totals for review.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_quotes" data-display="Search Quotes" data-section="Quotes" data-search="search quotes fuzzy_search_quotes find a quote by name when the quote number is unknown.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_quotes" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Quotes</span></span>
+          <span class="desc">Find a quote by name when the quote number is unknown.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_quote_fields" data-display="Update Quote" data-section="Quotes" data-search="update quote update_quote_fields change quote status, expiration, or header fields.">
+        <input type="checkbox" class="skill-check" value="update_quote_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Quote</span></span>
+          <span class="desc">Change quote status, expiration, or header fields.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_quote_line_item" data-display="Update Quote Line Item" data-section="Quotes" data-search="update quote line item update_quote_line_item change quantity or price on an existing quote line.">
+        <input type="checkbox" class="skill-check" value="update_quote_line_item" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Quote Line Item</span></span>
+          <span class="desc">Change quantity or price on an existing quote line.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="CPQ" id="sec-cpq">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">CPQ</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">6</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="add_cpq_quote_line" data-display="Add CPQ Quote Line" data-section="CPQ" data-search="add cpq quote line add_cpq_quote_line add a cpq product or bundle line to the quote.">
+        <input type="checkbox" class="skill-check" value="add_cpq_quote_line" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add CPQ Quote Line</span></span>
+          <span class="desc">Add a CPQ product or bundle line to the quote.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="calculate_cpq_quote" data-display="Calculate CPQ Quote" data-section="CPQ" data-search="calculate cpq quote calculate_cpq_quote run cpq pricing so totals and discounts refresh.">
+        <input type="checkbox" class="skill-check" value="calculate_cpq_quote" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Calculate CPQ Quote</span></span>
+          <span class="desc">Run CPQ pricing so totals and discounts refresh.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_cpq_quote" data-display="Create CPQ Quote" data-section="CPQ" data-search="create cpq quote create_cpq_quote start a cpq quote from an opportunity for guided selling.">
+        <input type="checkbox" class="skill-check" value="create_cpq_quote" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create CPQ Quote</span></span>
+          <span class="desc">Start a CPQ quote from an opportunity for guided selling.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_cpq_quote_details" data-display="Get CPQ Quote Details" data-section="CPQ" data-search="get cpq quote details fetch_cpq_quote_details load salesforce cpq quote header and configuration context.">
+        <input type="checkbox" class="skill-check" value="fetch_cpq_quote_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get CPQ Quote Details</span></span>
+          <span class="desc">Load Salesforce CPQ quote header and configuration context.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_cpq_quote_fields" data-display="Update CPQ Quote" data-section="CPQ" data-search="update cpq quote update_cpq_quote_fields edit cpq quote status or header fields before calculation.">
+        <input type="checkbox" class="skill-check" value="update_cpq_quote_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update CPQ Quote</span></span>
+          <span class="desc">Edit CPQ quote status or header fields before calculation.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_cpq_quote_line" data-display="Update CPQ Quote Line" data-section="CPQ" data-search="update cpq quote line update_cpq_quote_line change quantity, options, or pricing on a cpq line.">
+        <input type="checkbox" class="skill-check" value="update_cpq_quote_line" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update CPQ Quote Line</span></span>
+          <span class="desc">Change quantity, options, or pricing on a CPQ line.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Contracts" id="sec-contracts">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Contracts</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">3</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="create_contract" data-display="Create Contract" data-section="Contracts" data-search="create contract create_contract create a contract record under the customer account.">
+        <input type="checkbox" class="skill-check" value="create_contract" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Contract</span></span>
+          <span class="desc">Create a contract record under the customer account.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_contract_details" data-display="Get Contract Details" data-section="Contracts" data-search="get contract details fetch_contract_details load contract status, term dates, and account linkage.">
+        <input type="checkbox" class="skill-check" value="fetch_contract_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Contract Details</span></span>
+          <span class="desc">Load contract status, term dates, and account linkage.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_contract_fields" data-display="Update Contract" data-section="Contracts" data-search="update contract update_contract_fields update contract status, dates, or terms after review.">
+        <input type="checkbox" class="skill-check" value="update_contract_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Contract</span></span>
+          <span class="desc">Update contract status, dates, or terms after review.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Orders &amp; Subscriptions" id="sec-orders-subscriptions">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Orders &amp; Subscriptions</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">7</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="add_order_item" data-display="Add Order Product" data-section="Orders &amp; Subscriptions" data-search="add order product add_order_item add a product line to the order.">
+        <input type="checkbox" class="skill-check" value="add_order_item" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Add Order Product</span></span>
+          <span class="desc">Add a product line to the order.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="create_order" data-display="Create Order" data-section="Orders &amp; Subscriptions" data-search="create order create_order create an order from account or opportunity context.">
+        <input type="checkbox" class="skill-check" value="create_order" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Order</span></span>
+          <span class="desc">Create an order from account or opportunity context.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_order_details" data-display="Get Order Details" data-section="Orders &amp; Subscriptions" data-search="get order details fetch_order_details load order status, account, and totals after win or fulfillment.">
+        <input type="checkbox" class="skill-check" value="fetch_order_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Order Details</span></span>
+          <span class="desc">Load order status, account, and totals after win or fulfillment.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_subscription_details" data-display="Get Subscription Details" data-section="Orders &amp; Subscriptions" data-search="get subscription details fetch_subscription_details load subscription term, quantity, and billing status.">
+        <input type="checkbox" class="skill-check" value="fetch_subscription_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Subscription Details</span></span>
+          <span class="desc">Load subscription term, quantity, and billing status.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_order_fields" data-display="Update Order" data-section="Orders &amp; Subscriptions" data-search="update order update_order_fields update order status or header fields during fulfillment.">
+        <input type="checkbox" class="skill-check" value="update_order_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Order</span></span>
+          <span class="desc">Update order status or header fields during fulfillment.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_order_item" data-display="Update Order Product" data-section="Orders &amp; Subscriptions" data-search="update order product update_order_item adjust quantity or price on an order line.">
+        <input type="checkbox" class="skill-check" value="update_order_item" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Order Product</span></span>
+          <span class="desc">Adjust quantity or price on an order line.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_subscription_fields" data-display="Update Subscription" data-section="Orders &amp; Subscriptions" data-search="update subscription update_subscription_fields change subscription quantity, term, or status fields.">
+        <input type="checkbox" class="skill-check" value="update_subscription_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Subscription</span></span>
+          <span class="desc">Change subscription quantity, term, or status fields.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Renewals" id="sec-renewals">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Renewals</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">2</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="fetch_renewal_opportunities" data-display="Get Renewal Opportunities" data-section="Renewals" data-search="get renewal opportunities fetch_renewal_opportunities list open renewal-type deals for pipeline or csm review.">
+        <input type="checkbox" class="skill-check" value="fetch_renewal_opportunities" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Renewal Opportunities</span></span>
+          <span class="desc">List open renewal-type deals for pipeline or CSM review.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_upcoming_renewals" data-display="Get Upcoming Renewals" data-section="Renewals" data-search="get upcoming renewals fetch_upcoming_renewals show renewals closing within the next n days for outreach planning.">
+        <input type="checkbox" class="skill-check" value="fetch_upcoming_renewals" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Upcoming Renewals</span></span>
+          <span class="desc">Show renewals closing within the next N days for outreach planning.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Service Cloud" id="sec-service-cloud">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Service Cloud</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">9</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="assign_to_queue" data-display="Assign Record to Queue" data-section="Service Cloud" data-search="assign record to queue assign_to_queue route a record into a work queue for the next available agent.">
+        <input type="checkbox" class="skill-check" value="assign_to_queue" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Assign Record to Queue</span></span>
+          <span class="desc">Route a record into a work queue for the next available agent.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_asset_details" data-display="Get Asset Details" data-section="Service Cloud" data-search="get asset details fetch_asset_details load asset status, account, and product information.">
+        <input type="checkbox" class="skill-check" value="fetch_asset_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Asset Details</span></span>
+          <span class="desc">Load asset status, account, and product information.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_case_entitlements" data-display="Get Case Entitlements" data-section="Service Cloud" data-search="get case entitlements fetch_case_entitlements see support coverage and entitlement levels for the customer.">
+        <input type="checkbox" class="skill-check" value="fetch_case_entitlements" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Case Entitlements</span></span>
+          <span class="desc">See support coverage and entitlement levels for the customer.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_case_milestones" data-display="Get Case Milestones" data-section="Service Cloud" data-search="get case milestones fetch_case_milestones check sla milestone progress and breach risk on the case.">
+        <input type="checkbox" class="skill-check" value="fetch_case_milestones" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Case Milestones</span></span>
+          <span class="desc">Check SLA milestone progress and breach risk on the case.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_knowledge_article" data-display="Get Knowledge Article" data-section="Service Cloud" data-search="get knowledge article fetch_knowledge_article open the full article body for use in a reply.">
+        <input type="checkbox" class="skill-check" value="fetch_knowledge_article" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Knowledge Article</span></span>
+          <span class="desc">Open the full article body for use in a reply.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_queue_cases" data-display="Get Queue Cases" data-section="Service Cloud" data-search="get queue cases fetch_queue_cases list cases waiting in a specific support queue.">
+        <input type="checkbox" class="skill-check" value="fetch_queue_cases" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Queue Cases</span></span>
+          <span class="desc">List cases waiting in a specific support queue.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_assets" data-display="Search Assets" data-section="Service Cloud" data-search="search assets fuzzy_search_assets find installed equipment by name or serial number.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_assets" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Assets</span></span>
+          <span class="desc">Find installed equipment by name or serial number.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="search_knowledge_articles" data-display="Search Knowledge Articles" data-section="Service Cloud" data-search="search knowledge articles search_knowledge_articles find kb articles that may answer the customer&#x27;s question.">
+        <input type="checkbox" class="skill-check" value="search_knowledge_articles" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Knowledge Articles</span></span>
+          <span class="desc">Find KB articles that may answer the customer&#x27;s question.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_asset_fields" data-display="Update Asset" data-section="Service Cloud" data-search="update asset update_asset_fields update asset status, location, or warranty-related fields.">
+        <input type="checkbox" class="skill-check" value="update_asset_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Asset</span></span>
+          <span class="desc">Update asset status, location, or warranty-related fields.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Field Service" id="sec-field-service">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Field Service</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">7</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="create_work_order" data-display="Create Work Order" data-section="Field Service" data-search="create work order create_work_order open a work order for on-site or remote service.">
+        <input type="checkbox" class="skill-check" value="create_work_order" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Work Order</span></span>
+          <span class="desc">Open a work order for on-site or remote service.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_service_resource_availability" data-display="Get Resource Availability" data-section="Field Service" data-search="get resource availability fetch_service_resource_availability check when a technician or resource is free to schedule.">
+        <input type="checkbox" class="skill-check" value="fetch_service_resource_availability" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Resource Availability</span></span>
+          <span class="desc">Check when a technician or resource is free to schedule.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_service_appointment" data-display="Get Service Appointment" data-section="Field Service" data-search="get service appointment fetch_service_appointment load appointment time window and assigned resource.">
+        <input type="checkbox" class="skill-check" value="fetch_service_appointment" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Service Appointment</span></span>
+          <span class="desc">Load appointment time window and assigned resource.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_work_order_details" data-display="Get Work Order Details" data-section="Field Service" data-search="get work order details fetch_work_order_details load field service work order status and related customer data.">
+        <input type="checkbox" class="skill-check" value="fetch_work_order_details" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Work Order Details</span></span>
+          <span class="desc">Load field service work order status and related customer data.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="schedule_service_appointment" data-display="Schedule Service Appointment" data-section="Field Service" data-search="schedule service appointment schedule_service_appointment set or change when a technician visit is booked.">
+        <input type="checkbox" class="skill-check" value="schedule_service_appointment" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Schedule Service Appointment</span></span>
+          <span class="desc">Set or change when a technician visit is booked.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_service_appointment" data-display="Update Service Appointment" data-section="Field Service" data-search="update service appointment update_service_appointment edit appointment status, time, or assignment details.">
+        <input type="checkbox" class="skill-check" value="update_service_appointment" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Service Appointment</span></span>
+          <span class="desc">Edit appointment status, time, or assignment details.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_work_order_fields" data-display="Update Work Order" data-section="Field Service" data-search="update work order update_work_order_fields change work order status, priority, or schedule fields.">
+        <input type="checkbox" class="skill-check" value="update_work_order_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Work Order</span></span>
+          <span class="desc">Change work order status, priority, or schedule fields.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Partner Management" id="sec-partner-management">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Partner Management</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">2</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="fetch_partner_account" data-display="Get Partner Account Details" data-section="Partner Management" data-search="get partner account details fetch_partner_account load partner account profile and relationship details.">
+        <input type="checkbox" class="skill-check" value="fetch_partner_account" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Partner Account Details</span></span>
+          <span class="desc">Load partner account profile and relationship details.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fuzzy_search_partners" data-display="Search Partner Accounts" data-section="Partner Management" data-search="search partner accounts fuzzy_search_partners find partner accounts by name for deal registration or teaming.">
+        <input type="checkbox" class="skill-check" value="fuzzy_search_partners" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Search Partner Accounts</span></span>
+          <span class="desc">Find partner accounts by name for deal registration or teaming.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Industry Clouds" id="sec-industry-clouds">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Industry Clouds</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">5</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="create_care_task" data-display="Create Care Task" data-section="Industry Clouds" data-search="create care task create_care_task add a care-plan task for clinical or care-team follow-up.">
+        <input type="checkbox" class="skill-check" value="create_care_task" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Create Care Task</span></span>
+          <span class="desc">Add a care-plan task for clinical or care-team follow-up.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_care_plan" data-display="Get Care Plan" data-section="Industry Clouds" data-search="get care plan fetch_care_plan load a health cloud care plan and related goals when available.">
+        <input type="checkbox" class="skill-check" value="fetch_care_plan" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Care Plan</span></span>
+          <span class="desc">Load a Health Cloud care plan and related goals when available.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_financial_account" data-display="Get Financial Account" data-section="Industry Clouds" data-search="get financial account fetch_financial_account load fsc financial account balances and ownership when licensed.">
+        <input type="checkbox" class="skill-check" value="fetch_financial_account" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Financial Account</span></span>
+          <span class="desc">Load FSC financial account balances and ownership when licensed.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_care_plan_fields" data-display="Update Care Plan" data-section="Industry Clouds" data-search="update care plan update_care_plan_fields update care plan status or dates in health cloud orgs.">
+        <input type="checkbox" class="skill-check" value="update_care_plan_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Care Plan</span></span>
+          <span class="desc">Update care plan status or dates in Health Cloud orgs.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="update_financial_account_fields" data-display="Update Financial Account" data-section="Industry Clouds" data-search="update financial account update_financial_account_fields update financial account status or attributes in fsc orgs.">
+        <input type="checkbox" class="skill-check" value="update_financial_account_fields" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Update Financial Account</span></span>
+          <span class="desc">Update financial account status or attributes in FSC orgs.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    <div class="sec-tile" data-section="Platform &amp; Insights" id="sec-platform-insights">
+      <button type="button" class="sec-open" aria-haspopup="dialog">
+        <span class="sec-title">Platform &amp; Insights</span>
+        <span class="sec-meta">
+          <span class="sec-selected" hidden>0 selected</span>
+          <span class="sec-count" title="Skills in category">5</span>
+        </span>
+      </button>
+      <div class="sec-store" hidden>
+      <label class="skill" data-name="run_internal_prompt" data-display="Run a GPTfy prompt" data-section="Platform &amp; Insights" data-search="run a gptfy prompt run_internal_prompt generate a 360, summary, meeting prep, or draft from record data.">
+        <input type="checkbox" class="skill-check" value="run_internal_prompt" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Run a GPTfy prompt</span><span class="core-badge" title="Recommended for every agent">Core</span></span>
+          <span class="desc">Generate a 360, summary, meeting prep, or draft from record data.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_session_context" data-display="Get Session Context" data-section="Platform &amp; Insights" data-search="get session context fetch_session_context see which record and related people the chat is on, so the agent can act without asking for ids. use before updates, summaries, logging activity, or drafting follow-ups.">
+        <input type="checkbox" class="skill-check" value="fetch_session_context" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Session Context</span></span>
+          <span class="desc">See which record and related people the chat is on, so the agent can act without asking for Ids. Use before updates, summaries, logging activity, or drafting follow-ups.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_picklist_values" data-display="Get Picklist Values" data-section="Platform &amp; Insights" data-search="get picklist values fetch_picklist_values list valid choices for a field before setting a picklist value.">
+        <input type="checkbox" class="skill-check" value="fetch_picklist_values" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Picklist Values</span></span>
+          <span class="desc">List valid choices for a field before setting a picklist value.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="transfer_record_owner" data-display="Transfer Record Owner" data-section="Platform &amp; Insights" data-search="transfer record owner transfer_record_owner reassign ownership of a record to another user.">
+        <input type="checkbox" class="skill-check" value="transfer_record_owner" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Transfer Record Owner</span></span>
+          <span class="desc">Reassign ownership of a record to another user.</span>
+        </span>
+      </label>
+      <label class="skill" data-name="fetch_record_approvals" data-display="Get Record Approvals" data-section="Platform &amp; Insights" data-search="get record approvals fetch_record_approvals see pending approval requests and submitters on a record.">
+        <input type="checkbox" class="skill-check" value="fetch_record_approvals" />
+        <span class="skill-body">
+          <span class="skill-top"><span class="skill-title">Get Record Approvals</span></span>
+          <span class="desc">See pending approval requests and submitters on a record.</span>
+        </span>
+      </label>
+      </div>
+    </div>
+    </div>
+
+    <dialog class="modal" id="skillModal" aria-labelledby="modalTitle">
+      <div class="modal-shell">
+        <div class="modal-head">
+          <h2 id="modalTitle">Category</h2>
+          <button type="button" class="modal-x" id="modalClose" aria-label="Close">×</button>
+        </div>
+        <div class="modal-tools">
+          <span class="hintish">Select skills, then close — download from the toolbar</span>
+          <button type="button" class="linkish" id="modalSelectAll">Select all in category</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-foot">
+          <button type="button" class="btn" id="modalDone">Done</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="alert-modal success-modal" id="alertModal" aria-labelledby="alertTitle">
+      <div class="alert-shell">
+        <h2 id="alertTitle">Download complete</h2>
+        <p id="alertMessage">Your skill package is ready.</p>
+        <div class="cmd-box" id="cmdBox">
+          <div class="cmd-row">
+            <header>
+              <span>Quick install (PowerShell) — unzip first, then run</span>
+              <button type="button" class="copy-cmd" data-copy="cmdPs">Copy</button>
+            </header>
+            <pre id="cmdPs"></pre>
+          </div>
+          <div class="cmd-row">
+            <header>
+              <span>Or step-by-step CLI</span>
+              <button type="button" class="copy-cmd" data-copy="cmdCli">Copy</button>
+            </header>
+            <pre id="cmdCli"></pre>
+          </div>
+        </div>
+        <div class="alert-actions">
+          <button type="button" class="btn" id="alertCancel">Cancel</button>
+          <button type="button" class="btn primary" id="alertOk">OK</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="alert-modal config-modal" id="configModal" aria-labelledby="configTitle">
+      <form class="alert-shell config-form" id="configForm">
+        <h2 id="configTitle">Prepare download</h2>
+        <p>Enter your org’s GPTfy Ids. We’ll add them to the package and include a one-click install script plus ready-to-copy commands. Leave CLI alias blank to deploy to the org already connected in VS Code / Salesforce CLI.</p>
+        <div class="config-error" id="configError"></div>
+        <label>Data Extraction Mapping Id
+          <input id="cfgMapping" name="mapping" required autocomplete="off" spellcheck="false"
+            placeholder="15 or 18 character Salesforce Id" />
+          <span class="hint">From ccai__AI_Data_Extraction_Mapping__c</span>
+        </label>
+        <label>AI Connection Id
+          <input id="cfgConnection" name="connection" required autocomplete="off" spellcheck="false"
+            placeholder="15 or 18 character Salesforce Id" />
+          <span class="hint">From ccai__AI_Connection__c (model)</span>
+        </label>
+        <label>Agent Name
+          <input id="cfgAgent" name="agent" required autocomplete="off"
+            placeholder="Your existing GPTfy agent name" value="GPTfy Agent" />
+          <span class="hint">Must match the agent Name in your org</span>
+        </label>
+        <label>CLI org alias (optional)
+          <input id="cfgOrgAlias" name="orgAlias" autocomplete="off"
+            placeholder="Leave blank = use default connected org" />
+          <span class="hint">Blank uses the org already connected in VS Code / Salesforce CLI. Set only if you need a specific alias from <code>sf org list</code>.</span>
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="cfgUpdatePrompt" name="updatePrompt" />
+          <span class="check-copy">
+            <strong>Update agent system prompt</strong>
+            <span>Builds one prompt from your selected skills (base rules + only those skills) and overwrites the agent’s system prompt on install. Leave off to keep your current agent prompt.</span>
+          </span>
+        </label>
+        <div class="alert-actions">
+          <button type="button" class="btn" id="configCancel">Cancel</button>
+          <button type="submit" class="btn primary" id="configContinue">Download package</button>
+        </div>
+      </form>
+    </dialog>
+
+    <details class="guide-box">
+      <summary>
+        <span class="guide-summary-text">
+          <strong>After download — what to do next</strong>
+          <span>Exact install steps + what gets added to your org</span>
+        </span>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="guide-body">
+        <ol class="guide-steps">
+          <li><strong>Unzip</strong> the download package.</li>
+          <li><strong>Prerequisites:</strong> GPTfy installed; Salesforce CLI (<code>sf</code>) with a default org in VS Code/CLI, <em>or</em> Workbench logged into the target org.</li>
+          <li><strong>Org values:</strong> enter Mapping Id, Connection Id, Agent Name in the download dialog (Ids go into the install scripts). CLI org alias is optional — leave blank to deploy to the default connected org.</li>
+          <li><strong>Fastest path (CLI / VS Code):</strong> unzip, then run <code>install.ps1</code> (Windows) or <code>install.sh</code> (Mac/Linux). It uses your default org unless you pass an alias.</li>
+          <li><strong>Workbench path:</strong> login to the target org in Workbench → Migration → Deploy (Apex package) → Utilities → Apex Execute (paste each install script). No CLI alias needed.</li>
+          <li><strong>Manual CLI — Deploy Apex once:</strong>
+            <br /><code>sf project deploy start --manifest package.xml</code>
+            <br />(add <code>--target-org &lt;alias&gt;</code> only if not using the default org)
+          </li>
+          <li><strong>Manual CLI — Register skills</strong> (creates skill prompts and links them to your agent):
+            <br />Single skill: <code>sf apex run --file seed.apex</code>
+            <br />Multi-skill: run once per script under <code>skills/*/seed.apex</code>.</li>
+          <li><strong>System prompt:</strong> the package always includes a <em>composed</em> <code>sample-system-prompt.txt</code> for the skills you selected. Turn on <strong>Update agent system prompt</strong> in the download dialog if you want install to overwrite the agent field automatically (replaces existing prompt).</li>
+          <li><strong>Optional manual:</strong> paste <code>sample-system-prompt.txt</code> into the agent in GPTfy if you left the toggle off.</li>
+        </ol>
+        <div class="guide-disclaimer">
+          <strong>Disclaimer — what import adds</strong>
+          <ul>
+            <li><strong>Mostly GPTfy configuration</strong>: skill prompt records and links to your agent.</li>
+            <li>Uses the agent name you entered (creates that agent only if it does not already exist).</li>
+            <li><strong>Apex classes</strong> for the skill handlers — code, not CRM business data (no Accounts, Contacts, etc.).</li>
+            <li>Mapping and Connection Ids are org-specific; the download dialog fills them for <em>this</em> org.</li>
+            <li>Safe to re-run: existing skills are skipped; missing agent links are added.</li>
+          </ul>
+        </div>
+        <p class="guide-note">The package README has the same steps for offline use.</p>
+      </div>
+    </details>
+
+    <details class="request-box">
+      <summary>
+        <span class="request-summary-text">
+          <strong id="request-title">Request a new skill</strong>
+          <span>Missing something? Click to send a request to GPTfy</span>
+        </span>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="request-body">
+        <form class="request-form" id="requestForm">
+          <label>Your name
+            <input type="text" name="name" autocomplete="name" required placeholder="Jane Smith" />
+          </label>
+          <label>Work email
+            <input type="email" name="email" autocomplete="email" required placeholder="jane@company.com" />
+          </label>
+          <label>Skill title
+            <input type="text" name="title" required placeholder="e.g. Fetch contract renewal risk" />
+          </label>
+          <label>Object / area
+            <select name="area" required>
+              <option value="">Select…</option>
+              <option>Account</option>
+              <option>Contact</option>
+              <option>Lead</option>
+              <option>Opportunity</option>
+              <option>Case</option>
+              <option>Task / Event</option>
+              <option>Campaign</option>
+              <option>Utility / Cross-object</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label class="span-2">What should this skill do?
+            <textarea name="details" required placeholder="Use case, inputs, and expected Salesforce outcome."></textarea>
+          </label>
+          <div class="request-actions span-2">
+            <button type="submit" class="btn primary">Email request to GPTfy</button>
+            <span class="request-note">Opens email to support@gptfy.ai</span>
+          </div>
+        </form>
+      </div>
+    </details>
+  </div>
+  <script>
+    const SKILL_META = {"create_account":{"d":"Open a new company record after the user confirms the name and key fields.","m":true,"sec":"Accounts","h":"AccountAgenticSkillsHandler"},"fetch_account_details":{"d":"Load key account fields plus related contact/opportunity/case counts.","m":false,"sec":"Accounts","h":"AccountAgenticSkillsHandler"},"fetch_account_plan":{"d":"Load strategic plan and objectives for the account when the object exists.","m":false,"sec":"Accounts","h":"AccountAgenticSkillsHandler"},"fetch_account_related_lists":{"d":"See contacts, opportunities, cases, and other children on the account.","m":false,"sec":"Accounts","h":"AccountAgenticSkillsHandler"},"fuzzy_search_accounts":{"d":"Locate a company when the user gives a partial or spoken name.","m":false,"sec":"Accounts","h":"AccountAgenticSkillsHandler"},"update_account_fields":{"d":"Change industry, address, phone, or other account data the user confirmed.","m":true,"sec":"Accounts","h":"AccountAgenticSkillsHandler"},"create_contact":{"d":"Add a person to Salesforce, usually under an existing account.","m":true,"sec":"Contacts","h":"ContactAgenticSkillsHandler"},"fetch_contact_details":{"d":"Load contact profile, title, and account link for outreach or updates.","m":false,"sec":"Contacts","h":"ContactAgenticSkillsHandler"},"fetch_contact_engagement_history":{"d":"Timeline of recent tasks, meetings, and emails with the contact.","m":false,"sec":"Contacts","h":"ContactAgenticSkillsHandler"},"fuzzy_search_contacts":{"d":"Find a person by name or email when the Salesforce Id is unknown.","m":false,"sec":"Contacts","h":"ContactAgenticSkillsHandler"},"update_contact_fields":{"d":"Correct email, phone, title, or other contact details after confirmation.","m":true,"sec":"Contacts","h":"ContactAgenticSkillsHandler"},"convert_lead":{"d":"Turn a qualified lead into account, contact, and optional opportunity.","m":true,"sec":"Leads","h":"LeadAgenticSkillsHandler"},"create_lead":{"d":"Capture a new prospect when there is no matching account yet.","m":true,"sec":"Leads","h":"LeadAgenticSkillsHandler"},"fetch_lead_details":{"d":"Load lead status, source, and company context for follow-up.","m":false,"sec":"Leads","h":"LeadAgenticSkillsHandler"},"fuzzy_search_leads":{"d":"Find a prospect by name or company before qualifying or converting.","m":false,"sec":"Leads","h":"LeadAgenticSkillsHandler"},"update_lead_fields":{"d":"Update lead status, score, or contact info during qualification.","m":true,"sec":"Leads","h":"LeadAgenticSkillsHandler"},"add_opportunity_contact_role":{"d":"Link a contact to the deal with a role such as Decision Maker.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"add_opportunity_partner":{"d":"Associate a partner account with a deal and role.","m":true,"sec":"Opportunities","h":"PartnerAgenticSkillsHandler"},"add_opportunity_line_item":{"d":"Attach a priced product from the price book to the deal.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"add_opportunity_team_member":{"d":"Add a colleague to the deal with a team role.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"clone_opportunity":{"d":"Duplicate a deal to start a related or renewal opportunity faster.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"create_opportunity":{"d":"Start a new deal with account, stage, and close date confirmed.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"fetch_my_open_opportunities":{"d":"Pipeline view of the current user's open deals.","m":false,"sec":"Opportunities","h":"UtilityAgenticSkillsHandler"},"fetch_opportunity_contact_roles":{"d":"See who on the buying committee is linked to the deal.","m":false,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"fetch_opportunity_details":{"d":"Load stage, amount, close date, and deal context for review.","m":false,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"fetch_opportunity_partners":{"d":"List partners already tied to the opportunity.","m":false,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"fetch_opportunity_team":{"d":"List internal sellers and specialists on the deal team.","m":false,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"fetch_stale_opportunities":{"d":"Surface deals with little recent activity that may need attention.","m":false,"sec":"Opportunities","h":"UtilityAgenticSkillsHandler"},"fuzzy_search_opportunities":{"d":"Find a deal by name when the user cannot provide the Id.","m":false,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"update_opportunity_fields":{"d":"Move stage, change amount or close date, or edit other deal fields.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"update_opportunity_contact_role":{"d":"Change role or primary flag for someone on the deal.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"update_opportunity_line_item":{"d":"Adjust quantity, price, or discount on an existing product line.","m":true,"sec":"Opportunities","h":"OpportunityAgenticSkillsHandler"},"add_case_comment":{"d":"Post an internal or public update on the case thread.","m":true,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"add_case_team_member":{"d":"Bring another agent or specialist onto the case team.","m":true,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"close_case":{"d":"Resolve and close a ticket after the customer issue is handled.","m":true,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"create_case":{"d":"Open a support ticket linked to the right account or contact.","m":true,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"fetch_case_details":{"d":"Load case status, priority, and customer context for support work.","m":false,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"fetch_case_team":{"d":"See who is collaborating on the support case.","m":false,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"link_knowledge_article_to_case":{"d":"Attach a helpful article to the case for audit and deflection.","m":true,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"fuzzy_search_cases":{"d":"Find a ticket by subject or case number from chat.","m":false,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"update_case_fields":{"d":"Change status, priority, owner, or other case fields mid-work.","m":true,"sec":"Cases","h":"CaseAgenticSkillsHandler"},"complete_task":{"d":"Mark a follow-up done after the work is finished.","m":true,"sec":"Activities & Scheduling","h":"ActivityAgenticSkillsHandler"},"create_event":{"d":"Book a meeting on the calendar linked to a person or record.","m":true,"sec":"Activities & Scheduling","h":"ActivityAgenticSkillsHandler"},"create_task":{"d":"Schedule a follow-up to-do with due date and owner.","m":true,"sec":"Activities & Scheduling","h":"ActivityAgenticSkillsHandler"},"fetch_my_open_tasks":{"d":"Show the current user's incomplete to-dos for the day or week.","m":false,"sec":"Activities & Scheduling","h":"ActivityAgenticSkillsHandler"},"log_activity":{"d":"Record a completed call, email, or note against any CRM record.","m":true,"sec":"Activities & Scheduling","h":"ActivityAgenticSkillsHandler"},"update_event":{"d":"Reschedule or edit meeting time, location, or notes.","m":true,"sec":"Activities & Scheduling","h":"ActivityAgenticSkillsHandler"},"update_task":{"d":"Reschedule, reassign, or edit an existing to-do.","m":true,"sec":"Activities & Scheduling","h":"ActivityAgenticSkillsHandler"},"fetch_pricebook_entries":{"d":"Show list prices for products in a chosen or standard price book.","m":false,"sec":"Products & Price Books","h":"ProductAgenticSkillsHandler"},"fetch_product_details":{"d":"Load product code, family, and description for configuration.","m":false,"sec":"Products & Price Books","h":"ProductAgenticSkillsHandler"},"fuzzy_search_products":{"d":"Find a SKU or product name before adding lines to a deal or quote.","m":false,"sec":"Products & Price Books","h":"ProductAgenticSkillsHandler"},"add_campaign_member":{"d":"Enroll a lead or contact into the campaign.","m":true,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"create_campaign":{"d":"Set up a new marketing campaign with name and schedule.","m":true,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"fetch_campaign_details":{"d":"Load campaign dates, type, status, and response counts.","m":false,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"fetch_campaign_members":{"d":"List who is already on the campaign and their status.","m":false,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"remove_campaign_member":{"d":"Take a lead or contact off a campaign membership.","m":true,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"fuzzy_search_campaigns":{"d":"Find a marketing campaign by name for member or status work.","m":false,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"update_campaign_fields":{"d":"Change campaign status, dates, or type after launch planning.","m":true,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"update_campaign_member_status":{"d":"Mark someone as Sent, Responded, or another member status.","m":true,"sec":"Campaigns","h":"CampaignAgenticSkillsHandler"},"add_quote_line_item":{"d":"Add a priced product line to the quote.","m":true,"sec":"Quotes","h":"QuoteAgenticSkillsHandler"},"create_quote":{"d":"Create a standard quote for an opportunity.","m":true,"sec":"Quotes","h":"QuoteAgenticSkillsHandler"},"fetch_quote_details":{"d":"Load quote header, status, and totals for review.","m":false,"sec":"Quotes","h":"QuoteAgenticSkillsHandler"},"fuzzy_search_quotes":{"d":"Find a quote by name when the quote number is unknown.","m":false,"sec":"Quotes","h":"QuoteAgenticSkillsHandler"},"update_quote_fields":{"d":"Change quote status, expiration, or header fields.","m":true,"sec":"Quotes","h":"QuoteAgenticSkillsHandler"},"update_quote_line_item":{"d":"Change quantity or price on an existing quote line.","m":true,"sec":"Quotes","h":"QuoteAgenticSkillsHandler"},"add_cpq_quote_line":{"d":"Add a CPQ product or bundle line to the quote.","m":true,"sec":"CPQ","h":"CpqAgenticSkillsHandler"},"calculate_cpq_quote":{"d":"Run CPQ pricing so totals and discounts refresh.","m":true,"sec":"CPQ","h":"CpqAgenticSkillsHandler"},"create_cpq_quote":{"d":"Start a CPQ quote from an opportunity for guided selling.","m":true,"sec":"CPQ","h":"CpqAgenticSkillsHandler"},"fetch_cpq_quote_details":{"d":"Load Salesforce CPQ quote header and configuration context.","m":false,"sec":"CPQ","h":"CpqAgenticSkillsHandler"},"update_cpq_quote_fields":{"d":"Edit CPQ quote status or header fields before calculation.","m":true,"sec":"CPQ","h":"CpqAgenticSkillsHandler"},"update_cpq_quote_line":{"d":"Change quantity, options, or pricing on a CPQ line.","m":true,"sec":"CPQ","h":"CpqAgenticSkillsHandler"},"create_contract":{"d":"Create a contract record under the customer account.","m":true,"sec":"Contracts","h":"ContractAgenticSkillsHandler"},"fetch_contract_details":{"d":"Load contract status, term dates, and account linkage.","m":false,"sec":"Contracts","h":"ContractAgenticSkillsHandler"},"update_contract_fields":{"d":"Update contract status, dates, or terms after review.","m":true,"sec":"Contracts","h":"ContractAgenticSkillsHandler"},"add_order_item":{"d":"Add a product line to the order.","m":true,"sec":"Orders & Subscriptions","h":"OrderAgenticSkillsHandler"},"create_order":{"d":"Create an order from account or opportunity context.","m":true,"sec":"Orders & Subscriptions","h":"OrderAgenticSkillsHandler"},"fetch_order_details":{"d":"Load order status, account, and totals after win or fulfillment.","m":false,"sec":"Orders & Subscriptions","h":"OrderAgenticSkillsHandler"},"fetch_subscription_details":{"d":"Load subscription term, quantity, and billing status.","m":false,"sec":"Orders & Subscriptions","h":"OrderAgenticSkillsHandler"},"update_order_fields":{"d":"Update order status or header fields during fulfillment.","m":true,"sec":"Orders & Subscriptions","h":"OrderAgenticSkillsHandler"},"update_order_item":{"d":"Adjust quantity or price on an order line.","m":true,"sec":"Orders & Subscriptions","h":"OrderAgenticSkillsHandler"},"update_subscription_fields":{"d":"Change subscription quantity, term, or status fields.","m":true,"sec":"Orders & Subscriptions","h":"OrderAgenticSkillsHandler"},"fetch_renewal_opportunities":{"d":"List open renewal-type deals for pipeline or CSM review.","m":false,"sec":"Renewals","h":"UtilityAgenticSkillsHandler"},"fetch_upcoming_renewals":{"d":"Show renewals closing within the next N days for outreach planning.","m":false,"sec":"Renewals","h":"UtilityAgenticSkillsHandler"},"assign_to_queue":{"d":"Route a record into a work queue for the next available agent.","m":true,"sec":"Service Cloud","h":"UtilityAgenticSkillsHandler"},"fetch_asset_details":{"d":"Load asset status, account, and product information.","m":false,"sec":"Service Cloud","h":"ServiceAgenticSkillsHandler"},"fetch_case_entitlements":{"d":"See support coverage and entitlement levels for the customer.","m":false,"sec":"Service Cloud","h":"ServiceAgenticSkillsHandler"},"fetch_case_milestones":{"d":"Check SLA milestone progress and breach risk on the case.","m":false,"sec":"Service Cloud","h":"ServiceAgenticSkillsHandler"},"fetch_knowledge_article":{"d":"Open the full article body for use in a reply.","m":false,"sec":"Service Cloud","h":"UtilityAgenticSkillsHandler"},"fetch_queue_cases":{"d":"List cases waiting in a specific support queue.","m":false,"sec":"Service Cloud","h":"UtilityAgenticSkillsHandler"},"fuzzy_search_assets":{"d":"Find installed equipment by name or serial number.","m":false,"sec":"Service Cloud","h":"ServiceAgenticSkillsHandler"},"search_knowledge_articles":{"d":"Find KB articles that may answer the customer's question.","m":false,"sec":"Service Cloud","h":"UtilityAgenticSkillsHandler"},"update_asset_fields":{"d":"Update asset status, location, or warranty-related fields.","m":true,"sec":"Service Cloud","h":"ServiceAgenticSkillsHandler"},"create_work_order":{"d":"Open a work order for on-site or remote service.","m":true,"sec":"Field Service","h":"FieldServiceAgenticSkillsHandler"},"fetch_service_resource_availability":{"d":"Check when a technician or resource is free to schedule.","m":false,"sec":"Field Service","h":"FieldServiceAgenticSkillsHandler"},"fetch_service_appointment":{"d":"Load appointment time window and assigned resource.","m":false,"sec":"Field Service","h":"FieldServiceAgenticSkillsHandler"},"fetch_work_order_details":{"d":"Load field service work order status and related customer data.","m":false,"sec":"Field Service","h":"FieldServiceAgenticSkillsHandler"},"schedule_service_appointment":{"d":"Set or change when a technician visit is booked.","m":true,"sec":"Field Service","h":"FieldServiceAgenticSkillsHandler"},"update_service_appointment":{"d":"Edit appointment status, time, or assignment details.","m":true,"sec":"Field Service","h":"FieldServiceAgenticSkillsHandler"},"update_work_order_fields":{"d":"Change work order status, priority, or schedule fields.","m":true,"sec":"Field Service","h":"FieldServiceAgenticSkillsHandler"},"fetch_partner_account":{"d":"Load partner account profile and relationship details.","m":false,"sec":"Partner Management","h":"PartnerAgenticSkillsHandler"},"fuzzy_search_partners":{"d":"Find partner accounts by name for deal registration or teaming.","m":false,"sec":"Partner Management","h":"PartnerAgenticSkillsHandler"},"create_care_task":{"d":"Add a care-plan task for clinical or care-team follow-up.","m":true,"sec":"Industry Clouds","h":"IndustryAgenticSkillsHandler"},"fetch_care_plan":{"d":"Load a Health Cloud care plan and related goals when available.","m":false,"sec":"Industry Clouds","h":"IndustryAgenticSkillsHandler"},"fetch_financial_account":{"d":"Load FSC financial account balances and ownership when licensed.","m":false,"sec":"Industry Clouds","h":"IndustryAgenticSkillsHandler"},"update_care_plan_fields":{"d":"Update care plan status or dates in Health Cloud orgs.","m":true,"sec":"Industry Clouds","h":"IndustryAgenticSkillsHandler"},"update_financial_account_fields":{"d":"Update financial account status or attributes in FSC orgs.","m":true,"sec":"Industry Clouds","h":"IndustryAgenticSkillsHandler"},"run_internal_prompt":{"d":"Generate a 360, summary, meeting prep, or draft from record data.","m":false,"sec":"Platform & Insights","h":"UtilityAgenticSkillsHandler"},"fetch_session_context":{"d":"See which record and related people the chat is on, so the agent can act without asking for Ids. Use before updates, summaries, logging activity, or drafting follow-ups.","m":false,"sec":"Platform & Insights","h":"UtilityAgenticSkillsHandler"},"fetch_picklist_values":{"d":"List valid choices for a field before setting a picklist value.","m":false,"sec":"Platform & Insights","h":"UtilityAgenticSkillsHandler"},"transfer_record_owner":{"d":"Reassign ownership of a record to another user.","m":true,"sec":"Platform & Insights","h":"UtilityAgenticSkillsHandler"},"fetch_record_approvals":{"d":"See pending approval requests and submitters on a record.","m":false,"sec":"Platform & Insights","h":"UtilityAgenticSkillsHandler"}};
+    const q = document.getElementById('q');
+    const statusEl = document.getElementById('status');
+    const emptyEl = document.getElementById('empty');
+    const selCount = document.getElementById('selCount');
+    const visCount = document.getElementById('visCount');
+    const downloadSel = document.getElementById('downloadSel');
+    const modal = document.getElementById('skillModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const alertModal = document.getElementById('alertModal');
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const tiles = [...document.querySelectorAll('.sec-tile')];
+    const panels = [...document.querySelectorAll('.sec-panel')];
+    let activeStore = null;
+
+    let clearSelectionOnAlertClose = false;
+    const cmdBox = document.getElementById('cmdBox');
+    const cmdPs = document.getElementById('cmdPs');
+    const cmdCli = document.getElementById('cmdCli');
+
+    function showAlert(title, message, { clearSelection = false, commands = null } = {}) {
+      statusEl.textContent = '';
+      clearSelectionOnAlertClose = !!clearSelection;
+      alertTitle.textContent = title;
+      alertMessage.textContent = message;
+      if (commands && commands.ps && commands.cli) {
+        cmdPs.textContent = commands.ps;
+        cmdCli.textContent = commands.cli;
+        cmdBox.classList.add('show');
+      } else {
+        cmdPs.textContent = '';
+        cmdCli.textContent = '';
+        cmdBox.classList.remove('show');
+      }
+      if (!alertModal.open) alertModal.showModal();
+    }
+    function clearAllSelections() {
+      document.querySelectorAll('.skill-check').forEach(el => { el.checked = false; });
+      refreshCounts();
+    }
+    function closeAlert() {
+      if (alertModal.open) alertModal.close();
+      statusEl.textContent = '';
+      cmdBox.classList.remove('show');
+      if (clearSelectionOnAlertClose) {
+        clearSelectionOnAlertClose = false;
+        clearAllSelections();
+      }
+    }
+    document.getElementById('alertCancel').addEventListener('click', closeAlert);
+    document.getElementById('alertOk').addEventListener('click', closeAlert);
+    alertModal.addEventListener('cancel', (e) => { e.preventDefault(); closeAlert(); });
+    alertModal.addEventListener('click', (e) => {
+      if (e.target === alertModal) closeAlert();
+    });
+    document.querySelectorAll('.copy-cmd').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-copy');
+        const el = id ? document.getElementById(id) : null;
+        if (!el || !el.textContent) return;
+        try {
+          await navigator.clipboard.writeText(el.textContent);
+          const prev = btn.textContent;
+          btn.textContent = 'Copied';
+          setTimeout(() => { btn.textContent = prev; }, 1200);
+        } catch (_) {
+          const range = document.createRange();
+          range.selectNodeContents(el);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      });
+    });
+
+    function allSkills() {
+      return [...document.querySelectorAll('.skill')];
+    }
+
+    function selectedNames() {
+      // Unique by API name — Top Picks duplicates home-category cards
+      return [...new Set(
+        [...document.querySelectorAll('.skill-check:checked')].map(el => el.value)
+      )];
+    }
+
+    function selectedInNodes(nodes) {
+      const names = new Set();
+      nodes.forEach(card => {
+        const cb = card.querySelector('.skill-check');
+        if (cb && cb.checked) names.add(cb.value);
+      });
+      return names.size;
+    }
+
+    function visibleSkillNames() {
+      const names = new Set();
+      allSkills().forEach(card => {
+        if (!card.hidden && card.dataset.name) names.add(card.dataset.name);
+      });
+      return names;
+    }
+
+    function syncChecks(name, checked) {
+      document.querySelectorAll('.skill-check').forEach(cb => {
+        if (cb.value === name) cb.checked = checked;
+      });
+    }
+
+    function refreshTileSelection(tile) {
+      const n = selectedInNodes(skillsForTile(tile));
+      const badge = tile.querySelector('.sec-selected');
+      if (badge) {
+        badge.textContent = n === 1 ? '1 selected' : n + ' selected';
+        badge.hidden = n === 0;
+      }
+      tile.classList.toggle('has-selection', n > 0);
+    }
+
+    function refreshCounts() {
+      const selected = selectedNames().length;
+      const visible = visibleSkillNames().size;
+      selCount.textContent = String(selected);
+      visCount.textContent = String(visible);
+      downloadSel.disabled = selected === 0;
+      emptyEl.classList.toggle('show', visible === 0);
+      tiles.forEach(refreshTileSelection);
+    }
+
+    function closeModal() {
+      if (activeStore) {
+        while (modalBody.firstChild) activeStore.appendChild(modalBody.firstChild);
+        activeStore = null;
+      }
+      if (modal.open) modal.close();
+      refreshCounts();
+    }
+
+    function openTile(tile) {
+      closeModal();
+      const store = tile.querySelector('.sec-store');
+      if (!store) return;
+      activeStore = store;
+      modalTitle.textContent = tile.dataset.section || 'Skills';
+      while (store.firstChild) modalBody.appendChild(store.firstChild);
+      modal.showModal();
+    }
+
+    function skillsForTile(tile) {
+      if (activeStore && tile.querySelector('.sec-store') === activeStore) {
+        return [...modalBody.querySelectorAll('.skill')];
+      }
+      return [...tile.querySelectorAll('.skill')];
+    }
+
+    function applyFilter() {
+      const term = (q.value || '').trim().toLowerCase();
+      allSkills().forEach(card => {
+        const hay = card.dataset.search || '';
+        card.hidden = term !== '' && !hay.includes(term);
+      });
+      tiles.forEach(tile => {
+        tile.hidden = !skillsForTile(tile).some(s => !s.hidden);
+      });
+      panels.forEach(panel => {
+        panel.hidden = ![...panel.querySelectorAll('.skill')].some(s => !s.hidden);
+      });
+      refreshCounts();
+    }
+
+    q.addEventListener('input', applyFilter);
+    document.addEventListener('change', (e) => {
+      if (!e.target.classList.contains('skill-check')) return;
+      syncChecks(e.target.value, e.target.checked);
+      refreshCounts();
+    });
+
+    tiles.forEach(tile => {
+      tile.querySelector('.sec-open').addEventListener('click', () => openTile(tile));
+    });
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalDone').addEventListener('click', closeModal);
+    modal.addEventListener('cancel', (e) => { e.preventDefault(); closeModal(); });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.getElementById('modalSelectAll').addEventListener('click', () => {
+      modalBody.querySelectorAll('.skill').forEach(card => {
+        if (!card.hidden) {
+          const cb = card.querySelector('.skill-check');
+          if (cb) syncChecks(cb.value, true);
+        }
+      });
+      refreshCounts();
+    });
+
+    document.getElementById('clearSel').addEventListener('click', () => {
+      document.querySelectorAll('.skill-check').forEach(el => { el.checked = false; });
+      refreshCounts();
+    });
+
+    function classMembersXml(classNames) {
+      const members = [...classNames].sort().map(n => '        <members>' + n + '</members>').join('\n');
+      return [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<Package xmlns="http://soap.sforce.com/2006/04/metadata">',
+        '    <types>',
+        members,
+        '        <name>ApexClass</name>',
+        '    </types>',
+        '    <version>66.0</version>',
+        '</Package>',
+        ''
+      ].join('\n');
+    }
+
+    function testsForSkills(names) {
+      const t = new Set(['AgenticSkillsBaseTest']);
+      names.forEach(n => {
+        const h = SKILL_META && SKILL_META[n] && SKILL_META[n].h;
+        if (h) t.add(h + 'Test');
+      });
+      return [...t].sort();
+    }
+
+    const CONFIG_KEY = 'gptfyCatalogOrgConfig';
+    const configModal = document.getElementById('configModal');
+    const configForm = document.getElementById('configForm');
+    const configError = document.getElementById('configError');
+    const cfgMapping = document.getElementById('cfgMapping');
+    const cfgConnection = document.getElementById('cfgConnection');
+    const cfgAgent = document.getElementById('cfgAgent');
+    const cfgOrgAlias = document.getElementById('cfgOrgAlias');
+    const cfgUpdatePrompt = document.getElementById('cfgUpdatePrompt');
+
+    function isSalesforceId(value) {
+      return /^[a-zA-Z0-9]{15}$/.test(value) || /^[a-zA-Z0-9]{18}$/.test(value);
+    }
+
+    function sanitizeOrgAlias(value) {
+      const cleaned = String(value || '').trim().replace(/[^a-zA-Z0-9._-]/g, '');
+      return cleaned || '';
+    }
+
+    function loadSavedConfig() {
+      try {
+        const raw = localStorage.getItem(CONFIG_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (saved.mapping) cfgMapping.value = saved.mapping;
+        if (saved.connection) cfgConnection.value = saved.connection;
+        if (saved.agent) cfgAgent.value = saved.agent;
+        if (saved.orgAlias) cfgOrgAlias.value = saved.orgAlias;
+        if (typeof saved.updateSystemPrompt === 'boolean') cfgUpdatePrompt.checked = saved.updateSystemPrompt;
+      } catch (_) {}
+    }
+
+    function saveConfig(cfg) {
+      try {
+        localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
+      } catch (_) {}
+    }
+
+    function escapeApexString(value) {
+      return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    }
+
+    function patchSeed(text, cfg) {
+      let out = text;
+      out = out.replace(
+        /final String AGENT_NAME = '[^']*';/,
+        "final String AGENT_NAME = '" + escapeApexString(cfg.agent) + "';"
+      );
+      out = out.replace(
+        /final String DATA_MAPPING = '[^']*';/,
+        "final String DATA_MAPPING = '" + escapeApexString(cfg.mapping) + "';"
+      );
+      out = out.replace(
+        /final String AI_MODEL = '[^']*';/,
+        "final String AI_MODEL = '" + escapeApexString(cfg.connection) + "';"
+      );
+      return out;
+    }
+
+    function composeSystemPrompt(names) {
+      const mut = names.filter(n => SKILL_META && SKILL_META[n] && SKILL_META[n].m);
+      const read = names.filter(n => !mut.includes(n));
+      const lines = [];
+      lines.push('You are a CRM Assistant embedded in Salesforce via GPTfy. Help users manage Salesforce records safely using only the skills listed in this prompt. Confirm every mutation before calling a mutating skill. Never invent skill names, record Ids, picklist values, or success.');
+      lines.push('');
+      lines.push('RESPONSE STYLE');
+      lines.push('Be concise and businesslike. Summarise clearly. Always include record links after successful actions. Never claim success without skill confirmation. Never expose internal Ids unless asked. Never open with filler. Prefer short declarative sentences.');
+      lines.push('');
+      lines.push('Out of scope: if the request cannot use any skill listed below, say so and offer the closest supported action. Do not invent capabilities.');
+      lines.push('');
+      lines.push('RULE 1 - SKILLS ON THIS AGENT (source of truth)');
+      lines.push('Use only these skills. Never invent a skill name that is not listed here.');
+      lines.push('');
+      names.forEach(n => {
+        const m = (SKILL_META && SKILL_META[n]) || { d: n, m: false };
+        const tag = m.m ? ' [MUTATING - confirm first]' : ' [read/lookup]';
+        lines.push('- ' + n + tag + ' - ' + (m.d || n));
+      });
+      lines.push('');
+      lines.push('Skill response handling:');
+      lines.push('- JSON success:false -> show error friendly. Stop.');
+      lines.push('- Raw HTML -> display to the user as-is.');
+      lines.push('- JSON success:true for searches -> use records; only show lists when user asked to find/list.');
+      lines.push('- Never output raw JSON to the user.');
+      lines.push('');
+      lines.push('RULE 2 - KNOW WHICH RECORD');
+      lines.push('Before update, activity, or detail fetch, confirm the record Id:');
+      lines.push('1) Record page context Id if present - use it directly.');
+      lines.push('2) Already confirmed in conversation.');
+      lines.push('3) Name hint -> matching fuzzy_search_* if that skill is listed above.');
+      lines.push('4) Otherwise ask for the record name.');
+      lines.push('Never invent Ids. Prefer _id parameters when you have an Id.');
+      lines.push('');
+      lines.push('RULE 3 - CONFIRM BEFORE CHANGING DATA');
+      if (mut.length) {
+        lines.push('BEFORE calling any mutating skill, show a confirmation card and wait for explicit yes/confirm/go ahead. Never assume yes.');
+        lines.push('');
+        lines.push('Mutating skills on this agent (require confirmation):');
+        mut.forEach(n => lines.push('- ' + n));
+        lines.push('');
+        lines.push('Confirmation formats:');
+        lines.push('UPDATE: **[Record Name]** then Field - **current** -> **new**, then Shall I proceed? (yes / no)');
+        lines.push('CREATE: **Create new [Object]:** field list, then Shall I create this record? (yes / no)');
+        lines.push('Other actions: **[Action] [Record]:** details, then Shall I proceed? (yes / no)');
+        lines.push('');
+        lines.push('Hard rules: one confirmation per mutation; ok/sure/maybe is NOT confirmation; re-confirm after interruption.');
+      } else {
+        lines.push('No mutating skills are installed on this package. Do not invent create/update/delete actions.');
+      }
+      if (read.length) {
+        lines.push('');
+        lines.push('Read/lookup skills (no confirmation):');
+        read.forEach(n => lines.push('- ' + n));
+      }
+      lines.push('');
+      lines.push('RULE 4 - DATES, NUMBERS, PICKLISTS');
+      lines.push('Resolve relative dates to yyyy-MM-dd before skills. Numbers without currency/commas. Booleans true/false. Datetimes ISO 8601. Picklists = exact API values; if unsure and fetch_picklist_values is listed, call it first.');
+      lines.push('');
+      if (names.some(n => n.startsWith('fuzzy_search_'))) {
+        lines.push('RULE 5 - FUZZY SEARCH DISPLAY');
+        lines.push('Use totalFound / displayed / remaining from the skill. Show up to 5 rows. If remaining > 0, say how many more exist and suggest refining. Include View Record links when provided. Never dump raw Id columns.');
+        lines.push('');
+      }
+      if (names.includes('run_internal_prompt')) {
+        lines.push('RULE 6 - run_internal_prompt');
+        lines.push('For summary / 360 / meeting prep / drafts tied to a record: identify record (Rule 2), use configured promptRequestId (never invent Ids), call run_internal_prompt, display message verbatim.');
+        lines.push('');
+      }
+      if (names.includes('log_activity') || names.some(n => n.includes('task') || n.includes('event'))) {
+        lines.push('RULE 7 - ACTIVITY');
+        lines.push('For log_activity / tasks / events: parent record Id first; if subject missing, ask for it; then confirm (Rule 3) before mutating.');
+        lines.push('');
+      }
+      lines.push('AFTER SUCCESSFUL MUTATIONS');
+      lines.push('Show skill HTML verbatim, then one short plain-language Done sentence. No raw JSON.');
+      lines.push('');
+      lines.push('<!-- GPTFY_SKILLS_END -->');
+      lines.push('');
+      return lines.join('\n');
+    }
+
+    function buildInstallScripts(names, orgAlias, applySystemPrompt) {
+      const alias = (orgAlias || '').replace(/"/g, '');
+      const isMulti = names.length > 1;
+      const applyFlag = applySystemPrompt ? '$true' : '$false';
+      const applyDefault = applySystemPrompt ? '1' : '0';
+      const psRegister = isMulti
+        ? [
+            'Get-ChildItem -Path "skills" -Directory | ForEach-Object {',
+            '  $seed = Join-Path $_.FullName "seed.apex"',
+            '  Write-Host ("Registering " + $_.Name + "...")',
+            '  if ($OrgArgs.Count) { sf apex run --file $seed @OrgArgs } else { sf apex run --file $seed }',
+            '  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }',
+            '}'
+          ].join('\n')
+        : [
+            'Write-Host "Registering skill..."',
+            'if ($OrgArgs.Count) { sf apex run --file seed.apex @OrgArgs } else { sf apex run --file seed.apex }',
+            'if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }'
+          ].join('\n');
+      const shRegister = isMulti
+        ? [
+            'for seed in skills/*/seed.apex; do',
+            '  echo "Registering $seed..."',
+            '  sf apex run --file "$seed" "${ORG_ARGS[@]}"',
+            'done'
+          ].join('\n')
+        : 'sf apex run --file seed.apex "${ORG_ARGS[@]}"';
+
+      const applyHelperPy = [
+        'import json, os, shutil, subprocess, sys',
+        'from pathlib import Path',
+        '',
+        'def find_sf():',
+        '    for name in ("sf", "sf.cmd", "sf.exe"):',
+        '        p = shutil.which(name)',
+        '        if p:',
+        '            return p',
+        '    print("Salesforce CLI (sf) not found on PATH", file=sys.stderr)',
+        '    raise SystemExit(1)',
+        '',
+        'def run_sf(sf, args):',
+        '    # shell=True on Windows so .cmd shims resolve reliably',
+        '    use_shell = os.name == "nt"',
+        '    cmd = [sf] + args',
+        '    if use_shell:',
+        '        # quote for cmd.exe',
+        '        line = subprocess.list2cmdline(cmd)',
+        '        return subprocess.run(line, shell=True, capture_output=True, text=True, encoding="utf-8", errors="replace")',
+        '    return subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")',
+        '',
+        'root = Path(__file__).resolve().parent',
+        'cfg = json.loads((root / "package-config.json").read_text(encoding="utf-8"))',
+        'if not cfg.get("applySystemPrompt"):',
+        '    print("Skip system prompt update (toggle was off).")',
+        '    raise SystemExit(0)',
+        'prompt_path = root / "sample-system-prompt.txt"',
+        'if not prompt_path.exists():',
+        '    print("sample-system-prompt.txt missing", file=sys.stderr)',
+        '    raise SystemExit(1)',
+        'agent_name = str(cfg.get("agent") or "").strip()',
+        'if not agent_name:',
+        '    print("Agent name missing in package-config.json", file=sys.stderr)',
+        '    raise SystemExit(1)',
+        'sf = find_sf()',
+        'org = (os.environ.get("SF_TARGET_ORG") or "").strip()',
+        'org_args = ["--target-org", org] if org else []',
+        'safe = agent_name.replace(chr(39), chr(39) + chr(39))',
+        'soql = "SELECT Id FROM ccai__AI_Agent__c WHERE Name = " + chr(39) + safe + chr(39) + " LIMIT 1"',
+        'q = run_sf(sf, ["data", "query", "--query", soql, "--json"] + org_args)',
+        'if q.returncode != 0:',
+        '    print(q.stdout or q.stderr, file=sys.stderr)',
+        '    raise SystemExit(q.returncode)',
+        'raw = q.stdout or ""',
+        'i = raw.find(chr(123))',
+        'if i < 0:',
+        '    print("No JSON from sf data query", file=sys.stderr)',
+        '    raise SystemExit(1)',
+        'data = json.loads(raw[i:])',
+        'recs = (data.get("result") or data).get("records") or []',
+        'if not recs:',
+        '    print("Agent not found: " + agent_name, file=sys.stderr)',
+        '    raise SystemExit(1)',
+        'agent_id = recs[0]["Id"]',
+        'body = {"ccai__System_Prompt__c": prompt_path.read_text(encoding="utf-8")}',
+        'body_path = root / "sysprompt_body.json"',
+        'body_path.write_text(json.dumps(body, ensure_ascii=False), encoding="utf-8")',
+        'endpoint = "/services/data/v66.0/sobjects/ccai__AI_Agent__c/" + agent_id',
+        'patch = run_sf(sf, ["api", "request", "rest", "--method", "PATCH", endpoint,',
+        '    "--body", "@" + str(body_path), "--header", "Content-Type: application/json"] + org_args)',
+        'print(patch.stdout or "")',
+        'if patch.returncode != 0:',
+        '    print(patch.stderr or "", file=sys.stderr)',
+        '    raise SystemExit(patch.returncode)',
+        'print("System prompt updated for agent " + agent_name + " (" + agent_id + ")")',
+        ''
+      ].join('\n');
+
+      // Pure PowerShell path preferred on Windows (same PATH as sf deploy / apex run)
+      const psApply = [
+        'if ($ApplySystemPrompt -and (Test-Path (Join-Path $PSScriptRoot "sample-system-prompt.txt"))) {',
+        '  Write-Host "Updating agent system prompt..."',
+        '  $cfgPath = Join-Path $PSScriptRoot "package-config.json"',
+        '  if (-not (Test-Path $cfgPath)) { Write-Error "package-config.json missing"; exit 1 }',
+        '  $pkg = Get-Content $cfgPath -Raw -Encoding UTF8 | ConvertFrom-Json',
+        '  $agentName = [string]$pkg.agent',
+        '  $sq = [string][char]39',
+        '  $escaped = $agentName.Replace($sq, ($sq + $sq))',
+        '  $soql = "SELECT Id FROM ccai__AI_Agent__c WHERE Name = " + $sq + $escaped + $sq + " LIMIT 1"',
+        '  if ($OrgArgs.Count) { $qjson = sf data query --query $soql --json @OrgArgs | Out-String } else { $qjson = sf data query --query $soql --json | Out-String }',
+        '  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }',
+        '  $qobj = $qjson | ConvertFrom-Json',
+        '  $recs = @()',
+        '  if ($qobj.result -and $qobj.result.records) { $recs = @($qobj.result.records) }',
+        '  elseif ($qobj.records) { $recs = @($qobj.records) }',
+        '  if ($recs.Count -lt 1) { Write-Error "Agent not found: $agentName"; exit 1 }',
+        '  $agentId = $recs[0].Id',
+        '  $promptText = [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot "sample-system-prompt.txt"))',
+        '  $bodyPath = Join-Path $PSScriptRoot "sysprompt_body.json"',
+        '  $bodyObj = [ordered]@{ ccai__System_Prompt__c = $promptText }',
+        '  $bodyJson = $bodyObj | ConvertTo-Json -Depth 5 -Compress',
+        '  [System.IO.File]::WriteAllText($bodyPath, $bodyJson, [System.Text.UTF8Encoding]::new($false))',
+        '  $endpoint = "/services/data/v66.0/sobjects/ccai__AI_Agent__c/$agentId"',
+        '  if ($OrgArgs.Count) {',
+        '    sf api request rest --method PATCH $endpoint --body ("@" + $bodyPath) --header "Content-Type: application/json" @OrgArgs',
+        '  } else {',
+        '    sf api request rest --method PATCH $endpoint --body ("@" + $bodyPath) --header "Content-Type: application/json"',
+        '  }',
+        '  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }',
+        '  Write-Host "System prompt updated for agent $agentName ($agentId)"',
+        '}'
+      ].join('\n');
+
+      const shApply = [
+        'if [[ "${APPLY_SYSTEM_PROMPT}" == "1" ]]; then',
+        '  echo "Updating agent system prompt..."',
+        '  if [[ -n "$TARGET_ORG" ]]; then export SF_TARGET_ORG="$TARGET_ORG"; else unset SF_TARGET_ORG || true; fi',
+        '  python3 apply_system_prompt.py || python apply_system_prompt.py',
+        'fi'
+      ].join('\n');
+
+      const psDefault = alias ? alias : '';
+      const testNames = testsForSkills(names);
+      const testJoin = testNames.join(', ');
+      const sfTestFlags = testNames.map(t => '--tests ' + t).join(' ');
+      const ps = [
+        '# GPTfy skill install - deploy Apex + register skill(s) on your agent',
+        '# Omit -TargetOrg to use the default CLI / VS Code connected org.',
+        '# Use -RunTests for production deploys (RunSpecifiedTests).',
+        'param(',
+        '  [string]$TargetOrg = "' + psDefault + '",',
+        '  [bool]$ApplySystemPrompt = ' + applyFlag + ',',
+        '  [switch]$RunTests',
+        ')',
+        '$ErrorActionPreference = "Stop"',
+        'Set-Location $PSScriptRoot',
+        'if ($TargetOrg) {',
+        '  $OrgArgs = @("--target-org", $TargetOrg)',
+        '  Write-Host "Target org: $TargetOrg"',
+        '} else {',
+        '  $OrgArgs = @()',
+        '  Write-Host "Using default CLI / VS Code connected org (no alias)..."',
+        '}',
+        'Write-Host "Deploying Apex..."',
+        'if ($RunTests) {',
+        '  Write-Host "Running tests: ' + testJoin + '"',
+        '  if ($OrgArgs.Count) { sf project deploy start --manifest package.xml --test-level RunSpecifiedTests ' + sfTestFlags + ' @OrgArgs } else { sf project deploy start --manifest package.xml --test-level RunSpecifiedTests ' + sfTestFlags + ' }',
+        '} else {',
+        '  if ($OrgArgs.Count) { sf project deploy start --manifest package.xml @OrgArgs } else { sf project deploy start --manifest package.xml }',
+        '}',
+        'if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }',
+        psRegister,
+        psApply,
+        'Write-Host "Done. Verify the skill(s) on your agent in GPTfy."',
+        ''
+      ].join('\n');
+
+      const sh = [
+        '#!/usr/bin/env bash',
+        '# GPTfy skill install - deploy Apex + register skill(s) on your agent',
+        '# Optional arg 1: org alias. Omit to use default CLI / VS Code org.',
+        '# Optional arg 2: 1 apply system prompt, 0 skip (default baked into package).',
+        '# Optional: RUN_TESTS=1 ./install.sh   (RunSpecifiedTests)',
+        'set -euo pipefail',
+        'cd "$(dirname "$0")"',
+        'TARGET_ORG="${1:-' + psDefault + '}"',
+        'APPLY_SYSTEM_PROMPT="${2:-' + applyDefault + '}"',
+        'RUN_TESTS="${RUN_TESTS:-0}"',
+        'ORG_ARGS=()',
+        'if [[ -n "$TARGET_ORG" ]]; then',
+        '  ORG_ARGS=(--target-org "$TARGET_ORG")',
+        '  echo "Target org: $TARGET_ORG"',
+        'else',
+        '  echo "Using default CLI / VS Code connected org (no alias)..."',
+        'fi',
+        'echo "Deploying Apex..."',
+        'if [[ "$RUN_TESTS" == "1" ]]; then',
+        '  echo "Running tests: ' + testJoin + '"',
+        '  sf project deploy start --manifest package.xml --test-level RunSpecifiedTests ' + sfTestFlags + ' "${ORG_ARGS[@]}"',
+        'else',
+        '  sf project deploy start --manifest package.xml "${ORG_ARGS[@]}"',
+        'fi',
+        'echo "Registering skill(s)..."',
+        shRegister,
+        shApply,
+        'echo "Done. Verify the skill(s) on your agent in GPTfy."',
+        ''
+      ].join('\n');
+
+      return { ps, sh, applyHelperPy };
+    }
+
+    function buildReadyCommands(names, orgAlias, applySystemPrompt) {
+      const alias = orgAlias || '';
+      const isMulti = names.length > 1;
+      const folderHint = isMulti
+        ? 'cd into the unzipped bundle folder'
+        : 'cd into the unzipped ' + names[0] + ' folder';
+      const orgFlag = alias ? (' --target-org ' + alias) : '';
+      const psQuick = alias
+        ? [
+            '# ' + folderHint + ', then:',
+            '.\\install.ps1 -TargetOrg ' + alias
+          ].join('\n')
+        : [
+            '# ' + folderHint + ', then (uses default CLI / VS Code org):',
+            '.\\install.ps1'
+          ].join('\n');
+      const cliLines = [
+        'sf project deploy start --manifest package.xml' + orgFlag
+      ];
+      if (isMulti) {
+        names.forEach(n => {
+          cliLines.push('sf apex run --file skills/' + n + '/seed.apex' + orgFlag);
+        });
+      } else {
+        cliLines.push('sf apex run --file seed.apex' + orgFlag);
+      }
+      if (applySystemPrompt) {
+        cliLines.push('# System prompt: install.ps1 will overwrite agent system prompt after skills register');
+      } else {
+        cliLines.push('# System prompt: paste sample-system-prompt.txt in GPTfy if you want composed guidance');
+      }
+      if (!alias) {
+        cliLines.unshift('# Uses default connected org. Add --target-org <alias> only if needed.');
+      }
+      return { ps: psQuick, cli: cliLines.join('\n') };
+    }
+
+    function closeConfig() {
+      if (configModal.open) configModal.close();
+      configError.classList.remove('show');
+      configError.textContent = '';
+    }
+
+    function openConfig() {
+      loadSavedConfig();
+      if (!cfgAgent.value.trim()) cfgAgent.value = 'GPTfy Agent';
+      configError.classList.remove('show');
+      configError.textContent = '';
+      if (!configModal.open) configModal.showModal();
+      cfgMapping.focus();
+    }
+
+    document.getElementById('configCancel').addEventListener('click', closeConfig);
+    configModal.addEventListener('cancel', (e) => { e.preventDefault(); closeConfig(); });
+    configModal.addEventListener('click', (e) => {
+      if (e.target === configModal) closeConfig();
+    });
+
+    async function runDownload(cfg) {
+      const names = selectedNames();
+      if (!names.length) return;
+      if (typeof JSZip === 'undefined') {
+        showAlert('Download failed', 'Zip library failed to load. Check network/CDN.');
+        return;
+      }
+      downloadSel.disabled = true;
+      statusEl.textContent = 'Preparing download…';
+      try {
+        const out = new JSZip();
+        const seenClassFiles = new Set();
+        const classNames = new Set(['AgenticSkillsBase']);
+        let samplePromptAdded = false;
+        const skillsFolder = names.length > 1 ? out.folder('skills') : null;
+        const apexFolder = names.length > 1
+          ? out.folder('force-app/main/default/classes')
+          : null;
+        let singleFolder = null;
+
+        for (let i = 0; i < names.length; i++) {
+          const name = names[i];
+          statusEl.textContent = 'Fetching ' + (i + 1) + '/' + names.length + '…';
+          const res = await fetch('zips/' + encodeURIComponent(name) + '.zip');
+          if (!res.ok) throw new Error('Failed to fetch ' + name + ' (' + res.status + ')');
+          const buf = await res.arrayBuffer();
+          const skillZip = await JSZip.loadAsync(buf);
+          const tasks = [];
+
+          skillZip.forEach((path, entry) => {
+            if (entry.dir) return;
+            const parts = path.split('/');
+            const rel = parts[0] === name ? parts.slice(1).join('/') : path;
+            if (!rel) return;
+
+            if (names.length > 1) {
+              if (rel.startsWith('force-app/main/default/classes/')) {
+                const fileName = rel.split('/').pop();
+                if (!fileName || seenClassFiles.has(fileName)) return;
+                seenClassFiles.add(fileName);
+                if (fileName.endsWith('.cls')) classNames.add(fileName.slice(0, -4));
+                tasks.push(entry.async('uint8array').then(data => apexFolder.file(fileName, data)));
+                return;
+              }
+              if (rel === 'seed.apex') {
+                const skillDir = skillsFolder.folder(name);
+                tasks.push(entry.async('string').then(text => skillDir.file('seed.apex', patchSeed(text, cfg))));
+                return;
+              }
+              if (rel === 'sample-system-prompt.txt') return;
+              return;
+            }
+
+            const folder = out.folder(name);
+            singleFolder = folder;
+            if (rel === 'seed.apex') {
+              tasks.push(entry.async('string').then(text => folder.file('seed.apex', patchSeed(text, cfg))));
+            } else if (rel === 'sample-system-prompt.txt') {
+              return;
+            } else {
+              tasks.push(entry.async('uint8array').then(data => folder.file(rel, data)));
+            }
+          });
+          await Promise.all(tasks);
+        }
+
+        const composedPrompt = composeSystemPrompt(names);
+        const scripts = buildInstallScripts(names, cfg.orgAlias, !!cfg.updateSystemPrompt);
+        const pkgTests = testsForSkills(names);
+        const packageConfig = JSON.stringify({
+          agent: cfg.agent,
+          mapping: cfg.mapping,
+          connection: cfg.connection,
+          orgAlias: cfg.orgAlias || '',
+          applySystemPrompt: !!cfg.updateSystemPrompt,
+          skills: names,
+          tests: pkgTests,
+          packageVersion: '1.1.0'
+        }, null, 2) + '\n';
+        const aliasLabel = cfg.orgAlias || '';
+        const installPsLine = aliasLabel
+          ? '.\\install.ps1 -TargetOrg ' + aliasLabel
+          : '.\\install.ps1';
+        const installPsTests = aliasLabel
+          ? '.\\install.ps1 -TargetOrg ' + aliasLabel + ' -RunTests'
+          : '.\\install.ps1 -RunTests';
+        const installShLine = aliasLabel
+          ? './install.sh ' + aliasLabel
+          : './install.sh';
+        const deployLine = aliasLabel
+          ? 'sf project deploy start --manifest package.xml --target-org ' + aliasLabel
+          : 'sf project deploy start --manifest package.xml';
+        const seedLine = aliasLabel
+          ? 'sf apex run --file skills/<api_name>/seed.apex --target-org ' + aliasLabel
+          : 'sf apex run --file skills/<api_name>/seed.apex';
+
+        if (names.length > 1) {
+          out.file('package.xml', classMembersXml(classNames));
+          out.file('sfdx-project.json', JSON.stringify({
+            packageDirectories: [{ path: 'force-app', default: true }],
+            name: 'gptfy-skills-bundle',
+            sourceApiVersion: '66.0'
+          }, null, 2) + '\n');
+          out.file('install.ps1', scripts.ps);
+          out.file('install.sh', scripts.sh);
+          out.file('sample-system-prompt.txt', composedPrompt);
+          out.file('package-config.json', packageConfig);
+          out.file('version.json', JSON.stringify({
+            packageVersion: '1.1.0',
+            sourceApiVersion: '66.0',
+            skills: names,
+            classes: [...classNames].filter(n => !n.endsWith('Test')).sort(),
+            tests: pkgTests
+          }, null, 2) + '\n');
+          out.file('PRODUCTION_NOTES.txt', [
+            'PRODUCTION NOTES (short)',
+            '========================',
+            '- Deploy with tests:  ' + installPsTests,
+            '  or: RUN_TESTS=1 ' + installShLine,
+            '- Sharing: handlers use with sharing (agent user context).',
+            '- Re-run seed is safe (existing skill Names skipped).',
+            '- Apex re-deploy updates classes by API name.',
+            '',
+            'Verify: Apex classes → AI Prompts → agent skill links → smoke chat.',
+            ''
+          ].join('\n'));
+          out.file('apply_system_prompt.py', scripts.applyHelperPy);
+          out.file('README.txt', [
+            'GPTfy multi-skill bundle (Apex deduped)',
+            '=====================================',
+            '',
+            'Selected skills (' + names.length + '):',
+            ...names.map(n => '  - ' + n),
+            '',
+            'Pre-filled in every install script (seed.apex):',
+            '  AGENT_NAME   = ' + cfg.agent,
+            '  DATA_MAPPING = ' + cfg.mapping,
+            '  AI_MODEL     = ' + cfg.connection,
+            '',
+            'LAYOUT',
+            '------',
+            'force-app/                 Apex + smoke tests (deduped)',
+            'package.xml                Deploy manifest',
+            'skills/<api_name>/seed.apex   One seed per skill',
+            'install.ps1 / install.sh   Deploy + register (+ optional -RunTests)',
+            'sample-system-prompt.txt   Composed prompt for selected skills',
+            'package-config.json / version.json',
+            'PRODUCTION_NOTES.txt',
+            '',
+            'INSTALL (sandbox / default)',
+            '---------------------------',
+            '1) Unzip and open a terminal in this folder',
+            '2) Windows:  ' + installPsLine,
+            '   Mac/Linux: chmod +x install.sh && ' + installShLine,
+            '',
+            'INSTALL (production — run package tests)',
+            '----------------------------------------',
+            'Windows:  ' + installPsTests,
+            'Mac/Linux: RUN_TESTS=1 ' + installShLine,
+            '',
+            'INSTALL (manual CLI)',
+            '--------------------',
+            '1) ' + deployLine,
+            '2) For each skill: ' + seedLine,
+            '3) If applySystemPrompt was enabled, install.ps1 updates the agent system prompt.',
+            '   Otherwise paste sample-system-prompt.txt in GPTfy manually.',
+            '',
+            'INSTALL (Workbench)',
+            '-------------------',
+            '1) Log into the target org in Workbench',
+            '2) Migration → Deploy the Apex package (package.xml + force-app)',
+            '3) Utilities → Apex Execute: paste each skills/*/seed.apex',
+            '',
+            'Apex handlers are shared; deploying once covers all skills that use those classes.',
+            ''
+          ].join('\n'));
+          out.file('SELECTED_SKILLS.txt', [
+            'Selected skills (' + names.length + '):',
+            ...names.map(n => '  - ' + n),
+            '',
+            'Agent: ' + cfg.agent,
+            'Mapping: ' + cfg.mapping,
+            'Connection: ' + cfg.connection,
+            'CLI org alias: ' + (aliasLabel || '(default connected org)'),
+            'Update system prompt: ' + (cfg.updateSystemPrompt ? 'yes' : 'no'),
+            'Tests: ' + pkgTests.join(', '),
+            ''
+          ].join('\n'));
+        } else if (singleFolder) {
+          singleFolder.file('install.ps1', scripts.ps);
+          singleFolder.file('install.sh', scripts.sh);
+          singleFolder.file('sample-system-prompt.txt', composedPrompt);
+          singleFolder.file('package-config.json', packageConfig);
+          singleFolder.file('apply_system_prompt.py', scripts.applyHelperPy);
+        }
+
+        statusEl.textContent = 'Compressing…';
+        const blob = await out.generateAsync({ type: 'blob' });
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = names.length === 1
+          ? names[0] + '.zip'
+          : 'gptfy-skills-bundle-' + names.length + '.zip';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        const commands = buildReadyCommands(names, cfg.orgAlias, !!cfg.updateSystemPrompt);
+        const promptNote = cfg.updateSystemPrompt
+          ? ' Install will also overwrite the agent system prompt with the composed package prompt.'
+          : ' Package includes composed sample-system-prompt.txt (not applied unless you paste it or re-download with the toggle on).';
+        showAlert(
+          'Download complete',
+          names.length === 1
+            ? '1 skill package is ready with your org values filled in.' + promptNote + ' Unzip, then run install.ps1 / use Copy commands below.'
+            : names.length + ' skills are bundled with shared Apex and your org values filled in.' + promptNote + ' Unzip, then run install.ps1 / use Copy commands below.',
+          { clearSelection: true, commands }
+        );
+      } catch (err) {
+        console.error(err);
+        showAlert('Download failed', (err && err.message) ? err.message : String(err));
+      } finally {
+        refreshCounts();
+      }
+    }
+
+    downloadSel.addEventListener('click', () => {
+      const names = selectedNames();
+      if (!names.length) return;
+      openConfig();
+    });
+
+    configForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const cfg = {
+        mapping: cfgMapping.value.trim(),
+        connection: cfgConnection.value.trim(),
+        agent: cfgAgent.value.trim() || 'GPTfy Agent',
+        orgAlias: sanitizeOrgAlias(cfgOrgAlias.value),
+        updateSystemPrompt: !!(cfgUpdatePrompt && cfgUpdatePrompt.checked)
+      };
+      if (!isSalesforceId(cfg.mapping) || !isSalesforceId(cfg.connection)) {
+        configError.textContent = 'Mapping Id and Connection Id must be valid 15 or 18 character Salesforce Ids.';
+        configError.classList.add('show');
+        return;
+      }
+      if (!cfg.agent) {
+        configError.textContent = 'Agent Name is required.';
+        configError.classList.add('show');
+        return;
+      }
+      saveConfig(cfg);
+      closeConfig();
+      await runDownload(cfg);
+    });
+
+    document.getElementById('requestForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const subject = encodeURIComponent('Skill request: ' + (fd.get('title') || ''));
+      const body = encodeURIComponent(
+        'Name: ' + fd.get('name') + '\n' +
+        'Email: ' + fd.get('email') + '\n' +
+        'Title: ' + fd.get('title') + '\n' +
+        'Area: ' + fd.get('area') + '\n\n' +
+        'Details:\n' + fd.get('details')
+      );
+      window.location.href = 'mailto:support@gptfy.ai?subject=' + subject + '&body=' + body;
+    });
+
+    applyFilter();
+  </script>
+</body>
+</html>

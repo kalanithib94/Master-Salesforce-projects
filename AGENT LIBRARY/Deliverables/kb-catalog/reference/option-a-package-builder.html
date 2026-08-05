@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A — Package builder</title>
+  <style>
+    :root {
+      --bg: #f3f4f6; --panel: #fff; --ink: #111827; --muted: #6b7280;
+      --line: #e5e7eb; --accent: #6d28d9; --soft: #f5f3ff; --ok: #059669;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--ink); }
+    .banner { background: #fef3c7; color: #92400e; text-align: center; padding: 0.45rem; font-size: 0.8rem; font-weight: 600; }
+    .shell {
+      max-width: 1100px; margin: 1rem auto; display: grid;
+      grid-template-columns: 1fr 300px; gap: 0; background: var(--panel);
+      border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+      min-height: 560px;
+    }
+    .browse { border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+    .browse-head { padding: 1rem 1.1rem; border-bottom: 1px solid var(--line); }
+    .browse-head h1 { margin: 0 0 0.2rem; font-size: 1.1rem; }
+    .browse-head p { margin: 0; color: var(--muted); font-size: 0.85rem; }
+    .cats {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--line); background: #fafafa;
+    }
+    .cat {
+      border: 1px solid var(--line); background: #fff; border-radius: 999px;
+      padding: 0.3rem 0.7rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; color: var(--muted);
+    }
+    .cat.active { background: var(--soft); border-color: var(--accent); color: var(--accent); }
+    .list { padding: 0.5rem 0; overflow: auto; flex: 1; }
+    .skill {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+      padding: 0.85rem 1.1rem; border-bottom: 1px solid #f3f4f6;
+    }
+    .skill:hover { background: #fafafa; }
+    .skill.added { background: #f0fdf4; }
+    .skill h3 { margin: 0 0 0.2rem; font-size: 0.9rem; }
+    .skill p { margin: 0; font-size: 0.8rem; color: var(--muted); line-height: 1.4; max-width: 36rem; }
+    .skill code { display: block; margin-top: 0.25rem; font-size: 0.7rem; color: #9ca3af; }
+    .add-btn {
+      flex-shrink: 0; border: 1px solid var(--accent); background: var(--soft); color: var(--accent);
+      border-radius: 8px; padding: 0.4rem 0.75rem; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    }
+    .add-btn.added { border-color: var(--ok); background: #ecfdf5; color: var(--ok); }
+    .cart { display: flex; flex-direction: column; background: #fafafa; }
+    .cart-head { padding: 1rem 1.1rem; border-bottom: 1px solid var(--line); background: #fff; }
+    .cart-head h2 { margin: 0 0 0.15rem; font-size: 0.95rem; }
+    .cart-head p { margin: 0; font-size: 0.8rem; color: var(--muted); }
+    .cart-items { flex: 1; overflow: auto; padding: 0.5rem 0; }
+    .cart-empty { padding: 2rem 1rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
+    .cart-item {
+      display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 1rem; border-bottom: 1px solid var(--line); background: #fff; margin: 0.35rem 0.65rem; border-radius: 8px; border: 1px solid var(--line);
+    }
+    .cart-item strong { font-size: 0.8rem; display: block; }
+    .cart-item span { font-size: 0.7rem; color: var(--muted); }
+    .rm { border: 0; background: none; color: #b91c1c; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+    .cart-foot {
+      padding: 0.85rem 1rem; border-top: 1px solid var(--line); background: #fff;
+    }
+    .cart-foot button {
+      width: 100%; border: 0; background: var(--accent); color: #fff; border-radius: 8px;
+      padding: 0.7rem; font: inherit; font-weight: 700; cursor: pointer;
+    }
+    .cart-foot button:disabled { opacity: 0.4; cursor: not-allowed; }
+    @media (max-width: 800px) { .shell { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="banner">CONCEPT A — Package builder: browse left, cart right · Add / Remove (not checkboxes)</div>
+  <div class="shell">
+    <div class="browse">
+      <div class="browse-head">
+        <h1>Skill catalog</h1>
+        <p>Browse a section, then add skills to your package.</p>
+      </div>
+      <div class="cats">
+        <button type="button" class="cat active" data-cat="accounts">Accounts</button>
+        <button type="button" class="cat" data-cat="platform">Platform</button>
+        <button type="button" class="cat" data-cat="cases">Cases</button>
+        <button type="button" class="cat" data-cat="renewals">Renewals</button>
+      </div>
+      <div class="list" id="list"></div>
+    </div>
+    <aside class="cart">
+      <div class="cart-head">
+        <h2>Your package</h2>
+        <p><span id="cartCount">0</span> skills selected</p>
+      </div>
+      <div class="cart-items" id="cart"></div>
+      <div class="cart-foot">
+        <button type="button" id="download" disabled>Download package</button>
+      </div>
+    </aside>
+  </div>
+  <script>
+    const DATA = {
+      accounts: [
+        { id: 'create_account', title: 'Create Account', desc: 'Create a new account.' },
+        { id: 'fuzzy_search_accounts', title: 'Search Accounts', desc: 'Find accounts by partial name.' },
+        { id: 'fetch_account_plan', title: 'Get Account Plan', desc: 'Get plan and objectives for one account.' },
+      ],
+      platform: [
+        { id: 'run_internal_prompt', title: 'Run a GPTfy prompt', desc: 'Run a GPTfy prompt on record data.' },
+        { id: 'fetch_session_context', title: 'Get Session Context', desc: 'Get the current page record for this chat.' },
+        { id: 'transfer_record_owner', title: 'Transfer Record Owner', desc: 'Change the owner of a record.' },
+      ],
+      cases: [
+        { id: 'create_case', title: 'Create Case', desc: 'Create a new support case.' },
+        { id: 'close_case', title: 'Close Case', desc: 'Close a case.' },
+      ],
+      renewals: [
+        { id: 'fetch_upcoming_renewals', title: 'Get Upcoming Renewals', desc: 'List renewals due in the next N days.' },
+      ],
+    };
+    const cart = new Map();
+    let active = 'accounts';
+
+    function renderList() {
+      const list = document.getElementById('list');
+      list.innerHTML = DATA[active].map(s => {
+        const inCart = cart.has(s.id);
+        return `<div class="skill ${inCart ? 'added' : ''}" data-id="${s.id}">
+          <div>
+            <h3>${s.title}</h3>
+            <p>${s.desc}</p>
+            <code>${s.id}</code>
+          </div>
+          <button type="button" class="add-btn ${inCart ? 'added' : ''}" data-id="${s.id}">
+            ${inCart ? 'Added' : 'Add'}
+          </button>
+        </div>`;
+      }).join('');
+      list.querySelectorAll('.add-btn').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const skill = Object.values(DATA).flat().find(x => x.id === id);
+          if (cart.has(id)) cart.delete(id); else cart.set(id, skill);
+          renderList(); renderCart();
+        };
+      });
+    }
+    function renderCart() {
+      const el = document.getElementById('cart');
+      document.getElementById('cartCount').textContent = cart.size;
+      document.getElementById('download').disabled = cart.size === 0;
+      if (!cart.size) {
+        el.innerHTML = '<div class="cart-empty">Nothing in your package yet.<br>Click Add on skills to the left.</div>';
+        return;
+      }
+      el.innerHTML = [...cart.values()].map(s => `
+        <div class="cart-item">
+          <div><strong>${s.title}</strong><span>${s.id}</span></div>
+          <button type="button" class="rm" data-id="${s.id}">Remove</button>
+        </div>`).join('');
+      el.querySelectorAll('.rm').forEach(b => b.onclick = () => { cart.delete(b.dataset.id); renderList(); renderCart(); });
+    }
+    document.querySelectorAll('.cat').forEach(c => {
+      c.onclick = () => {
+        document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+        active = c.dataset.cat;
+        renderList();
+      };
+    });
+    renderList(); renderCart();
+  </script>
+</body>
+</html>

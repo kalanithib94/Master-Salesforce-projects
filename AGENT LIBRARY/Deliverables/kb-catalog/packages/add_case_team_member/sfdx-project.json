@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-add_case_team_member",
+  "sourceApiVersion": "66.0"
+}

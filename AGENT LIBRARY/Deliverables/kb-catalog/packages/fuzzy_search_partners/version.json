@@ -1,0 +1,17 @@
+{
+  "packageVersion": "1.1.0",
+  "sourceApiVersion": "66.0",
+  "skill": "fuzzy_search_partners",
+  "handler": "PartnerAgenticSkillsHandler",
+  "classes": [
+    "AgenticSkillsBase",
+    "PartnerAgenticSkillsHandler"
+  ],
+  "tests": [
+    "AgenticSkillsBaseTest",
+    "PartnerAgenticSkillsHandlerTest"
+  ],
+  "requires": [
+    "GPTfy (ccai) managed package"
+  ]
+}

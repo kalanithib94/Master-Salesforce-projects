@@ -1,0 +1,132 @@
+// Updates ccai__AI_Prompt__c Agentic_Function_Class__c — all 108 skills.
+Map<String, String> skillToClass = new Map<String, String>();
+skillToClass.put('add_campaign_member', 'CampaignAgenticSkillsHandler');
+skillToClass.put('add_case_comment', 'CaseAgenticSkillsHandler');
+skillToClass.put('add_case_team_member', 'CaseAgenticSkillsHandler');
+skillToClass.put('add_cpq_quote_line', 'CpqAgenticSkillsHandler');
+skillToClass.put('add_opportunity_contact_role', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('add_opportunity_line_item', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('add_opportunity_partner', 'PartnerAgenticSkillsHandler');
+skillToClass.put('add_opportunity_team_member', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('add_order_item', 'OrderAgenticSkillsHandler');
+skillToClass.put('add_quote_line_item', 'QuoteAgenticSkillsHandler');
+skillToClass.put('assign_to_queue', 'UtilityAgenticSkillsHandler');
+skillToClass.put('calculate_cpq_quote', 'CpqAgenticSkillsHandler');
+skillToClass.put('clone_opportunity', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('close_case', 'CaseAgenticSkillsHandler');
+skillToClass.put('complete_task', 'ActivityAgenticSkillsHandler');
+skillToClass.put('convert_lead', 'LeadAgenticSkillsHandler');
+skillToClass.put('create_account', 'AccountAgenticSkillsHandler');
+skillToClass.put('create_campaign', 'CampaignAgenticSkillsHandler');
+skillToClass.put('create_care_task', 'IndustryAgenticSkillsHandler');
+skillToClass.put('create_case', 'CaseAgenticSkillsHandler');
+skillToClass.put('create_contact', 'ContactAgenticSkillsHandler');
+skillToClass.put('create_contract', 'ContractAgenticSkillsHandler');
+skillToClass.put('create_cpq_quote', 'CpqAgenticSkillsHandler');
+skillToClass.put('create_event', 'ActivityAgenticSkillsHandler');
+skillToClass.put('create_lead', 'LeadAgenticSkillsHandler');
+skillToClass.put('create_opportunity', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('create_order', 'OrderAgenticSkillsHandler');
+skillToClass.put('create_quote', 'QuoteAgenticSkillsHandler');
+skillToClass.put('create_task', 'ActivityAgenticSkillsHandler');
+skillToClass.put('create_work_order', 'FieldServiceAgenticSkillsHandler');
+skillToClass.put('fetch_account_details', 'AccountAgenticSkillsHandler');
+skillToClass.put('fetch_account_plan', 'AccountAgenticSkillsHandler');
+skillToClass.put('fetch_account_related_lists', 'AccountAgenticSkillsHandler');
+skillToClass.put('fetch_asset_details', 'ServiceAgenticSkillsHandler');
+skillToClass.put('fetch_campaign_details', 'CampaignAgenticSkillsHandler');
+skillToClass.put('fetch_campaign_members', 'CampaignAgenticSkillsHandler');
+skillToClass.put('fetch_care_plan', 'IndustryAgenticSkillsHandler');
+skillToClass.put('fetch_case_details', 'CaseAgenticSkillsHandler');
+skillToClass.put('fetch_case_entitlements', 'ServiceAgenticSkillsHandler');
+skillToClass.put('fetch_case_milestones', 'ServiceAgenticSkillsHandler');
+skillToClass.put('fetch_case_team', 'CaseAgenticSkillsHandler');
+skillToClass.put('fetch_contact_details', 'ContactAgenticSkillsHandler');
+skillToClass.put('fetch_contact_engagement_history', 'ContactAgenticSkillsHandler');
+skillToClass.put('fetch_contract_details', 'ContractAgenticSkillsHandler');
+skillToClass.put('fetch_cpq_quote_details', 'CpqAgenticSkillsHandler');
+skillToClass.put('fetch_financial_account', 'IndustryAgenticSkillsHandler');
+skillToClass.put('fetch_knowledge_article', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_lead_details', 'LeadAgenticSkillsHandler');
+skillToClass.put('fetch_my_open_opportunities', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_my_open_tasks', 'ActivityAgenticSkillsHandler');
+skillToClass.put('fetch_opportunity_contact_roles', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('fetch_opportunity_details', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('fetch_opportunity_partners', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('fetch_opportunity_team', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('fetch_order_details', 'OrderAgenticSkillsHandler');
+skillToClass.put('fetch_partner_account', 'PartnerAgenticSkillsHandler');
+skillToClass.put('fetch_picklist_values', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_pricebook_entries', 'ProductAgenticSkillsHandler');
+skillToClass.put('fetch_product_details', 'ProductAgenticSkillsHandler');
+skillToClass.put('fetch_queue_cases', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_quote_details', 'QuoteAgenticSkillsHandler');
+skillToClass.put('fetch_record_approvals', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_renewal_opportunities', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_service_appointment', 'FieldServiceAgenticSkillsHandler');
+skillToClass.put('fetch_service_resource_availability', 'FieldServiceAgenticSkillsHandler');
+skillToClass.put('fetch_session_context', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_stale_opportunities', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_subscription_details', 'OrderAgenticSkillsHandler');
+skillToClass.put('fetch_upcoming_renewals', 'UtilityAgenticSkillsHandler');
+skillToClass.put('fetch_work_order_details', 'FieldServiceAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_accounts', 'AccountAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_assets', 'ServiceAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_campaigns', 'CampaignAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_cases', 'CaseAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_contacts', 'ContactAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_leads', 'LeadAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_opportunities', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_partners', 'PartnerAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_products', 'ProductAgenticSkillsHandler');
+skillToClass.put('fuzzy_search_quotes', 'QuoteAgenticSkillsHandler');
+skillToClass.put('link_knowledge_article_to_case', 'CaseAgenticSkillsHandler');
+skillToClass.put('log_activity', 'ActivityAgenticSkillsHandler');
+skillToClass.put('remove_campaign_member', 'CampaignAgenticSkillsHandler');
+skillToClass.put('run_internal_prompt', 'UtilityAgenticSkillsHandler');
+skillToClass.put('schedule_service_appointment', 'FieldServiceAgenticSkillsHandler');
+skillToClass.put('search_knowledge_articles', 'UtilityAgenticSkillsHandler');
+skillToClass.put('transfer_record_owner', 'UtilityAgenticSkillsHandler');
+skillToClass.put('update_account_fields', 'AccountAgenticSkillsHandler');
+skillToClass.put('update_asset_fields', 'ServiceAgenticSkillsHandler');
+skillToClass.put('update_campaign_fields', 'CampaignAgenticSkillsHandler');
+skillToClass.put('update_campaign_member_status', 'CampaignAgenticSkillsHandler');
+skillToClass.put('update_care_plan_fields', 'IndustryAgenticSkillsHandler');
+skillToClass.put('update_case_fields', 'CaseAgenticSkillsHandler');
+skillToClass.put('update_contact_fields', 'ContactAgenticSkillsHandler');
+skillToClass.put('update_contract_fields', 'ContractAgenticSkillsHandler');
+skillToClass.put('update_cpq_quote_fields', 'CpqAgenticSkillsHandler');
+skillToClass.put('update_cpq_quote_line', 'CpqAgenticSkillsHandler');
+skillToClass.put('update_event', 'ActivityAgenticSkillsHandler');
+skillToClass.put('update_financial_account_fields', 'IndustryAgenticSkillsHandler');
+skillToClass.put('update_lead_fields', 'LeadAgenticSkillsHandler');
+skillToClass.put('update_opportunity_contact_role', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('update_opportunity_fields', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('update_opportunity_line_item', 'OpportunityAgenticSkillsHandler');
+skillToClass.put('update_order_fields', 'OrderAgenticSkillsHandler');
+skillToClass.put('update_order_item', 'OrderAgenticSkillsHandler');
+skillToClass.put('update_quote_fields', 'QuoteAgenticSkillsHandler');
+skillToClass.put('update_quote_line_item', 'QuoteAgenticSkillsHandler');
+skillToClass.put('update_service_appointment', 'FieldServiceAgenticSkillsHandler');
+skillToClass.put('update_subscription_fields', 'OrderAgenticSkillsHandler');
+skillToClass.put('update_task', 'ActivityAgenticSkillsHandler');
+skillToClass.put('update_work_order_fields', 'FieldServiceAgenticSkillsHandler');
+
+Set<String> skillNames = skillToClass.keySet();
+List<ccai__AI_Prompt__c> prompts = [
+    SELECT Id, Name, ccai__Agentic_Function_Class__c
+    FROM ccai__AI_Prompt__c
+    WHERE Name IN :skillNames
+];
+Integer updated = 0;
+for (ccai__AI_Prompt__c p : prompts) {
+    String target = skillToClass.get(p.Name);
+    if (p.ccai__Agentic_Function_Class__c != target) {
+        p.ccai__Agentic_Function_Class__c = target;
+        updated++;
+    }
+}
+if (!prompts.isEmpty()) {
+    update prompts;
+}
+System.debug('Updated ' + updated + ' prompt(s) to per-object handler classes.');

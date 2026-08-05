@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B — Persona starter</title>
+  <style>
+    :root {
+      --bg: #fafafa; --panel: #fff; --ink: #171717; --muted: #737373;
+      --line: #e5e5e5; --accent: #7c3aed; --soft: #ede9fe;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--ink); }
+    .banner { background: #dbeafe; color: #1e40af; text-align: center; padding: 0.45rem; font-size: 0.8rem; font-weight: 600; }
+    .page { max-width: 820px; margin: 1.25rem auto; padding: 0 1rem 2rem; }
+    .steps { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .step {
+      flex: 1; text-align: center; padding: 0.55rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
+      background: #fff; border: 1px solid var(--line); color: var(--muted);
+    }
+    .step.on { background: var(--soft); border-color: var(--accent); color: var(--accent); }
+    .panel {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem 1.4rem;
+    }
+    h1 { margin: 0 0 0.35rem; font-size: 1.25rem; }
+    .sub { margin: 0 0 1.25rem; color: var(--muted); font-size: 0.9rem; }
+    .personas { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .persona {
+      border: 2px solid var(--line); border-radius: 12px; padding: 1rem; cursor: pointer; background: #fff; text-align: left;
+    }
+    .persona:hover { border-color: #c4b5fd; }
+    .persona.selected { border-color: var(--accent); background: var(--soft); }
+    .persona h3 { margin: 0 0 0.25rem; font-size: 0.95rem; }
+    .persona p { margin: 0 0 0.5rem; font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+    .persona .count { font-size: 0.75rem; font-weight: 700; color: var(--accent); }
+    .actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.25rem; }
+    .actions button {
+      border: 1px solid var(--line); background: #fff; border-radius: 8px;
+      padding: 0.55rem 1rem; font: inherit; font-weight: 650; font-size: 0.85rem; cursor: pointer;
+    }
+    .actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .actions button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .hidden { display: none !important; }
+    .row {
+      display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.7rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .row:last-child { border-bottom: 0; }
+    .row input { margin-top: 0.2rem; accent-color: var(--accent); }
+    .row strong { display: block; font-size: 0.9rem; }
+    .row span { font-size: 0.8rem; color: var(--muted); }
+    .summary { background: var(--soft); border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.85rem; margin-bottom: 1rem; }
+    @media (max-width: 560px) { .personas { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="banner">CONCEPT B — Persona wizard: choose role first → recommended skills pre-selected → refine</div>
+  <div class="page">
+    <div class="steps">
+      <div class="step on" id="s1">1 · Choose role</div>
+      <div class="step" id="s2">2 · Refine skills</div>
+      <div class="step" id="s3">3 · Download</div>
+    </div>
+
+    <div class="panel" id="step1">
+      <h1>Who is this agent for?</h1>
+      <p class="sub">We pre-select a recommended skill set. You can edit it next.</p>
+      <div class="personas">
+        <button type="button" class="persona" data-p="ae">
+          <h3>Account Executive</h3>
+          <p>Accounts, contacts, opportunities, quotes, activities, meeting prep.</p>
+          <div class="count">~28 skills</div>
+        </button>
+        <button type="button" class="persona" data-p="support">
+          <h3>Support Agent</h3>
+          <p>Cases, comments, knowledge, queues, tasks, case summary prompts.</p>
+          <div class="count">~18 skills</div>
+        </button>
+        <button type="button" class="persona" data-p="csm">
+          <h3>Customer Success</h3>
+          <p>Accounts, renewals, engagement history, account plans, cases.</p>
+          <div class="count">~22 skills</div>
+        </button>
+        <button type="button" class="persona" data-p="full">
+          <h3>Full library</h3>
+          <p>All 111 skills — start broad, then remove what you don’t need.</p>
+          <div class="count">111 skills</div>
+        </button>
+      </div>
+      <div class="actions">
+        <button type="button" class="primary" id="toStep2" disabled>Continue with recommended set →</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="step2">
+      <h1>Refine your set</h1>
+      <p class="sub">Recommended for <strong id="personaName"></strong>. Uncheck anything you don’t want.</p>
+      <div class="summary" id="summary"></div>
+      <div id="skillRows"></div>
+      <div class="actions">
+        <button type="button" id="back1">← Back</button>
+        <button type="button" class="primary" id="toStep3">Continue →</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="step3">
+      <h1>Ready to download</h1>
+      <p class="sub">Your package is ready. (Demo only — no real zip.)</p>
+      <div class="summary" id="finalSummary"></div>
+      <div class="actions">
+        <button type="button" id="back2">← Back</button>
+        <button type="button" class="primary">Download package</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const PRESETS = {
+      ae: {
+        label: 'Account Executive',
+        skills: [
+          ['fuzzy_search_accounts', 'Search Accounts', 'Find accounts by partial name.'],
+          ['create_opportunity', 'Create Opportunity', 'Create a new opportunity.'],
+          ['log_activity', 'Log Activity', 'Log a completed call, email, or note.'],
+          ['run_internal_prompt', 'Run a GPTfy prompt', 'Run a GPTfy prompt on record data.'],
+          ['create_quote', 'Create Quote', 'Create a new quote.'],
+        ],
+      },
+      support: {
+        label: 'Support Agent',
+        skills: [
+          ['create_case', 'Create Case', 'Create a new support case.'],
+          ['add_case_comment', 'Add Case Comment', 'Add a comment to a case.'],
+          ['search_knowledge_articles', 'Search Knowledge Articles', 'Search knowledge by keywords.'],
+          ['run_internal_prompt', 'Run a GPTfy prompt', 'Summarize a case or draft a reply.'],
+        ],
+      },
+      csm: {
+        label: 'Customer Success',
+        skills: [
+          ['fetch_account_plan', 'Get Account Plan', 'Get plan and objectives for one account.'],
+          ['fetch_upcoming_renewals', 'Get Upcoming Renewals', 'List renewals due soon.'],
+          ['fetch_contact_engagement_history', 'Get Contact Engagement History', 'Recent activity for a contact.'],
+          ['run_internal_prompt', 'Run a GPTfy prompt', 'Run a GPTfy prompt on record data.'],
+        ],
+      },
+      full: {
+        label: 'Full library',
+        skills: [
+          ['run_internal_prompt', 'Run a GPTfy prompt', 'Run a GPTfy prompt on record data.'],
+          ['fuzzy_search_accounts', 'Search Accounts', 'Find accounts by partial name.'],
+          ['create_case', 'Create Case', 'Create a new support case.'],
+          ['fetch_upcoming_renewals', 'Get Upcoming Renewals', 'List renewals due soon.'],
+          ['transfer_record_owner', 'Transfer Record Owner', 'Change the owner of a record.'],
+        ],
+      },
+    };
+    let persona = null;
+
+    document.querySelectorAll('.persona').forEach(p => {
+      p.onclick = () => {
+        document.querySelectorAll('.persona').forEach(x => x.classList.remove('selected'));
+        p.classList.add('selected');
+        persona = p.dataset.p;
+        document.getElementById('toStep2').disabled = false;
+      };
+    });
+
+    function show(step) {
+      ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.toggle('hidden', id !== 'step' + step));
+      [1,2,3].forEach(n => document.getElementById('s' + n).classList.toggle('on', n === step));
+    }
+
+    document.getElementById('toStep2').onclick = () => {
+      const preset = PRESETS[persona];
+      document.getElementById('personaName').textContent = preset.label;
+      document.getElementById('summary').textContent =
+        preset.skills.length + ' skills recommended for ' + preset.label + '. All checked by default.';
+      document.getElementById('skillRows').innerHTML = preset.skills.map(([id, title, desc]) => `
+        <label class="row">
+          <input type="checkbox" checked data-id="${id}" />
+          <div><strong>${title}</strong><span>${desc}</span></div>
+        </label>`).join('');
+      show(2);
+    };
+    document.getElementById('back1').onclick = () => show(1);
+    document.getElementById('toStep3').onclick = () => {
+      const n = document.querySelectorAll('#skillRows input:checked').length;
+      document.getElementById('finalSummary').textContent =
+        n + ' skills for ' + PRESETS[persona].label + ' are ready to download.';
+      show(3);
+    };
+    document.getElementById('back2').onclick = () => show(2);
+  </script>
+</body>
+</html>

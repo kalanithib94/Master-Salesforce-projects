@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-clone_opportunity",
+  "sourceApiVersion": "66.0"
+}

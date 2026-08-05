@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-link_knowledge_article_to_case",
+  "sourceApiVersion": "66.0"
+}

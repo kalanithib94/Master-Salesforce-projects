@@ -1,0 +1,423 @@
+═══════════════════════════════════════════════════════════════════════════════
+SYSTEM PROMPT VERSION HISTORY
+File under change control:  docs/GenericCRMAssistant_SystemPrompt.txt
+Working file version:       v1.3.1  (page-context-explicit, 2026-05-08)
+Currently synced to org:    v1.3.0  on All-in-One agent (a0sJ9000001BSF5IAO)
+                            — repo is ONE PATCH AHEAD of the org.
+                              Run scripts\SyncSystemPromptToOrg.ps1 to push
+                              v1.3.1 to the All-in-One agent.
+═══════════════════════════════════════════════════════════════════════════════
+
+Snapshot naming convention:
+    vMAJOR.MINOR.PATCH__YYYY-MM-DD__short-slug.txt
+
+  - MAJOR  bumps for incompatible / breaking rule changes
+  - MINOR  bumps for new rules or significant rewrites
+  - PATCH  bumps for clarifications, typo fixes, wording polish
+  - The slug is a short kebab-case description of the change.
+
+Each snapshot is a verbatim, byte-faithful copy of GenericCRMAssistant_SystemPrompt.txt
+at the moment that version was authored. Reverting is just `Copy-Item` — see
+"How to revert" at the bottom of this file.
+
+
+───────────────────────────────────────────────────────────────────────────────
+v1.3.1  —  2026-05-08  —  page-context-explicit            [CURRENT, NOT YET DEPLOYED]
+───────────────────────────────────────────────────────────────────────────────
+File:   v1.3.1__2026-05-08__page-context-explicit.txt
+Chars:  41,089 on disk (CRLF, UTF-8); 36,607 LF-normalised codepoints.
+Lines:  ~544
+Status: Currently in docs/GenericCRMAssistant_SystemPrompt.txt.
+        NOT YET SYNCED to the All-in-One agent — run
+        scripts\SyncSystemPromptToOrg.ps1 to push (the script auto-falls
+        back to REST PATCH for prompts > 32 KB, which v1.3.1 still is).
+
+What changed (vs v1.3.0):
+  Reviewer feedback: while the user was on the **ABC Corporation Inc.**
+  Account record page and asked "Provide the account details", the agent
+  replied with a synthetic search result ("No Account found matching the
+  current record") instead of using the page-context Account Id with
+  fetch_account_details. Root cause was twofold: (a) the
+  Prompt_Command__c JSON schema for fetch_account_details only declared
+  `account_name` (required), so the LLM physically could not pass the
+  page-context Id even with perfect prompt guidance; (b) the system prompt
+  declared page context as Rule 2 priority #1 but never operationalised
+  HOW to use it — no parameter names, no "first action" pattern, no
+  examples.
+
+  This patch addresses (b). The companion schema fix for (a) is applied
+  in the org's ccai__AI_Prompt__c record for fetch_account_details
+  (and documented in GPTfy_Agent_Prompt_Commands.md §1.2).
+
+  RULE 2 — KNOW WHICH RECORD:
+   1. NEW "CRITICAL — Using the record Id from page context" sub-section
+      after the priority list, mirroring the pattern from
+      Sample system prompt.txt that already worked for Opportunity. New
+      block documents:
+        * Object Id prefixes (Account 001…, Contact 003…, Lead 00Q…,
+          Opportunity 006…, Case 500…) so the LLM can recognise the
+          page-context Id format.
+        * The exact per-object parameter name to pass the page-context Id
+          under (account_id / contact_id / lead_id / opportunity_id /
+          case_id) for every skill that accepts a record Id.
+        * Three "page-context fast paths" — for details requests,
+          updates, and activity logging — that explicitly say to call
+          fetch_/update_/log_ skills with the Id directly, without first
+          calling fuzzy_search_*.
+        * A fallback rule: if the runtime did NOT inject a page record
+          Id, fall back to priority steps 2–4. NEVER fabricate an Id and
+          NEVER paraphrase "the current record" as a search term.
+
+  EXAMPLES appendix:
+   2. NEW EXAMPLE 4 — "Page-context-driven details fetch (Account record
+      page)": fully-worked dialogue showing the user on ABC Corporation
+      Inc., asking "Provide the account details", and the assistant
+      calling fetch_account_details with `{ account_id: "001..." }`
+      directly — no fuzzy search, no name resolution.
+   3. NEW COUNTER-EXAMPLE block immediately after Example 4: shows the
+      exact failing behaviour from the screenshot ("No Account found
+      matching the current record") and explicitly labels it as INCORRECT.
+      LLMs are biased to copy patterns; explicitly showing the wrong
+      pattern + correct pattern side-by-side is the strongest available
+      mitigation.
+
+  Metadata:
+   4. Header bumped to "Version: 1.3.1 | Last updated: 2026-05-08".
+
+  Net char delta vs v1.3.0: roughly +4,200 chars (LF-normalised).
+
+Why:
+  - Production user feedback: page-context-driven flows (the most common
+    way users ask the agent to do things from a record page) were silently
+    broken for Account because fetch_account_details's Prompt_Command__c
+    schema didn't expose account_id. Even after fixing the schema, the
+    LLM needed an explicit prompt-level instruction + worked example to
+    reliably USE the new parameter; otherwise it would still default to
+    name-based reasoning out of habit.
+  - The counter-example pattern (Example 4 + COUNTER-EXAMPLE block) is a
+    deliberately heavyweight mitigation because page-context handling is
+    high-value and high-frequency. We will re-evaluate after a week of
+    production usage and trim if no regressions.
+
+Companion changes (NOT in this snapshot):
+  - GPTfy_Agent_Prompt_Commands.md §1.2: fetch_account_details schema
+    now exposes both account_id and account_name with anyOf required.
+  - Org ccai__AI_Prompt__c record (Id a07J900000DeqtdIAB,
+    Name = fetch_account_details) Prompt_Command__c field PATCHed via
+    REST API to the new schema (verified by content read-back).
+
+
+───────────────────────────────────────────────────────────────────────────────
+v1.3.0  —  2026-05-08  —  fuzzy-search-pagination                 [SUPERSEDED]
+───────────────────────────────────────────────────────────────────────────────
+File:   v1.3.0__2026-05-08__fuzzy-search-pagination.txt
+Chars:  36,499 on disk (CRLF, UTF-8); 32,403 LF-normalised codepoints.
+Lines:  496
+Status: Currently in docs/GenericCRMAssistant_SystemPrompt.txt.
+        SYNCED to the All-in-One agent (a0sJ9000001BSF5IAO) on 2026-05-08
+        via scripts\SyncSystemPromptToOrg.ps1. Stored value verified by
+        content (header, FUZZY SEARCH RESULT RENDERING block, Account
+        display schema, totalFound/displayed/remaining keys, rewritten
+        Rule 9 header all present in the stored prompt).
+
+Sync mechanism note (Jira V2-8418):
+  v1.3.0 exceeds the 32 KB anonymous-Apex script limit, so the original
+  bake-into-Apex strategy could not be used. SyncSystemPromptToOrg.ps1
+  was updated to fall back to a REST PATCH (`sf api request rest
+  /services/data/v66.0/sobjects/ccai__AI_Agent__c/<id>`) automatically
+  whenever the generated Apex would exceed 32 KB. The script now does
+  content-level verification (head/tail markers) on the REST path
+  rather than strict char-count parity (Salesforce stores CRLF, the
+  local file is LF, and PS measures by char while the stored value
+  comes back with multi-byte UTF-8 sequences re-counted, so strict
+  parity is not meaningful for the REST flow).
+
+What changed (vs v1.2.0):
+  Companion change to the GenericAgenticSkillsHandler.cls fuzzy_search_*
+  refactor (Jira V2-8418) which now fetches ALL matching records (capped
+  at 200), returns the LATEST 5 by LastModifiedDate DESC, and exposes
+  totalFound / displayed / remaining counters in the JSON envelope.
+
+  RULE 2 — KNOW WHICH RECORD:
+   1. Replaced the 3-line "When a name search returns results" block with a
+      detailed "FUZZY SEARCH RESULT RENDERING" block. New block documents:
+        * the JSON envelope keys (records, totalFound, displayed, remaining)
+        * how to render 0 / 1 / 2-5 / 6+ matches
+        * the EXACT "Showing the latest 5 of N — M more not shown" sentence
+          to append when remaining > 0
+        * the per-skill display columns (one line per fuzzy_search_* skill)
+        * for fuzzy_search_accounts: the explicit
+          "Name | Type | Industry | Website | View Record" column set,
+          with View Record as a clickable hyperlink to recordUrl (using
+          either the pre-built `viewRecord` HTML anchor or Markdown).
+
+  RULE 9 — SEARCH RESULTS DISPLAY:
+   2. Rewrote the rule body. Header line is now templated to surface
+      totalFound / displayed; footer line is templated to surface
+      `remaining` only when > 0. The list-row schema cross-references the
+      Rule 2 column tables so there is one source of truth for fuzzy
+      column ordering.
+
+  Metadata:
+   3. Header bumped to "Version: 1.3.0 | Last updated: 2026-05-08".
+
+  Net char delta: +6,803  (29,696 → 36,499).
+
+Why:
+  - Product feedback: "Apex must fetch all relevant records, agent must
+    display the latest 5 and call out how many more weren't shown."
+  - Account fuzzy needed an explicit display schema so the agent stops
+    showing Phone (which is no longer in the JSON anyway) and uniformly
+    presents Name | Type | Industry | Website | View Record.
+  - Rule 9's prior body said "Found [X] matching" without distinguishing
+    `displayed` from `totalFound`, which would have hidden the truncation
+    from the user once the cap kicks in.
+
+Companion code change: Jira V2-8418 in
+docs/../force-app/main/default/classes/GenericAgenticSkillsHandler.cls
+(refactored fuzzyQuery + new fuzzyQueryMulti + applyTopNAndCount helper +
+all five handleFuzzySearch* skills now emit totalFound/displayed/
+remaining + Account skill emits viewRecord HTML anchor; Phone removed
+from output).
+
+
+───────────────────────────────────────────────────────────────────────────────
+v1.2.0  —  2026-05-07  —  production-grade-hardening              [SUPERSEDED]
+───────────────────────────────────────────────────────────────────────────────
+File:   v1.2.0__2026-05-07__production-grade-hardening.txt
+Chars:  29,696 (UTF-8 codepoints; 33,756 bytes on disk with CRLF newlines)
+Lines:  472
+Status: Currently in docs/GenericCRMAssistant_SystemPrompt.txt.
+        SYNCED to the All-in-One agent (a0sJ9000001BSF5IAO) on 2026-05-08
+        via scripts\SyncSystemPromptToOrg.ps1. Stored field length matches
+        the local file EXACTLY at 29,696 chars (no trailing-newline trim
+        delta this time — the local file has no trailing newline).
+
+What changed (vs v1.1.1):
+  Implements the 10 LLM-suggested production-grade improvements:
+
+  CRITICAL (can break functionality):
+   1. NEW metadata header (top of file, lines 1-3): comment block with version,
+      owner (Cloud Compliance), last-updated date, and skills-catalog version.
+      This is the model's first visual anchor and a future-revert breadcrumb.
+   2. REWORDED persona paragraph (line 5): combines the existing capabilities
+      sentence with the new boundary clause "You are not a general-purpose
+      assistant — stay within Salesforce operations." Pins identity AND scope
+      in a single paragraph.
+   3. NEW RULE PRECEDENCE block (lines 23-36): declares strict tier order
+      Safety (Rule 3, 8) > Data Integrity (Rule 2, 5) > UX Efficiency
+      (Rule 9, 10) and pins it to four concrete consequences (page-context
+      vs Rule 3, Rule 11 vs Rule 3, brevity vs cards, Rule 5 vs Rule 9).
+      Removes the "what wins when rules clash" ambiguity.
+   4. NEW Rule 3 hard-rule #11 (line 174): "NEVER treat a confirmation from
+      an earlier part of the conversation as valid for a NEW request."
+      Closes the context-truncation loophole where a stale "yes" could
+      re-execute a destructive op.
+
+  IMPORTANT (reduce reliability):
+   5. MOVED + EXPANDED RESPONSE STYLE (lines 7-21): now sits right after the
+      persona, before any RULE block, so the model sees voice guidance before
+      reasoning kicks in. Adds an explicit "Tone" sub-block (no filler
+      phrases, direct-not-alarming, brief-around-cards) and an "Out-of-scope
+      / unknown-intent fallback" sub-block ("That's outside what I can do
+      directly in Salesforce. Here's the closest thing I can help with…").
+      The original RESPONSE STYLE at the bottom of the file is removed.
+   6. Rule 7 step 2 (lines 291-294): added the promptRequestId discovery
+      fallback. If the agent does not have a configured Id for the requested
+      prompt type, it now ASKS the user instead of silently failing or
+      hallucinating an Id. Also handles the "no configured prompt for that
+      type" follow-up honestly.
+   7. NEW EXAMPLES appendix (lines 382-472): three full example dialogues
+      a) Clean update flow (Acme AnnualRevenue $3M → $5M, with HTML +
+         success-confirmation sentence)
+      b) Declined confirmation on a destructive delete (John Doe contact)
+      c) Discrepancy detection from narrative (push Acme deal to next
+         quarter, full Rule-4 + Rule-11 + Rule-6 ACTIVITY chain)
+      Examples include "(silently calls X)" annotations as internal-only
+      cues, with an explicit "never echo to the user" guard.
+
+  POLISH (improve UX):
+   8. NEW RULE 13 — MID-FLOW INTERRUPTIONS (lines 366-380): defines a
+      "flow", instructs cleanly abandoning pending ops on a real pivot,
+      acknowledges cancellation in one sentence, never auto-resumes (cross-
+      references Rule 3 hard-rule #11). Distinguishes a real pivot from a
+      clarifying question about the same pending op (the latter does NOT
+      cancel the flow). When unsure, "treat it as a pivot — cancel safely".
+   9. NEW success-message block in Rule 6 (lines 265-282) titled
+      "AFTER A SUCCESSFUL MUTATION": one-sentence patterns by operation
+      type (CREATE/UPDATE/DELETE/CONVERT/CLOSE/COMPLETE/ACTIVITY) appended
+      AFTER the verbatim HTML, plus partial-success pattern for bulk.
+      Each Rule 6 flow step now references this block.
+  10. (Same as #1 above — metadata block also satisfies the "version /
+       ownership metadata" suggestion.)
+
+Why:
+  - User feedback: a 10-point LLM review flagging missing identity/persona,
+    rule-precedence ambiguity, stale-confirmation risk, no fallback for
+    unknown intent, no few-shot examples, no promptRequestId discovery
+    path, buried tone guidance, no mid-flow handling, no success-message
+    pattern, and no version/ownership metadata.
+  - Goal: bring the prompt to "production grade" so it can be onboarded by
+    new agents / reviewed by other engineers without losing context.
+
+Net char delta: +10,258 (vs v1.1.1's 19,438 → v1.2.0's 29,696).
+The growth is concentrated in:
+  - EXAMPLES appendix (~3,200 chars)
+  - RESPONSE STYLE expansion (~1,100 chars)
+  - RULE PRECEDENCE block (~1,000 chars)
+  - RULE 13 mid-flow interruptions (~1,100 chars)
+  - Rule 6 AFTER A SUCCESSFUL MUTATION block (~1,200 chars)
+  - Rule 3 hard-rule #11 + Rule 7 fallback + metadata + minor wiring
+    in each Rule 6 flow step (~2,600 chars combined).
+
+Rules 1, 2, 4, 5, 8, 9, 10, 11, 12: structurally unchanged. Rule 6 flow
+steps 6 (CREATE), 6 (UPDATE), 5 (DELETE), 5 (CONVERT), 4 (CLOSE),
+3 (COMPLETE) and 4 (ACTIVITY LOGGING) gained a "then append the
+success-confirmation sentence" tail; Rule 8 gained the same tail.
+
+
+───────────────────────────────────────────────────────────────────────────────
+v1.1.1  —  2026-05-07  —  matrix-to-bullets                      [SUPERSEDED]
+───────────────────────────────────────────────────────────────────────────────
+File:   v1.1.1__2026-05-07__matrix-to-bullets.txt
+Chars:  19,438  (UTF-8 codepoints; ~21.9 KB on disk with CRLF)
+Status: Superseded by v1.2.0 in docs/GenericCRMAssistant_SystemPrompt.txt
+        on 2026-05-07, and superseded in the org on 2026-05-08 when v1.2.0
+        was synced. Snapshot kept for revert reference only.
+
+What changed (vs v1.1.0):
+  - RULE 1 "Object support matrix" (the small ✓/— ASCII table) was replaced
+    with instruction-style bullet points. The structural table was making the
+    list hard to skim and risked the LLM mis-parsing it.
+  - The new bullets explicitly state:
+       * Standard CRUD pattern applies to FIVE objects only: Account,
+         Contact, Lead, Opportunity, Case.
+       * For all five, search / details / create / update follow the pattern
+         exactly (with the object name substituted in).
+       * Only Account / Contact / Opportunity support delete_<object>;
+         delete is destructive and Rule 3 DOUBLE-CONFIRMATION applies.
+       * Lead has NO delete_lead - use convert_lead.
+       * Case has NO delete_case  - use close_case.
+       * Anti-hallucination clause: never invent a skill name; if the
+         requested operation does not exist for that object, say so and
+         offer the closest supported alternative.
+  - Intro line on the catalog updated from "support matrix below" to
+    "per-object support notes below" so it now matches the new bullet form.
+  - Rules 2-12 + RESPONSE STYLE: unchanged.
+
+Why:
+  - User feedback: "the matrix affects the structure, make it as generic
+    bullet points to instruct the AI more clearly".
+  - Removes a non-natural-language structure that the model has to re-parse
+    every turn, and replaces it with prose-style instructions the LLM can
+    follow directly.
+
+Net char delta: +719  (more instruction text, but consistent prose flow).
+
+
+───────────────────────────────────────────────────────────────────────────────
+v1.1.0  —  2026-05-07  —  generic-skills-catalog                  [SUPERSEDED]
+───────────────────────────────────────────────────────────────────────────────
+File:   v1.1.0__2026-05-07__generic-skills-catalog.txt
+Chars:  18,719  (18.3 KB UTF-8 codepoints, ~21.1 KB on disk with CRLF)
+Status: Superseded by v1.1.1 on 2026-05-07. Snapshot kept for revert reference.
+
+What changed (vs v1.0.0):
+  - RULE 1 skills catalog rewritten from a 53-line enumeration of all 40 skill
+    names into a generic pattern + support matrix:
+        * STANDARD CRUD PATTERN  (search / details / create / update / delete)
+        * Object support matrix  (Account, Contact, Lead, Opportunity, Case)
+          with explicit "—" cells and pointers to the right alternative
+          (Lead has no delete → use convert_lead; Case has no delete → use close_case)
+        * ACTIVITY-LOGGING PATTERN
+        * OBJECT-SPECIFIC SKILLS (genuine exceptions: fetch_account_related_lists,
+          convert_lead, close_case, add_opportunity_line_item,
+          fetch_opportunity_recent_changes)
+        * ACTIVITY SKILLS (Task / Event)
+        * UTILITY SKILLS  (object-agnostic)
+  - Added inline (CONFIRMATION REQUIRED) / (DOUBLE CONFIRMATION REQUIRED)
+    annotations on every mutating skill, reinforcing Rule 3 directly in the
+    catalog itself.
+  - Net char delta: +779. The line count dropped (53 → 39) but inline safety
+    annotations and the matrix added explanatory text.
+
+Why:
+  - User feedback: "the listing is too specific — handle as generic commands".
+  - Maintenance: adding a new skill / object no longer forces manual editing
+    of multiple bullet rows.
+  - Hallucination protection: the matrix explicitly marks unsupported
+    operations and points to the correct alternative.
+
+Rules 2-12 + RESPONSE STYLE: unchanged.
+
+
+───────────────────────────────────────────────────────────────────────────────
+v1.0.0  —  2026-05-07  —  strengthened-confirmations                [BASELINE]
+───────────────────────────────────────────────────────────────────────────────
+File:   v1.0.0__2026-05-07__strengthened-confirmations.txt
+Chars:  17,940  (UTF-8 codepoints; 20,810 bytes on disk with LF newlines)
+Status: Superseded by v1.1.0 on 2026-05-07. Kept for revert reference.
+
+Provenance:
+  - Snapshot recovered directly from the org via:
+        scripts/PullOrgSystemPrompt.apex      (emits the prompt as
+                                               base64 chunks in debug log)
+        scripts/DecodeOrgSysprompt.ps1        (joins chunks + base64-decodes
+                                               + writes the .txt snapshot)
+
+What it represents:
+  - Earlier today the agent's system prompt was re-synced after Rule 3 was
+    rewritten as the "ALWAYS CONFIRM BEFORE CHANGING DATA (MANDATORY)" rule:
+        * Explicit list of which skills require / do not require confirmation
+        * 4 confirmation card formats (UPDATE / CREATE / DELETE-double / CONVERT-CLOSE-COMPLETE-ACTIVITY)
+        * 10 hard rules (NEVER assume yes, ALWAYS show record name, etc.)
+        * DOUBLE CONFIRMATION required for any delete_*
+  - Rule 6 (CRUD flows) was updated end-to-end so every mutating flow now has
+    a "MANDATORY CONFIRMATION" step that explicitly references Rule 3.
+  - Rule 8 (bulk_update_records) gained a multi-record confirmation example.
+  - Rule 11 (discrepancy detection) made explicit that updates must follow
+    Rule 3 confirmation and activity logging must follow Rule 6 ACTIVITY flow.
+
+This is the VERSION CURRENTLY DEPLOYED on the All-in-One agent in
+jeevan@cloudcompliance.app_tso_gptfy. The repo's working file (v1.1.0) is one
+generation ahead.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+HOW TO REVERT
+═══════════════════════════════════════════════════════════════════════════════
+
+1. To revert the working file in the repo to a previous version:
+       Copy-Item docs\system-prompt-versions\v<X.Y.Z>__<date>__<slug>.txt `
+                 docs\GenericCRMAssistant_SystemPrompt.txt -Force
+   (PowerShell, run from the Deliverables folder.)
+
+2. To re-sync the All-in-One agent's ccai__System_Prompt__c field to whatever
+   is currently in docs/GenericCRMAssistant_SystemPrompt.txt:
+       powershell -ExecutionPolicy Bypass -File scripts\SyncSystemPromptToOrg.ps1
+   (Pass -AgentId <Id> to target a different agent.)
+   The script bakes the file content into a one-shot anonymous Apex update,
+   runs it via `sf apex run`, and verifies the stored char length matches.
+   A 1-char "trim-trailing-newline" delta is expected and treated as success.
+
+3. To verify the org currently matches a specific version:
+       sf apex run --file scripts\PullOrgSystemPrompt.apex
+       powershell -ExecutionPolicy Bypass -File scripts\DecodeOrgSysprompt.ps1 `
+                 -OutputPath _temp_org_dump.txt
+       fc /B _temp_org_dump.txt docs\system-prompt-versions\v<X.Y.Z>...txt
+       Remove-Item _temp_org_dump.txt
+
+
+═══════════════════════════════════════════════════════════════════════════════
+DELTA POLICY
+═══════════════════════════════════════════════════════════════════════════════
+Every time docs/GenericCRMAssistant_SystemPrompt.txt is edited:
+
+  1. Bump the version per the convention above.
+  2. Save the EDITED file as a new snapshot under this folder.
+  3. Add a new entry at the TOP of this file (above the previous [CURRENT]
+     entry; mark the new one [CURRENT] and the previous one as no longer
+     current).
+  4. Document: what changed, why, and which other rules / files were touched.
+  5. If the change is deployed to the org, update the [CURRENT] section's
+     "Status" line to confirm the org is in sync.

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Handler regression — CaseAgenticSkillsHandler</title>
+<style>
+body{font-family:Segoe UI,system-ui,sans-serif;background:#0f1419;color:#e7eef8;margin:0;padding:1.25rem 1.5rem 3rem;line-height:1.45}
+.wrap{max-width:1200px;margin:0 auto}
+.hero{background:linear-gradient(145deg,#1a2332,#15202e);border:1px solid #2e3f56;border-radius:14px;padding:1.2rem 1.35rem;margin-bottom:1rem}
+h1{margin:0 0 .4rem;font-size:1.4rem;font-weight:650}
+.muted{color:#9db0c9;font-size:.92rem}
+section.intro,article.card{background:#1a2332;border:1px solid #2e3f56;border-radius:12px;padding:1rem 1.15rem;margin:.85rem 0;border-left:4px solid #2e3f56}
+article.card.ok{border-left-color:#3dd68c} article.card.warn{border-left-color:#f0b429}
+article.card.bad{border-left-color:#f07178} article.card.mute{border-left-color:#6b7c93}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:900px){.pair{grid-template-columns:1fr}}
+.col h3{margin:.1rem 0 .4rem;font-size:.95rem;color:#c5d4e8;font-weight:600}
+pre{background:#0d1218;padding:.75rem .85rem;border-radius:8px;white-space:pre-wrap;word-break:break-word;
+  font-size:.8rem;line-height:1.4;max-height:none;overflow:auto;border:1px solid #243044;margin:0}
+.pill{font-size:.72rem;font-weight:700;padding:.12rem .5rem;border-radius:999px;vertical-align:middle}
+.pill.ok{background:#14352a;color:#3dd68c}.pill.warn{background:#3a2e0e;color:#f0b429}
+.pill.bad{background:#3a1518;color:#f07178}.pill.mute{background:#2a3340;color:#9db0c9}
+code{color:#b8e0ff} header{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-bottom:.15rem}
+header h2{font-size:1.1rem;margin:0;font-weight:650} .meta{color:#9db0c9;font-size:.84rem;margin:.15rem 0 .65rem}
+ul{margin:.35rem 0 .2rem 1.15rem;padding:0} li{margin:.28rem 0}
+.toc a{color:#5eb1ff;text-decoration:none} .toc a:hover{text-decoration:underline}
+.toc{columns:2} @media(max-width:700px){.toc{columns:1}}
+.toc li{break-inside:avoid}
+</style></head><body><div class="wrap">
+<header class="hero">
+  <h1>Handler regression — CaseAgenticSkillsHandler</h1>
+  <p class="muted">2026-08-05 20:57:17 India Standard Time · 2026-08-05 15:27:17 UTC</p>
+  <p class="muted">Org <b>Master Dev</b> · Agent <code>IT_Helpdesk_Assistant05/08/2026, 11:47</code></p>
+  <p class="muted">Handler / target: <code>CaseAgenticSkillsHandler</code></p>
+</header>
+
+<section class="intro">
+  <h2 style="margin:0 0 .5rem;font-size:1rem">Why we updated this</h2>
+  <ul><li>HTML reports must show full request and full response for every skill (not scoreboard numbers)</li></ul>
+  <h2 style="margin:1rem 0 .5rem;font-size:1rem">What changed</h2>
+  <ul><li><code>regression_handler.py</code></li><li><code>handler-skill-regression-html.mdc</code></li></ul>
+  <h2 style="margin:1rem 0 .5rem;font-size:1rem">Skills in this report</h2>
+  <ul class="toc"><li><a href="#add_case_comment">add_case_comment</a> <span class="pill ok">pass</span></li><li><a href="#add_case_team_member">add_case_team_member</a> <span class="pill bad">fail_business</span></li><li><a href="#close_case">close_case</a> <span class="pill bad">fail_business</span></li><li><a href="#create_case">create_case</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_details">fetch_case_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_team">fetch_case_team</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_cases">fuzzy_search_cases</a> <span class="pill ok">pass</span></li><li><a href="#link_knowledge_article_to_case">link_knowledge_article_to_case</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_case_fields">update_case_fields</a> <span class="pill ok">pass</span></li></ul>
+</section>
+
+<article class="card ok" id="add_case_comment"><header><h2><code>add_case_comment</code></h2><span class="pill ok">pass</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseNumber&quot;: &quot;00001026&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+  &quot;CommentBody&quot;: &quot;E2E seeded case comment&quot;,
+  &quot;IsPublished&quot;: true,
+  &quot;ParentId&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+    &quot;message&quot;: &quot;✅ Case Comment Added Case #: 00001026 Comment: E2E seeded case comment 👉 View Case&quot;,
+    &quot;success&quot;: true,
+    &quot;messageHtml&quot;: &quot;&lt;div&gt;✅ &lt;b&gt;Case Comment Added&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Case #:&lt;/b&gt; 00001026&lt;/li&gt;&lt;li&gt;&lt;b&gt;Comment:&lt;/b&gt; E2E seeded case comment&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\&quot; target=\&quot;_blank\&quot;&gt;&lt;b&gt;View Case&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;&quot;
+  }
+}</pre></div></div></article><article class="card bad" id="add_case_team_member"><header><h2><code>add_case_team_member</code></h2><span class="pill bad">fail_business</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseNumber&quot;: &quot;00001026&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+  &quot;UserId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;user_id&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;team_role_id&quot;: &quot;0B7QH0000005bDR0AY&quot;,
+  &quot;TeamRoleId&quot;: &quot;0B7QH0000005bDR0AY&quot;,
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;message&quot;: &quot;⚠️ Could not add case team member Insert failed. First exception on row 0; first error: DUPLICATE_VALUE, The member you have selected is already on the team. Please select another.: []&quot;,
+    &quot;success&quot;: false,
+    &quot;messageHtml&quot;: &quot;&lt;div&gt;⚠️ &lt;b&gt;Could not add case team member&lt;/b&gt;&lt;br/&gt;Insert failed. First exception on row 0; first error: DUPLICATE_VALUE, The member you have selected is already on the team. Please select another.: []&lt;/div&gt;&quot;
+  }
+}</pre></div></div></article><article class="card bad" id="close_case"><header><h2><code>close_case</code></h2><span class="pill bad">fail_business</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseNumber&quot;: &quot;00001026&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+  &quot;Status&quot;: &quot;Closed&quot;,
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;message&quot;: &quot;⚠️ Could not close case Case is already closed.&quot;,
+    &quot;success&quot;: false,
+    &quot;messageHtml&quot;: &quot;&lt;div&gt;⚠️ &lt;b&gt;Could not close case&lt;/b&gt;&lt;br/&gt;Case is already closed.&lt;/div&gt;&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="create_case"><header><h2><code>create_case</code></h2><span class="pill ok">pass</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+  &quot;AccountName&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;ContactName&quot;: &quot;Rose E2EContact&quot;,
+  &quot;fields&quot;: {
+    &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+    &quot;Status&quot;: &quot;New&quot;,
+    &quot;Origin&quot;: &quot;Web&quot;,
+    &quot;AccountId&quot;: &quot;E2E Skill Test Account&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;500QH00000VaQ33YAF&quot;,
+    &quot;message&quot;: &quot;✅ Case Created Case #: 00001032 Subject: E2E Created Case 👉 View Case&quot;,
+    &quot;success&quot;: true,
+    &quot;messageHtml&quot;: &quot;&lt;div&gt;✅ &lt;b&gt;Case Created&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Case #:&lt;/b&gt; 00001032&lt;/li&gt;&lt;li&gt;&lt;b&gt;Subject:&lt;/b&gt; E2E Created Case&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\&quot; target=\&quot;_blank\&quot;&gt;&lt;b&gt;View Case&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="fetch_case_details"><header><h2><code>fetch_case_details</code></h2><span class="pill ok">pass</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseNumber&quot;: &quot;00001026&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view&quot;,
+    &quot;IsClosed&quot;: true,
+    &quot;Contact&quot;: &quot;Rose E2EContact&quot;,
+    &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+    &quot;Reason&quot;: null,
+    &quot;Origin&quot;: &quot;Web&quot;,
+    &quot;Type&quot;: null,
+    &quot;Priority&quot;: &quot;Medium&quot;,
+    &quot;Status&quot;: &quot;Closed&quot;,
+    &quot;Description&quot;: &quot;E2E_SKILL_TEST&quot;,
+    &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+    &quot;CaseNumber&quot;: &quot;00001026&quot;,
+    &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="fetch_case_team"><header><h2><code>fetch_case_team</code></h2><span class="pill ok">pass</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseNumber&quot;: &quot;00001026&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;teamMembers&quot;: [
+      {
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/CaseTeamMember/0B6QH000000150r0AA/view&quot;,
+        &quot;TeamRole&quot;: &quot;E2E Role&quot;,
+        &quot;MemberName&quot;: &quot;Kalanithi Balasubramanian&quot;,
+        &quot;MemberId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+        &quot;Id&quot;: &quot;0B6QH000000150r0AA&quot;
+      }
+    ],
+    &quot;count&quot;: 1,
+    &quot;caseId&quot;: &quot;500QH00000VaKWEYA3&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_cases"><header><h2><code>fuzzy_search_cases</code></h2><span class="pill ok">pass</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2E Skill&quot;,
+  &quot;search_term&quot;: &quot;E2E Skill&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;records&quot;: [
+      {
+        &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view&quot;,
+        &quot;Priority&quot;: &quot;Medium&quot;,
+        &quot;Status&quot;: &quot;New&quot;,
+        &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+        &quot;CaseNumber&quot;: &quot;00001032&quot;,
+        &quot;Id&quot;: &quot;500QH00000VaQ33YAF&quot;
+      },
+      {
+        &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view&quot;,
+        &quot;Priority&quot;: &quot;Medium&quot;,
+        &quot;Status&quot;: &quot;Closed&quot;,
+        &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+        &quot;CaseNumber&quot;: &quot;00001026&quot;,
+        &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+      },
+      {
+        &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaLIjYAN/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaLIjYAN/view&quot;,
+        &quot;Priority&quot;: &quot;Medium&quot;,
+        &quot;Status&quot;: &quot;New&quot;,
+        &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+        &quot;CaseNumber&quot;: &quot;00001031&quot;,
+        &quot;Id&quot;: &quot;500QH00000VaLIjYAN&quot;
+      },
+      {
+        &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNPHYA3/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNPHYA3/view&quot;,
+        &quot;Priority&quot;: &quot;Medium&quot;,
+        &quot;Status&quot;: &quot;New&quot;,
+        &quot;Subject&quot;: &quot;E2E Natural Key Case Smoke&quot;,
+        &quot;CaseNumber&quot;: &quot;00001030&quot;,
+        &quot;Id&quot;: &quot;500QH00000VaNPHYA3&quot;
+      },
+      {
+        &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaImGYAV/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaImGYAV/view&quot;,
+        &quot;Priority&quot;: &quot;Medium&quot;,
+        &quot;Status&quot;: &quot;New&quot;,
+        &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+        &quot;CaseNumber&quot;: &quot;00001029&quot;,
+        &quot;Id&quot;: &quot;500QH00000VaImGYAV&quot;
+      }
+    ],
+    &quot;remaining&quot;: 2,
+    &quot;displayed&quot;: 5,
+    &quot;totalFound&quot;: 7,
+    &quot;status&quot;: &quot;found&quot;
+  }
+}</pre></div></div></article><article class="card mute" id="link_knowledge_article_to_case"><header><h2><code>link_knowledge_article_to_case</code></h2><span class="pill mute">fail_missing_feature</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;KnowledgeArticleId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;message&quot;: &quot;⚠️ Could not link article CaseArticle is not available in this org (Knowledge may not be enabled).&quot;,
+    &quot;success&quot;: false,
+    &quot;messageHtml&quot;: &quot;&lt;div&gt;⚠️ &lt;b&gt;Could not link article&lt;/b&gt;&lt;br/&gt;CaseArticle is not available in this org (Knowledge may not be enabled).&lt;/div&gt;&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="update_case_fields"><header><h2><code>update_case_fields</code></h2><span class="pill ok">pass</span></header><p class="meta">handler <code>CaseAgenticSkillsHandler</code></p><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseNumber&quot;: &quot;00001026&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+  &quot;fields&quot;: {
+    &quot;Priority&quot;: &quot;Medium&quot;
+  },
+  &quot;Priority&quot;: &quot;Medium&quot;,
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+    &quot;message&quot;: &quot;✅ Case Updated 00001026 Priority: Medium → Medium Subject: E2E Skill Test Case → E2E Skill Test Case 👉 View Case&quot;,
+    &quot;success&quot;: true,
+    &quot;messageHtml&quot;: &quot;&lt;div&gt;✅ &lt;b&gt;Case Updated&lt;/b&gt;&lt;br/&gt;&lt;b&gt;00001026&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Priority:&lt;/b&gt; Medium → &lt;b&gt;Medium&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;Subject:&lt;/b&gt; E2E Skill Test Case → &lt;b&gt;E2E Skill Test Case&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\&quot; target=\&quot;_blank\&quot;&gt;&lt;b&gt;View Case&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;&quot;
+  }
+}</pre></div></div></article>
+
+<footer class="muted" style="margin-top:1.5rem;font-size:.84rem">
+  Each card is the full invoke request payload and the full API/Apex response for that skill.
+</footer>
+</div></body></html>

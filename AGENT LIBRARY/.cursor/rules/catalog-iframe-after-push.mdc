@@ -1,0 +1,29 @@
+---
+description: After publishing the KB catalog to GitHub, always return the updated iframe embed code.
+alwaysApply: true
+---
+
+# Catalog iframe after git push
+
+Whenever you push updates to the public skill catalog repo (`gptfy-agentic-skills-catalog` / GitHub Pages), **always end with the updated iframe embed code** in the same response.
+
+## Required output after a successful push
+
+1. Get the latest short SHA from `main` (or the commit just pushed).
+2. Provide this iframe block with a cache-busting `?v=<sha>` query param:
+
+```html
+<iframe
+  src="https://kalanithib94.github.io/gptfy-agentic-skills-catalog/?v=<sha>"
+  title="GPTfy Agentic Skills Catalog"
+  width="100%"
+  height="900"
+  style="border:0; border-radius:12px; min-height:720px;"
+  loading="lazy"
+  allow="clipboard-write"
+></iframe>
+```
+
+3. Also include the plain live URL with the same `?v=<sha>` for quick copy.
+
+Do this automatically — do not wait for the user to ask for the iframe.

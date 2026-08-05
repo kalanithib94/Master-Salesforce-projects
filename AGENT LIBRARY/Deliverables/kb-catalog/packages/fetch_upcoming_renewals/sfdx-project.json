@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-fetch_upcoming_renewals",
+  "sourceApiVersion": "66.0"
+}

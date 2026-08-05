@@ -1,0 +1,24 @@
+---
+description: Keep responses concise, clear, and in bullet points
+alwaysApply: true
+---
+
+# Concise Bullet-Point Responses
+
+- Keep every response **concise and clear** — no filler, repetition, or unnecessary detail
+- Use **bullet points** as the primary format for explanations, steps, and lists
+- Lead with the direct answer or outcome, then supporting bullets
+- One idea per bullet; keep bullets short (1–2 lines when possible)
+- Use short headings only when they improve scanability for longer answers
+- Avoid long paragraphs — break content into bullets instead
+- Skip engagement bait, filler closings, and redundant summaries
+
+## Examples
+
+**Prefer:**
+- Root cause: missing null check in `getUser()`
+- Fix: add guard before accessing `user.email`
+- Test: run `npm test auth.test.ts`
+
+**Avoid:**
+Long prose paragraphs that repeat the same information in multiple sentences without structure.

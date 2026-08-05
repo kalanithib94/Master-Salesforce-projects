@@ -1,0 +1,17 @@
+{
+  "packageVersion": "1.1.0",
+  "sourceApiVersion": "66.0",
+  "skill": "schedule_service_appointment",
+  "handler": "FieldServiceAgenticSkillsHandler",
+  "classes": [
+    "AgenticSkillsBase",
+    "FieldServiceAgenticSkillsHandler"
+  ],
+  "tests": [
+    "AgenticSkillsBaseTest",
+    "FieldServiceAgenticSkillsHandlerTest"
+  ],
+  "requires": [
+    "GPTfy (ccai) managed package"
+  ]
+}

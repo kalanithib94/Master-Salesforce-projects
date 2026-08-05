@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-fuzzy_search_leads",
+  "sourceApiVersion": "66.0"
+}

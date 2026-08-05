@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>AgenticSkillsBase</members>
+        <members>AccountAgenticSkillsHandler</members>
+        <members>ContactAgenticSkillsHandler</members>
+        <members>LeadAgenticSkillsHandler</members>
+        <members>OpportunityAgenticSkillsHandler</members>
+        <members>CaseAgenticSkillsHandler</members>
+        <members>ActivityAgenticSkillsHandler</members>
+        <members>UtilityAgenticSkillsHandler</members>
+        <members>ProductAgenticSkillsHandler</members>
+        <members>CampaignAgenticSkillsHandler</members>
+        <members>QuoteAgenticSkillsHandler</members>
+        <members>ContractAgenticSkillsHandler</members>
+        <members>ServiceAgenticSkillsHandler</members>
+        <members>FieldServiceAgenticSkillsHandler</members>
+        <members>CpqAgenticSkillsHandler</members>
+        <members>OrderAgenticSkillsHandler</members>
+        <members>PartnerAgenticSkillsHandler</members>
+        <members>IndustryAgenticSkillsHandler</members>
+        <members>GenericAgenticSkillsHandler</members>
+        <members>GenericAgenticSkillsHandlerTest</members>
+        <name>ApexClass</name>
+    </types>
+    <version>66.0</version>
+</Package>

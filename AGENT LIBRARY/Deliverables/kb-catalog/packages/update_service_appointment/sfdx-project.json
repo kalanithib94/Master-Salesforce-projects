@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-update_service_appointment",
+  "sourceApiVersion": "66.0"
+}

@@ -1,0 +1,1961 @@
+{
+  "add_campaign_member": {
+    "required": [
+      "CampaignId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "CampaignId",
+        "type": "string",
+        "description": "Parent Campaign Id (CampaignMember.CampaignId). Create a CampaignMember under this campaign — do NOT pass CampaignMember Id."
+      },
+      {
+        "name": "ContactId",
+        "type": "string",
+        "description": "Contact to enroll (CampaignMember.ContactId). Use ContactId OR LeadId, not both."
+      },
+      {
+        "name": "LeadId",
+        "type": "string",
+        "description": "Lead to enroll (CampaignMember.LeadId). Use LeadId OR ContactId, not both."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "Optional CampaignMember.Status picklist API value (e.g. Sent, Responded)."
+      }
+    ]
+  },
+  "add_case_comment": {
+    "required": [
+      "ParentId",
+      "CommentBody"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "ParentId",
+        "type": "string",
+        "description": "Case Id to comment on (CaseComment.ParentId). Not the CaseComment Id."
+      },
+      {
+        "name": "CommentBody",
+        "type": "string",
+        "description": "Text of the public case comment — must be confirmed with the user."
+      },
+      {
+        "name": "IsPublished",
+        "type": "boolean",
+        "description": "Optional. Defaults true (visible to customer portal when applicable)."
+      }
+    ]
+  },
+  "add_case_team_member": {
+    "required": [
+      "CaseId",
+      "UserId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "CaseId",
+        "type": "string",
+        "description": "Salesforce case id."
+      },
+      {
+        "name": "UserId",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "TeamRole",
+        "type": "string",
+        "description": ""
+      }
+    ]
+  },
+  "add_cpq_quote_line": {
+    "required": [
+      "SBQQ__Quote__c"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "SBQQ__Quote__c",
+        "type": "string",
+        "description": "Parent CPQ Quote Id (SBQQ__QuoteLine__c.SBQQ__Quote__c). Not the quote-line Id."
+      }
+    ]
+  },
+  "add_opportunity_contact_role": {
+    "required": [
+      "OpportunityId",
+      "ContactId",
+      "Role"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Opportunity Id (OpportunityContactRole.OpportunityId)."
+      },
+      {
+        "name": "ContactId",
+        "type": "string",
+        "description": "Contact Id (OpportunityContactRole.ContactId)."
+      },
+      {
+        "name": "Role",
+        "type": "string",
+        "description": "OCR Role picklist API value (e.g. Decision Maker)."
+      },
+      {
+        "name": "IsPrimary",
+        "type": "boolean",
+        "description": "Optional. OpportunityContactRole.IsPrimary."
+      }
+    ]
+  },
+  "add_opportunity_line_item": {
+    "required": [
+      "OpportunityId",
+      "Quantity",
+      "UnitPrice"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Parent Opportunity Id (OpportunityLineItem.OpportunityId). Not the line-item Id."
+      },
+      {
+        "name": "PricebookEntryId",
+        "type": "string",
+        "description": "Optional. PricebookEntry Id. Use when already known."
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "Optional. Product name resolved to an active PricebookEntry on the Opportunity price book."
+      },
+      {
+        "name": "Quantity",
+        "type": "number",
+        "description": "Quantity of the product (must be > 0). OpportunityLineItem.Quantity."
+      },
+      {
+        "name": "UnitPrice",
+        "type": "number",
+        "description": "Unit price for the line item (OpportunityLineItem.UnitPrice)."
+      }
+    ]
+  },
+  "add_opportunity_partner": {
+    "required": [
+      "OpportunityId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Salesforce opportunity id."
+      },
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "Role",
+        "type": "string",
+        "description": "Partner role for the opportunity-account relationship."
+      }
+    ]
+  },
+  "add_opportunity_team_member": {
+    "required": [
+      "OpportunityId",
+      "UserId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Salesforce opportunity id."
+      },
+      {
+        "name": "UserId",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "TeamRole",
+        "type": "string",
+        "description": ""
+      }
+    ]
+  },
+  "add_order_item": {
+    "required": [
+      "OrderId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OrderId",
+        "type": "string",
+        "description": "Parent Order Id (OrderItem.OrderId). Not the OrderItem Id."
+      }
+    ]
+  },
+  "add_quote_line_item": {
+    "required": [
+      "QuoteId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "QuoteId",
+        "type": "string",
+        "description": "Parent Quote Id (QuoteLineItem.QuoteId). Not the line-item Id."
+      }
+    ]
+  },
+  "assign_to_queue": {
+    "required": [
+      "Id",
+      "OwnerId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce record id."
+      },
+      {
+        "name": "OwnerId",
+        "type": "string",
+        "description": ""
+      }
+    ]
+  },
+  "calculate_cpq_quote": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce cpq quote id."
+      }
+    ]
+  },
+  "clone_opportunity": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Opportunity Id to clone (primary Id of the source Opportunity)."
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "Optional name for the clone (defaults to source Name + Copy)."
+      }
+    ]
+  },
+  "close_case": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Case Id to close (primary Id of Case)."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "Optional. Case.Status picklist closed value (default Closed). Use org closed values such as Closed, Resolved."
+      },
+      {
+        "name": "Reason",
+        "type": "string",
+        "description": "Optional. Case.Reason picklist API value at closure (e.g. User error, Other)."
+      },
+      {
+        "name": "Comments",
+        "type": "string",
+        "description": "Optional. Public CaseComment.CommentBody to post at closure."
+      }
+    ]
+  },
+  "complete_task": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Task to mark Completed."
+      }
+    ]
+  },
+  "convert_lead": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Lead to convert."
+      },
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": "Optional. The Salesforce Id of an EXISTING Account to merge the Lead into."
+      },
+      {
+        "name": "opportunityName",
+        "type": "string",
+        "description": "Optional. Name for the Opportunity that will be created."
+      },
+      {
+        "name": "doNotCreateOpportunity",
+        "type": "boolean",
+        "description": "Optional. If true, no Opportunity is created during conversion. Default false."
+      }
+    ]
+  },
+  "create_account": {
+    "required": [
+      "Name"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "REQUIRED. The Account Name (e.g. \"Acme Corporation\"). This is the only mandatory parameter for creating an Account — do not invoke this skill without it."
+      },
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Optional. Map of additional Account field API names to their values — Industry, Type, AnnualRevenue, NumberOfEmployees, Phone, Website, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Description, Rating, custom fields, etc. Do NOT put \"Name\" here — pass it at the top level. Numbers as numbers, booleans as true/false, picklist values as the exact API value."
+      }
+    ]
+  },
+  "create_campaign": {
+    "required": [
+      "Name"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "REQUIRED. Campaign Name (org field)."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "Campaign Status picklist API value."
+      },
+      {
+        "name": "Type",
+        "type": "string",
+        "description": "Campaign Type picklist API value."
+      },
+      {
+        "name": "StartDate",
+        "type": "string",
+        "description": "Campaign StartDate (yyyy-MM-dd)."
+      },
+      {
+        "name": "EndDate",
+        "type": "string",
+        "description": "Campaign EndDate (yyyy-MM-dd)."
+      }
+    ]
+  },
+  "create_care_task": {
+    "required": [
+      "WhatId",
+      "Subject"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "WhatId",
+        "type": "string",
+        "description": "Care Plan (or related) record Id for Task.WhatId — parent, not the task Id."
+      },
+      {
+        "name": "Subject",
+        "type": "string",
+        "description": "Task.Subject (required)."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "Optional Task.Status (default Not Started)."
+      },
+      {
+        "name": "Priority",
+        "type": "string",
+        "description": "Optional Task.Priority (default Normal)."
+      },
+      {
+        "name": "Description",
+        "type": "string",
+        "description": "Optional Task.Description."
+      },
+      {
+        "name": "ActivityDate",
+        "type": "string",
+        "description": "Optional Task.ActivityDate (yyyy-MM-dd)."
+      }
+    ]
+  },
+  "create_case": {
+    "required": [
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Case field API names to values. MUST include \"Subject\". May include Description, Status, Priority, Type, Origin, Reason, AccountId, ContactId, OwnerId and custom fields."
+      }
+    ]
+  },
+  "create_contact": {
+    "required": [],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "LastName",
+        "type": "string",
+        "description": "REQUIRED. Contact LastName (org field API name)."
+      },
+      {
+        "name": "FirstName",
+        "type": "string",
+        "description": "Contact FirstName."
+      },
+      {
+        "name": "Email",
+        "type": "string",
+        "description": "Contact Email."
+      },
+      {
+        "name": "Phone",
+        "type": "string",
+        "description": "Contact Phone."
+      },
+      {
+        "name": "Title",
+        "type": "string",
+        "description": "Contact Title."
+      },
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": "Parent Account Id (org relationship field AccountId). Prefer over accountName when known."
+      },
+      {
+        "name": "accountName",
+        "type": "string",
+        "description": "Optional. Parent Account Name when AccountId is unknown — skill resolves to AccountId."
+      }
+    ]
+  },
+  "create_contract": {
+    "required": [
+      "AccountId"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": "Parent Account Id (Contract.AccountId). Required."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "Contract.Status picklist API value."
+      },
+      {
+        "name": "StartDate",
+        "type": "string",
+        "description": "Contract.StartDate (yyyy-MM-dd)."
+      },
+      {
+        "name": "ContractTerm",
+        "type": "integer",
+        "description": "Contract.ContractTerm (months)."
+      },
+      {
+        "name": "Description",
+        "type": "string",
+        "description": "Contract.Description."
+      }
+    ]
+  },
+  "create_cpq_quote": {
+    "required": [
+      "OpportunityId"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Parent Opportunity Id (SBQQ__Quote__c.SBQQ__Opportunity2__c or equivalent)."
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "Optional CPQ quote Name."
+      }
+    ]
+  },
+  "create_event": {
+    "required": [
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Event field API names to values. MUST include \"Subject\" AND \"StartDateTime\" (ISO 8601, e.g. \"2026-05-31T14:30:00Z\"). Provide EITHER \"EndDateTime\" OR \"DurationInMinutes\". May also include \"Description\", \"Location\", \"WhatId\" (record like Account/Opportunity), \"WhoId\" (Contact/Lead), \"IsAllDayEvent\" and custom fields."
+      }
+    ]
+  },
+  "create_lead": {
+    "required": [
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Lead field API names to values. MUST include \"LastName\" AND \"Company\". May include FirstName, Title, Email, Phone, MobilePhone, Status, LeadSource, Industry, Rating, AnnualRevenue, NumberOfEmployees and custom fields."
+      }
+    ]
+  },
+  "create_opportunity": {
+    "required": [
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Opportunity field API names to values. MUST include \"Name\", \"StageName\", AND \"CloseDate\" (yyyy-MM-dd). May include AccountId, Amount, Probability, Type, LeadSource, NextStep, Description, Pricebook2Id and custom fields."
+      }
+    ]
+  },
+  "create_order": {
+    "required": [
+      "AccountId",
+      "Status",
+      "EffectiveDate"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": "Parent Account Id (Order.AccountId)."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "Order.Status picklist API value (e.g. Draft)."
+      },
+      {
+        "name": "EffectiveDate",
+        "type": "string",
+        "description": "Order.EffectiveDate (yyyy-MM-dd)."
+      },
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Optional Order.OpportunityId."
+      },
+      {
+        "name": "Pricebook2Id",
+        "type": "string",
+        "description": "Optional Order.Pricebook2Id."
+      }
+    ]
+  },
+  "create_quote": {
+    "required": [
+      "Name",
+      "OpportunityId"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "Quote.Name (required)."
+      },
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Parent Opportunity Id (Quote.OpportunityId)."
+      },
+      {
+        "name": "ExpirationDate",
+        "type": "string",
+        "description": "Optional Quote.ExpirationDate (yyyy-MM-dd)."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "Optional Quote.Status picklist API value."
+      }
+    ]
+  },
+  "create_task": {
+    "required": [
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Task field API names to values. MUST include \"Subject\". Set \"WhatId\" to the Account/Opportunity/Case Id OR \"WhoId\" to the Contact/Lead Id. May also include Description, Status, Priority, ActivityDate (yyyy-MM-dd), OwnerId and custom fields."
+      }
+    ]
+  },
+  "create_work_order": {
+    "required": [],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": "Salesforce account id."
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "Record name (required for most objects)."
+      }
+    ]
+  },
+  "fetch_account_details": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Account Id (001…). Prefer when known (page context / prior skill)."
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "Account Name for lookup when Id is unknown. Fuzzy match on Name."
+      },
+      {
+        "name": "userContextId",
+        "type": "string",
+        "description": "Session / page context id when chatting on an Account record page."
+      }
+    ]
+  },
+  "fetch_account_plan": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Account Id (primary Id of Account whose plan to load)."
+      }
+    ]
+  },
+  "fetch_account_related_lists": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Account whose related lists should be fetched."
+      },
+      {
+        "name": "related",
+        "type": "array",
+        "description": "Optional. Which related lists to fetch. Allowed values: \"contacts\", \"opportunities\", \"cases\". If omitted, all three are returned."
+      }
+    ]
+  },
+  "fetch_asset_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce asset id."
+      }
+    ]
+  },
+  "fetch_campaign_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Campaign Id (primary Id of Campaign, prefix 701…)."
+      }
+    ]
+  },
+  "fetch_campaign_members": {
+    "required": [
+      "CampaignId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "CampaignId",
+        "type": "string",
+        "description": "Campaign Id (CampaignMember.CampaignId relationship). Not the CampaignMember Id."
+      }
+    ]
+  },
+  "fetch_care_plan": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce record id."
+      }
+    ]
+  },
+  "fetch_case_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Either the Salesforce Id of the Case (starts with \"500\") OR the human-readable CaseNumber (e.g. \"00001234\")."
+      }
+    ]
+  },
+  "fetch_case_entitlements": {
+    "required": [
+      "CaseId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "CaseId",
+        "type": "string",
+        "description": "Salesforce case id."
+      }
+    ]
+  },
+  "fetch_case_milestones": {
+    "required": [
+      "CaseId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "CaseId",
+        "type": "string",
+        "description": "Salesforce case id."
+      }
+    ]
+  },
+  "fetch_case_team": {
+    "required": [
+      "CaseId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "CaseId",
+        "type": "string",
+        "description": "Salesforce case id."
+      }
+    ]
+  },
+  "fetch_contact_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Contact whose details should be fetched."
+      }
+    ]
+  },
+  "fetch_contact_engagement_history": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Contact Id (primary Id of Contact)."
+      },
+      {
+        "name": "daysBack",
+        "type": "integer",
+        "description": "How far back to look (default 90 days)."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "description": "Max items (default 50)."
+      }
+    ]
+  },
+  "fetch_contract_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Contract Id (primary Id of Contract)."
+      }
+    ]
+  },
+  "fetch_cpq_quote_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce cpq quote id."
+      }
+    ]
+  },
+  "fetch_financial_account": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce record id."
+      }
+    ]
+  },
+  "fetch_knowledge_article": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "KnowledgeArticleVersion Id or KnowledgeArticleId (primary article identity)."
+      }
+    ]
+  },
+  "fetch_lead_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Lead whose details should be fetched."
+      }
+    ]
+  },
+  "fetch_my_open_opportunities": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "limit",
+        "type": "integer",
+        "description": "Max rows (default 50)."
+      }
+    ]
+  },
+  "fetch_my_open_tasks": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "limit",
+        "type": "integer",
+        "description": "Optional. Maximum number of tasks to return (1-200). Defaults to 25."
+      }
+    ]
+  },
+  "fetch_opportunity_contact_roles": {
+    "required": [
+      "OpportunityId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Opportunity Id (OpportunityContactRole.OpportunityId). Not the contact-role Id."
+      }
+    ]
+  },
+  "fetch_opportunity_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Opportunity whose details should be fetched."
+      }
+    ]
+  },
+  "fetch_opportunity_partners": {
+    "required": [
+      "OpportunityId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Salesforce opportunity id."
+      }
+    ]
+  },
+  "fetch_opportunity_team": {
+    "required": [
+      "OpportunityId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OpportunityId",
+        "type": "string",
+        "description": "Opportunity Id (OpportunityTeamMember.OpportunityId). Not the team-member Id."
+      }
+    ]
+  },
+  "fetch_order_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce order id."
+      }
+    ]
+  },
+  "fetch_partner_account": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Partner account Id (primary Id of the Account / partner record)."
+      }
+    ]
+  },
+  "fetch_picklist_values": {
+    "required": [
+      "objectApiName",
+      "fieldApiName"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "objectApiName",
+        "type": "string",
+        "description": "API name of the object the field lives on. Examples: \"Account\", \"Opportunity\", \"Custom_Object__c\"."
+      },
+      {
+        "name": "fieldApiName",
+        "type": "string",
+        "description": "API name of the picklist or multi-picklist field. Examples: \"Industry\", \"StageName\", \"Type__c\"."
+      },
+      {
+        "name": "controllerValue",
+        "type": "string",
+        "description": "Required ONLY for dependent picklists. The exact API value of the controlling field that the record will have AFTER the update. The skill returns only the dependent values valid for this controller value."
+      }
+    ]
+  },
+  "fetch_pricebook_entries": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Pricebook2Id",
+        "type": "string",
+        "description": "Optional. Pricebook2 Id. Defaults to standard pricebook."
+      },
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Optional. Filter entries to one Product2 Id."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "description": "Optional. Max rows (1-200). Default 25."
+      }
+    ]
+  },
+  "fetch_product_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce Product2 Id."
+      }
+    ]
+  },
+  "fetch_queue_cases": {
+    "required": [
+      "OwnerId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "OwnerId",
+        "type": "string",
+        "description": "Salesforce queue id."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "description": ""
+      }
+    ]
+  },
+  "fetch_quote_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce quote id."
+      }
+    ]
+  },
+  "fetch_record_approvals": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce record id."
+      }
+    ]
+  },
+  "fetch_renewal_opportunities": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": "Optional Account filter (Opportunity.AccountId)."
+      }
+    ]
+  },
+  "fetch_service_appointment": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce record id."
+      }
+    ]
+  },
+  "fetch_service_resource_availability": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ServiceResource Id (primary Id of the resource whose availability to check)."
+      },
+      {
+        "name": "StartDate",
+        "type": "string",
+        "description": "Optional window start (yyyy-MM-dd)."
+      },
+      {
+        "name": "EndDate",
+        "type": "string",
+        "description": "Optional window end (yyyy-MM-dd)."
+      }
+    ]
+  },
+  "fetch_session_context": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Optional. Salesforce Id of the page-context or related record (15 or 18 characters). Pass when you have a confirmed record Id from the record page. If omitted, the skill resolves from the session record or userContextId when applicable."
+      }
+    ]
+  },
+  "fetch_stale_opportunities": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "daysStale",
+        "type": "integer",
+        "description": "Days since last activity (default 30)."
+      }
+    ]
+  },
+  "fetch_subscription_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce subscription id."
+      }
+    ]
+  },
+  "fetch_upcoming_renewals": {
+    "required": [],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "daysAhead",
+        "type": "integer",
+        "description": "Days ahead to look (default 90)."
+      },
+      {
+        "name": "AccountId",
+        "type": "string",
+        "description": "Optional Account filter."
+      },
+      {
+        "name": "OwnerId",
+        "type": "string",
+        "description": "Optional owner filter."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "description": "Max rows (default 50)."
+      }
+    ]
+  },
+  "fetch_work_order_details": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce work order id."
+      }
+    ]
+  },
+  "fuzzy_search_accounts": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "The Account name (or partial name) to search for. Examples: \"Acme\", \"power grid\", \"United Health\"."
+      }
+    ]
+  },
+  "fuzzy_search_assets": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Partial name or keyword to search."
+      }
+    ]
+  },
+  "fuzzy_search_campaigns": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Partial name or keyword to search."
+      }
+    ]
+  },
+  "fuzzy_search_cases": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Case Subject partial text or CaseNumber (e.g. 00001234)."
+      }
+    ]
+  },
+  "fuzzy_search_contacts": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "The Contact name OR email (or partial) to search for. Examples: \"John Smith\", \"john@acme.com\", \"Khan\"."
+      }
+    ]
+  },
+  "fuzzy_search_leads": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Lead name, company name, or email to search for. Examples: \"Jane Doe\", \"Acme Industries\", \"jane@acme.com\"."
+      }
+    ]
+  },
+  "fuzzy_search_opportunities": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Opportunity Name (partial) OR Salesforce Opportunity Id (006…)."
+      }
+    ]
+  },
+  "fuzzy_search_partners": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Partial name or keyword to search."
+      }
+    ]
+  },
+  "fuzzy_search_products": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Product name or product code partial match."
+      }
+    ]
+  },
+  "fuzzy_search_quotes": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Partial name or keyword to search."
+      }
+    ]
+  },
+  "link_knowledge_article_to_case": {
+    "required": [
+      "CaseId",
+      "KnowledgeArticleId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "CaseId",
+        "type": "string",
+        "description": "Salesforce case id."
+      },
+      {
+        "name": "KnowledgeArticleId",
+        "type": "string",
+        "description": ""
+      }
+    ]
+  },
+  "log_activity": {
+    "required": [
+      "Subject"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "WhatId",
+        "type": "string",
+        "description": "Related record for Task.WhatId (Account, Opportunity, Case, etc.). Use WhatId OR WhoId."
+      },
+      {
+        "name": "WhoId",
+        "type": "string",
+        "description": "Person for Task.WhoId (Contact or Lead). Use WhoId OR WhatId."
+      },
+      {
+        "name": "Subject",
+        "type": "string",
+        "description": "Task.Subject for the completed activity — must be confirmed with the user."
+      },
+      {
+        "name": "Description",
+        "type": "string",
+        "description": "Optional Task.Description notes/summary."
+      }
+    ]
+  },
+  "remove_campaign_member": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "CampaignMember Id (primary Id of the membership row to delete). Not CampaignId."
+      }
+    ]
+  },
+  "run_internal_prompt": {
+    "required": [
+      "promptRequestId",
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "promptRequestId",
+        "type": "string",
+        "description": "The pre-configured GPTfy Prompt Request Id to invoke. Example: \"96a10206d7990a5fabc728ddfd83be0fbd5a9\". Must exist in the org configuration — never make this up."
+      },
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the record the prompt should run against (e.g. an Opportunity Id for a Deal Overview prompt)."
+      }
+    ]
+  },
+  "schedule_service_appointment": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce service appointment id."
+      },
+      {
+        "name": "StartDateTime",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "EndDateTime",
+        "type": "string",
+        "description": ""
+      }
+    ]
+  },
+  "search_knowledge_articles": {
+    "required": [
+      "searchTerm"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "searchTerm",
+        "type": "string",
+        "description": "Keywords to search Knowledge."
+      }
+    ]
+  },
+  "transfer_record_owner": {
+    "required": [
+      "Id",
+      "OwnerId"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce Id of the record to reassign."
+      },
+      {
+        "name": "OwnerId",
+        "type": "string",
+        "description": "User Id (005…) or Queue Id (00G…) for the new owner."
+      }
+    ]
+  },
+  "update_account_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Account to update."
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "description": "Account Name."
+      },
+      {
+        "name": "Industry",
+        "type": "string",
+        "description": "Industry picklist API value (call fetch_picklist_values first if unsure)."
+      },
+      {
+        "name": "Type",
+        "type": "string",
+        "description": "Type picklist API value (call fetch_picklist_values first if unsure)."
+      },
+      {
+        "name": "AnnualRevenue",
+        "type": "number",
+        "description": "Annual revenue as a plain number, no currency symbol or commas."
+      },
+      {
+        "name": "Phone",
+        "type": "string",
+        "description": "Account phone number."
+      },
+      {
+        "name": "Website",
+        "type": "string",
+        "description": "Account website URL."
+      },
+      {
+        "name": "Description",
+        "type": "string",
+        "description": "Long-text description of the Account."
+      }
+    ]
+  },
+  "update_asset_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce asset id."
+      }
+    ]
+  },
+  "update_campaign_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Campaign Id to update (primary Id of Campaign)."
+      }
+    ]
+  },
+  "update_campaign_member_status": {
+    "required": [
+      "Id",
+      "Status"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "CampaignMember Id (primary Id of the member row being updated)."
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": "New CampaignMember.Status picklist API value."
+      }
+    ]
+  },
+  "update_care_plan_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce care plan id."
+      }
+    ]
+  },
+  "update_case_fields": {
+    "required": [
+      "Id",
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Case to update."
+      },
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Case field API names to NEW values. Only the fields the user wants to change."
+      }
+    ]
+  },
+  "update_contact_fields": {
+    "required": [
+      "Id",
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Contact to update."
+      },
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Contact field API names to their NEW values. Pass only the fields the user wants to change."
+      }
+    ]
+  },
+  "update_contract_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Contract Id to update (primary Id of Contract)."
+      }
+    ]
+  },
+  "update_cpq_quote_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce cpq quote id."
+      }
+    ]
+  },
+  "update_cpq_quote_line": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce line id."
+      }
+    ]
+  },
+  "update_event": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce Event Id."
+      },
+      {
+        "name": "Subject",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "StartDateTime",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "EndDateTime",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "Location",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "Description",
+        "type": "string",
+        "description": ""
+      }
+    ]
+  },
+  "update_financial_account_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce financial account id."
+      }
+    ]
+  },
+  "update_lead_fields": {
+    "required": [
+      "Id",
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Lead to update."
+      },
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Lead field API names to their NEW values. Only fields the user wants to change."
+      }
+    ]
+  },
+  "update_opportunity_contact_role": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce contact role id."
+      }
+    ]
+  },
+  "update_opportunity_fields": {
+    "required": [
+      "Id",
+      "fields"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "ONLY the Salesforce Id of the Opportunity to update."
+      },
+      {
+        "name": "fields",
+        "type": "object",
+        "description": "Map of Opportunity field API names to NEW values. Common fields: StageName, Amount, CloseDate (yyyy-MM-dd), Probability, ForecastCategoryName, NextStep, Description and custom fields. Pass numbers as numbers, dates as \"yyyy-MM-dd\", booleans as true/false, picklist values as exact API values."
+      }
+    ]
+  },
+  "update_opportunity_line_item": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce Id of the OpportunityLineItem to update."
+      },
+      {
+        "name": "Quantity",
+        "type": "number",
+        "description": ""
+      },
+      {
+        "name": "UnitPrice",
+        "type": "number",
+        "description": ""
+      },
+      {
+        "name": "Discount",
+        "type": "number",
+        "description": ""
+      }
+    ]
+  },
+  "update_order_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce order id."
+      }
+    ]
+  },
+  "update_order_item": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce order item id."
+      }
+    ]
+  },
+  "update_quote_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce quote id."
+      }
+    ]
+  },
+  "update_quote_line_item": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce line item id."
+      }
+    ]
+  },
+  "update_service_appointment": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": null,
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce service appointment id."
+      }
+    ]
+  },
+  "update_subscription_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce subscription id."
+      }
+    ]
+  },
+  "update_task": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce Task Id."
+      },
+      {
+        "name": "Subject",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "Status",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "Priority",
+        "type": "string",
+        "description": ""
+      },
+      {
+        "name": "ActivityDate",
+        "type": "string",
+        "description": "Due date yyyy-MM-dd."
+      },
+      {
+        "name": "Description",
+        "type": "string",
+        "description": ""
+      }
+    ]
+  },
+  "update_work_order_fields": {
+    "required": [
+      "Id"
+    ],
+    "additionalProperties": "true",
+    "properties": [
+      {
+        "name": "Id",
+        "type": "string",
+        "description": "Salesforce work order id."
+      }
+    ]
+  }
+}

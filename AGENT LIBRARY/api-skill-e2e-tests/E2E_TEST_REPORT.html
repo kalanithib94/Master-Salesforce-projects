@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>GPTfy Skills E2E Report — Master Dev</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #1a2332;
+    --panel2: #243044;
+    --text: #e7eef8;
+    --muted: #9db0c9;
+    --ok: #3dd68c;
+    --warn: #f0b429;
+    --bad: #f07178;
+    --accent: #5eb1ff;
+    --border: #2e3f56;
+    --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--font); background:
+      radial-gradient(1200px 600px at 10% -10%, #1a3a5c 0%, transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, #1e2d22 0%, transparent 50%),
+      var(--bg);
+    color: var(--text); line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  header.hero {
+    border: 1px solid var(--border); background: linear-gradient(145deg, var(--panel), #15202e);
+    border-radius: 16px; padding: 1.75rem 1.75rem 1.5rem; margin-bottom: 1.5rem;
+  }
+  header.hero h1 { margin: 0 0 .35rem; font-size: 1.65rem; letter-spacing: -0.02em; }
+  header.hero p { margin: .25rem 0; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+  .chip {
+    background: var(--panel2); border: 1px solid var(--border); border-radius: 999px;
+    padding: .35rem .75rem; font-size: .85rem;
+  }
+  .chip strong { color: var(--accent); }
+  h2 {
+    margin: 2rem 0 .75rem; font-size: 1.2rem; border-bottom: 1px solid var(--border);
+    padding-bottom: .4rem;
+  }
+  h3 { margin: 0 0 .35rem; font-size: 1.05rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .75rem; }
+  .stat {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: .9rem 1rem;
+  }
+  .stat .n { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+  .stat .l { color: var(--muted); font-size: .8rem; margin-top: .25rem; }
+  .stat.ok .n { color: var(--ok); }
+  .stat.warn .n { color: var(--warn); }
+  .stat.bad .n { color: var(--bad); }
+  section.card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.1rem 1.25rem; margin-bottom: 1rem;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th, td { text-align: left; padding: .55rem .5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+  code { font-family: ui-monospace, Consolas, monospace; font-size: .84em; color: #b8e0ff; }
+  ul { margin: .4rem 0 .4rem 1.1rem; padding: 0; }
+  li { margin: .25rem 0; }
+  .pill {
+    display: inline-block; padding: .15rem .5rem; border-radius: 999px; font-size: .75rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: .03em;
+  }
+  .pill.ok { background: #14352a; color: var(--ok); }
+  .pill.warn { background: #3a2e0e; color: var(--warn); }
+  .pill.bad { background: #3a1518; color: var(--bad); }
+  .pill.mute { background: #2a3340; color: var(--muted); }
+  .badge {
+    background: var(--panel2); border: 1px solid var(--border); border-radius: 8px;
+    padding: .1rem .45rem; font-size: .8rem; color: var(--muted); margin-left: .35rem;
+  }
+  details.bucket { margin: .6rem 0; }
+  details.bucket summary { cursor: pointer; padding: .4rem 0; }
+  .step {
+    border-left: 3px solid var(--accent); background: var(--panel); border-radius: 0 12px 12px 0;
+    padding: 1rem 1.15rem; margin-bottom: .85rem; border: 1px solid var(--border); border-left-width: 3px;
+  }
+  .step .phase {
+    color: var(--accent); font-size: .75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .step .meta { display: flex; flex-wrap: wrap; gap: 1rem; color: var(--muted); font-size: .88rem; margin: .35rem 0 .5rem; }
+  .step .outcome { color: var(--muted); margin: .5rem 0 0; font-size: .9rem; }
+  .effort-box {
+    background: linear-gradient(120deg, #1a2f4a, #1a3328); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.15rem 1.35rem; margin: 1rem 0 1.5rem;
+  }
+  .effort-box strong { color: var(--ok); font-size: 1.25rem; }
+  .note { color: var(--muted); font-size: .9rem; }
+  a { color: var(--accent); }
+  footer { margin-top: 2rem; color: var(--muted); font-size: .85rem; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>GPTfy Agentic Skills — E2E Report</h1>
+    <p>Pre-fix baseline on <strong>Master Dev</strong> · Generated 2026-08-05 14:30 UTC</p>
+    <p>Agent: <strong>GPTfy Master Agent</strong> · API DevName: <code>IT_Helpdesk_Assistant05/08/2026, 11:47</code></p>
+    <p class="note">Deploy + seed 111 skills + invokeAgentSkill × 110. No product Apex fixes applied in this run.</p>
+    <div class="chips">
+      <span class="chip">Org: <strong>masterdev@gptfy.ai</strong></span>
+      <span class="chip">Prompts: <strong>111</strong></span>
+      <span class="chip">Linked: <strong>110</strong></span>
+      <span class="chip">Unlinked: <strong>fetch_account_details</strong></span>
+    </div>
+  </header>
+
+  <h2>Executive summary</h2>
+  <div class="grid">
+    <div class="stat ok"><div class="n">19</div><div class="l">Handler OK</div></div>
+    <div class="stat warn"><div class="n">69</div><div class="l">Handler error</div></div>
+    <div class="stat bad"><div class="n">22</div><div class="l">API fail (class missing)</div></div>
+    <div class="stat"><div class="n">103/111</div><div class="l">Seeds OK</div></div>
+    <div class="stat bad"><div class="n">Full deploy</div><div class="l">FAILED (partial used)</div></div>
+    <div class="stat ok"><div class="n">5–11.5d</div><div class="l">Est. effort to green path</div></div>
+  </div>
+
+  <div class="effort-box">
+    <div><strong>Recommended total effort:</strong> about <strong>5–11.5 person-days</strong>
+      (1 developer + part-time admin for cloud installs).</div>
+    <p class="note" style="margin:.5rem 0 0">
+      Core CRM path (~half the library) can be “green enough” after Phases 1–4 (~3–4.5 days)
+      without installing FSC / Health / CPQ / FSL. Cloud install time is license- and package-driven,
+      not coding effort.
+    </p>
+  </div>
+
+  <h2>Org capabilities you need</h2>
+  <section class="card">
+    <p class="note">
+      Master Dev is a <strong>core CRM</strong> sandbox. Industry skills correctly returned “not available”
+      when packages are missing. Install only what product scope requires.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Master Dev</th>
+          <th>Needed for</th>
+          <th>Skills</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Core Sales Cloud CRM</strong></td><td><span class='pill ok'>present</span></td><td>Account, Contact, Lead, Opportunity (logic), Campaign, Activity</td><td>majority of library</td><td>Master Dev has data. Opportunity/Activity Apex still blocked by compile issues.</td></tr><tr><td><strong>Service Cloud</strong></td><td><span class='pill warn'>partial</span></td><td>Case, CaseComment, Case Team, Knowledge link, Entitlements, Milestones</td><td>~12–15</td><td>Cases exist. Entitlements/Milestones/CaseArticle may need entitlements &amp; Knowledge enabled.</td></tr><tr><td><strong>Knowledge</strong></td><td><span class='pill warn'>partial</span></td><td>search_knowledge_articles, fetch_knowledge_article, link_knowledge_article_to_case</td><td>3</td><td>fetch_knowledge_article returned OK; full coverage needs Lightning Knowledge + articles.</td></tr><tr><td><strong>Quotes (Sales Cloud Quotes)</strong></td><td><span class='pill bad'>missing</span></td><td>create_quote, fetch_quote_details, add/update quote line, fuzzy_search_quotes</td><td>6</td><td>Compile blocker: Quote / QuoteLineItem types absent. Enable Quotes + Price Books.</td></tr><tr><td><strong>Team Selling (Opportunity Teams)</strong></td><td><span class='pill bad'>missing</span></td><td>fetch/add opportunity team member skills</td><td>2+</td><td>OpportunityTeamMember invalid at compile-time in Master Dev.</td></tr><tr><td><strong>Salesforce CPQ (SBQQ)</strong></td><td><span class='pill bad'>missing</span></td><td>create/calculate/fetch/update CPQ quote &amp; lines</td><td>6</td><td>Runtime degrade: SBQQ__Quote__c not accessible.</td></tr><tr><td><strong>Field Service (FSL)</strong></td><td><span class='pill warn'>partial</span></td><td>WorkOrder, ServiceAppointment, ServiceResource availability</td><td>6–7</td><td>WorkOrder may exist without full FSL; ServiceAppointment/Resource missing/not updateable.</td></tr><tr><td><strong>Orders</strong></td><td><span class='pill warn'>partial</span></td><td>create_order, fetch/update order &amp; items</td><td>4–5</td><td>Order object available; sample data limited; Status picklist issues in smoke create.</td></tr><tr><td><strong>Contracts / Subscriptions</strong></td><td><span class='pill warn'>partial</span></td><td>Contract skills; Subscription (Revenue Cloud / billing)</td><td>Contract 3–4; Sub 2</td><td>Contract object present (no Name field). Subscription object not available.</td></tr><tr><td><strong>Financial Services Cloud (FSC)</strong></td><td><span class='pill bad'>missing</span></td><td>fetch_financial_account, update_financial_account_fields</td><td>2</td><td>Requires FinServ package (FinServ__FinancialAccount__c). Not on Master Dev.</td></tr><tr><td><strong>Health Cloud (Care Plan)</strong></td><td><span class='pill bad'>missing</span></td><td>fetch_care_plan, update_care_plan_fields, create_care_task (partial)</td><td>2–3</td><td>Care Plan object unavailable. create_care_task may use Task/Work-style objects and OK&#x27;d once.</td></tr><tr><td><strong>Sales / Industry Account Plan</strong></td><td><span class='pill bad'>missing</span></td><td>fetch_account_plan</td><td>1</td><td>AccountPlan (or industry cloud variant) not available. Not HEDA/EduCloud.</td></tr><tr><td><strong>Partners (PRM / Partner Account)</strong></td><td><span class='pill bad'>blocked</span></td><td>partner fetch/search + opportunity partners</td><td>4</td><td>PartnerAgenticSkillsHandler failed compile (bind type). Needs Partner features + code fix.</td></tr><tr><td><strong>HEDA / Education Cloud</strong></td><td><span class='pill mute'>not_required</span></td><td>— none in current 111-skill library —</td><td>0</td><td>No skills map to HEDA/EDA objects (Contact Language, Program Enrollment, Course Offing, etc.). Do not install HEDA for this matrix unless you add Education-specific skills later.</td></tr><tr><td><strong>Assets</strong></td><td><span class='pill warn'>code_gap</span></td><td>fetch/update/fuzzy asset skills</td><td>3</td><td>Runtime: Unsupported skill — routing gap, not an install gap (Asset is standard).</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card">
+    <h3>FSC vs HEDA vs others (plain English)</h3>
+    <ul>
+      <li><strong>FSC (Financial Services Cloud)</strong> — required for Financial Account skills
+        (<code>fetch_financial_account</code>, <code>update_financial_account_fields</code>. Not on Master Dev.</li>
+      <li><strong>HEDA / Education Cloud</strong> — <strong>not required</strong> for the current 111-skill library.
+        No HEDA objects are referenced. Skip unless you plan Education-specific skills later.</li>
+      <li><strong>Health Cloud</strong> — Care Plan objects for care plan skills (not FSC, not HEDA).</li>
+      <li><strong>CPQ (SBQQ)</strong> — Advanced quoting skills (separate from standard Sales Quotes).</li>
+      <li><strong>Field Service (FSL)</strong> — Service Appointment / Service Resource / full WO scheduling.</li>
+      <li><strong>Sales Quotes + Team Selling</strong> — standard Quote types &amp; OpportunityTeamMember (compile today).</li>
+    </ul>
+  </section>
+
+  <h2>Next steps &amp; effort</h2>
+  
+        <article class="step">
+          <header>
+            <span class="phase">Phase 1</span>
+            <h3>Fix Apex compile blockers</h3>
+            <div class="meta">
+              <span>Effort: <strong>1–2 days</strong></span>
+              <span>Owner: Dev</span>
+            </div>
+          </header>
+          <ul><li>Activity: fix PicklistEntry.isClosed() (~L124) → redeploy Activity + Generic</li><li>Opportunity: guard OpportunityTeamMember with describe / dynamic query when team selling off</li><li>Quote: soft-dependency on Quote types OR enable Quotes then deploy</li><li>Partner: fix Invalid bind APEX_OBJECT vs Id (~L133)</li></ul>
+          <p class="outcome"><strong>Outcome:</strong> Full handler set deploys; unlocks ~22 api_fail skills</p>
+        </article>
+        
+        <article class="step">
+          <header>
+            <span class="phase">Phase 2</span>
+            <h3>Fix skill routing (assets + WorkOrder fields)</h3>
+            <div class="meta">
+              <span>Effort: <strong>0.5–1 day</strong></span>
+              <span>Owner: Dev</span>
+            </div>
+          </header>
+          <ul><li>Wire fetch_asset_details / fuzzy_search_assets / update_asset_fields into handler switch</li><li>fetch_work_order_details: only select ServiceTerritoryId when field exists (describe-safe)</li></ul>
+          <p class="outcome"><strong>Outcome:</strong> +3 asset skills + hardier FSL WO fetch</p>
+        </article>
+        
+        <article class="step">
+          <header>
+            <span class="phase">Phase 3</span>
+            <h3>Seed / agent config on Master Dev</h3>
+            <div class="meta">
+              <span>Effort: <strong>0.5 day</strong></span>
+              <span>Owner: Dev / Admin</span>
+            </div>
+          </header>
+          <ul><li>Update legacy 8 Prompt Commands without changing Data Extraction Mapping</li><li>Link fetch_account_details to agent</li><li>Optional: delete or archive E2E smoke records (E2E Smoke Account DO NOT USE)</li></ul>
+          <p class="outcome"><strong>Outcome:</strong> Schemas aligned with library; 111 linked</p>
+        </article>
+        
+        <article class="step">
+          <header>
+            <span class="phase">Phase 4</span>
+            <h3>Harness fixtures + re-run matrix</h3>
+            <div class="meta">
+              <span>Effort: <strong>1 day</strong></span>
+              <span>Owner: QA / Dev</span>
+            </div>
+          </header>
+          <ul><li>Generate payloads from live promptCommand (nested fields.LastName, searchTerm, Case Id keys)</li><li>Load real Account/Contact/Case/Lead/Campaign/Product Ids from org</li><li>Tag outcomes: PASS / EXPECTED_EMPTY / N/A_FEATURE / DEFECT</li><li>Prefer read-only first; write skills on disposable sandbox</li></ul>
+          <p class="outcome"><strong>Outcome:</strong> Clean signal — removes ~25–40 fixture false fails</p>
+        </article>
+        
+        <article class="step">
+          <header>
+            <span class="phase">Phase 5</span>
+            <h3>Org enablement (feature matrix)</h3>
+            <div class="meta">
+              <span>Effort: <strong>1–3 days (admin / licenses)</strong></span>
+              <span>Owner: Admin + Product</span>
+            </div>
+          </header>
+          <ul><li>Sales Quotes + Team Selling if product wants those skills live</li><li>Install only clouds you sell: CPQ · FSL · FSC · Health Cloud · Revenue Subscriptions</li><li>Do not install HEDA unless Education skills are added</li><li>Knowledge + Entitlements if Service skills are in scope</li></ul>
+          <p class="outcome"><strong>Outcome:</strong> Feature-gated skills move from N/A → testable</p>
+        </article>
+        
+        <article class="step">
+          <header>
+            <span class="phase">Phase 6</span>
+            <h3>Remaining handler defects</h3>
+            <div class="meta">
+              <span>Effort: <strong>2–4 days</strong></span>
+              <span>Owner: Dev</span>
+            </div>
+          </header>
+          <ul><li>Triage post-rerun DEFECT bucket only</li><li>Param aliasing (case_id vs CaseId) wherever handlers lag schema</li><li>Order Status picklist, queue assignment Ids</li><li>Regression: re-run full matrix on sandbox</li></ul>
+          <p class="outcome"><strong>Outcome:</strong> Core CRM skill set production-ready on capable orgs</p>
+        </article>
+        
+
+  <section class="card">
+    <h3>Suggested sequencing</h3>
+    <ol>
+      <li>Do <strong>Phases 1–3</strong> on Master Dev immediately (code + seed). Unblocks deploy &amp; 22 class-not-found skills.</li>
+      <li>Do <strong>Phase 4</strong> retest with better fixtures → honest residual defect list.</li>
+      <li>Decide product scope for clouds → <strong>Phase 5</strong> install only needed packages on a <em>feature sandbox</em>.</li>
+      <li><strong>Phase 6</strong> only after fixtures stop drowning real bugs.</li>
+    </ol>
+  </section>
+
+  <h2>Deploy detail</h2>
+  <div class="two">
+    <section class="card">
+      <h3>Full deploy (failed)</h3>
+      <p class="note">Id <code>0AfQH00000P9St80AF</code> · 68 component failures · rolled back</p>
+      <ul><li><code>ActivityAgenticSkillsHandler</code> — Method does not exist or incorrect signature: void isClosed() from the type Schema.PicklistEntry (124:41)</li><li><code>OpportunityAgenticSkillsHandler</code> — OpportunityTeamMember invalid (feature/type not available) — Schema.sObjectType.OpportunityTeamMember</li><li><code>PartnerAgenticSkillsHandler</code> — Invalid bind expression type of APEX_OBJECT for column of type Id (133:39)</li><li><code>QuoteAgenticSkillsHandler</code> — Quote / QuoteLineItem types not available (Quotes not enabled or not in org)</li><li><code>GenericAgenticSkillsHandler</code> — Dependent on ActivityAgenticSkillsHandler invalid compile</li></ul>
+    </section>
+    <section class="card">
+      <h3>Partial deploy (used for tests)</h3>
+      <p><strong>Excluded</strong></p>
+      <ul><li><code>ActivityAgenticSkillsHandler</code></li><li><code>OpportunityAgenticSkillsHandler</code></li><li><code>PartnerAgenticSkillsHandler</code></li><li><code>QuoteAgenticSkillsHandler</code></li><li><code>GenericAgenticSkillsHandler</code></li></ul>
+      <p><strong>Deployed handlers</strong></p>
+      <ul><li><code>AgenticSkillsBase</code></li><li><code>AccountAgenticSkillsHandler</code></li><li><code>CampaignAgenticSkillsHandler</code></li><li><code>CaseAgenticSkillsHandler</code></li><li><code>ContactAgenticSkillsHandler</code></li><li><code>ContractAgenticSkillsHandler</code></li><li><code>CpqAgenticSkillsHandler</code></li><li><code>FieldServiceAgenticSkillsHandler</code></li><li><code>IndustryAgenticSkillsHandler</code></li><li><code>LeadAgenticSkillsHandler</code></li><li><code>OrderAgenticSkillsHandler</code></li><li><code>ProductAgenticSkillsHandler</code></li><li><code>ServiceAgenticSkillsHandler</code></li><li><code>UtilityAgenticSkillsHandler</code></li></ul>
+    </section>
+  </div>
+
+  <h2>Seed detail</h2>
+  <section class="card">
+    <p><strong>103</strong> of <strong>111</strong> package seeds succeeded.
+    Eight legacy prompts failed because Data Extraction Mapping cannot be changed after create:</p>
+    <ul><li><code>create_account</code></li><li><code>create_contact</code></li><li><code>fetch_account_details</code></li><li><code>fuzzy_search_contacts</code></li><li><code>log_activity</code></li><li><code>run_internal_prompt</code></li><li><code>update_account_fields</code></li><li><code>update_contact_fields</code></li></ul>
+    <p class="note">Impact: those skills keep old Prompt Command schemas until refreshed without remapping.</p>
+  </section>
+
+  <h2>Invoke matrix — handler OK (19)</h2>
+  <section class="card">
+    <ul style="columns:2; gap:1.5rem"><li><code>add_case_comment</code></li>
+<li><code>create_account</code></li>
+<li><code>create_campaign</code></li>
+<li><code>create_care_task</code></li>
+<li><code>fetch_account_related_lists</code></li>
+<li><code>fetch_campaign_members</code></li>
+<li><code>fetch_knowledge_article</code></li>
+<li><code>fetch_my_open_opportunities</code></li>
+<li><code>fetch_my_open_tasks</code></li>
+<li><code>fetch_pricebook_entries</code></li>
+<li><code>fetch_record_approvals</code></li>
+<li><code>fetch_renewal_opportunities</code></li>
+<li><code>fetch_session_context</code></li>
+<li><code>fetch_stale_opportunities</code></li>
+<li><code>fetch_upcoming_renewals</code></li>
+<li><code>log_activity</code></li>
+<li><code>run_internal_prompt</code></li>
+<li><code>update_account_fields</code></li>
+<li><code>update_contact_fields</code></li></ul>
+  </section>
+
+  <h2>Invoke matrix — failures by bucket</h2>
+  <section class="card">
+    <details open class="bucket"><summary><strong>A. Missing Apex class</strong> <span class="badge">22</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>add_opportunity_contact_role</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>add_opportunity_line_item</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>add_opportunity_partner</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>add_opportunity_team_member</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>add_quote_line_item</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>clone_opportunity</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>create_opportunity</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>create_quote</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fetch_opportunity_contact_roles</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fetch_opportunity_details</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fetch_opportunity_partners</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fetch_opportunity_team</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fetch_partner_account</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fetch_quote_details</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fuzzy_search_opportunities</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fuzzy_search_partners</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>fuzzy_search_quotes</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>update_opportunity_contact_role</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>update_opportunity_fields</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>update_opportunity_line_item</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>update_quote_fields</code></td><td>api_fail</td><td>Agentic function class not found</td></tr><tr><td><code>update_quote_line_item</code></td><td>api_fail</td><td>Agentic function class not found</td></tr></tbody></table></details><details open class="bucket"><summary><strong>B. Unsupported skill routing</strong> <span class="badge">3</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>fetch_asset_details</code></td><td>handler_error</td><td>Unsupported skill: fetch_asset_details</td></tr><tr><td><code>fuzzy_search_assets</code></td><td>handler_error</td><td>Unsupported skill: fuzzy_search_assets</td></tr><tr><td><code>update_asset_fields</code></td><td>handler_error</td><td>Unsupported skill: update_asset_fields</td></tr></tbody></table></details><details open class="bucket"><summary><strong>C. Cloud / feature not in org</strong> <span class="badge">16</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>add_cpq_quote_line</code></td><td>handler_error</td><td>⚠️ Could not add CPQ quote line Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</td></tr><tr><td><code>calculate_cpq_quote</code></td><td>handler_error</td><td>⚠️ Could not calculate CPQ quote Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</td></tr><tr><td><code>create_cpq_quote</code></td><td>handler_error</td><td>⚠️ Could not create CPQ quote Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</td></tr><tr><td><code>fetch_account_plan</code></td><td>handler_error</td><td>Account Plan is not available in this org.</td></tr><tr><td><code>fetch_care_plan</code></td><td>handler_error</td><td>Care Plan object is not available in this org.</td></tr><tr><td><code>fetch_cpq_quote_details</code></td><td>handler_error</td><td>Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</td></tr><tr><td><code>fetch_financial_account</code></td><td>handler_error</td><td>Financial Account object (FinServ__FinancialAccount__c) is not available in this org.</td></tr><tr><td><code>fetch_service_appointment</code></td><td>handler_error</td><td>ServiceAppointment object is not available in this org.</td></tr><tr><td><code>fetch_service_resource_availability</code></td><td>handler_error</td><td>ServiceResource object is not available in this org.</td></tr><tr><td><code>fetch_subscription_details</code></td><td>handler_error</td><td>Subscription object is not available in this org.</td></tr><tr><td><code>schedule_service_appointment</code></td><td>handler_error</td><td>⚠️ Could not schedule appointment ServiceAppointment is not available or creatable in this org.</td></tr><tr><td><code>update_care_plan_fields</code></td><td>handler_error</td><td>⚠️ Could not update care plan Care Plan object is not available in this org.</td></tr><tr><td><code>update_cpq_quote_fields</code></td><td>handler_error</td><td>⚠️ Could not update CPQ quote Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</td></tr><tr><td><code>update_cpq_quote_line</code></td><td>handler_error</td><td>⚠️ Could not update CPQ quote line Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</td></tr><tr><td><code>update_financial_account_fields</code></td><td>handler_error</td><td>⚠️ Could not update financial account FinServ__FinancialAccount__c is not available in this org.</td></tr><tr><td><code>update_subscription_fields</code></td><td>handler_error</td><td>⚠️ Could not update subscription Subscription object is not available in this org.</td></tr></tbody></table></details><details open class="bucket"><summary><strong>D. Param / fixture / schema</strong> <span class="badge">28</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>add_case_team_member</code></td><td>handler_error</td><td>⚠️ Could not add case team member Missing parameter: case_id</td></tr><tr><td><code>add_order_item</code></td><td>handler_error</td><td>⚠️ Could not add order item Missing parameter: OrderId</td></tr><tr><td><code>create_case</code></td><td>handler_error</td><td>⚠️ Could not create case Subject is required.</td></tr><tr><td><code>create_contact</code></td><td>handler_error</td><td>⚠️ Could not create contact LastName is required.</td></tr><tr><td><code>create_contract</code></td><td>handler_error</td><td>⚠️ Could not create contract Status is required.</td></tr><tr><td><code>create_event</code></td><td>handler_error</td><td>⚠️ Could not create event Subject is required.</td></tr><tr><td><code>create_lead</code></td><td>handler_error</td><td>⚠️ Could not create lead LastName is required.</td></tr><tr><td><code>create_task</code></td><td>handler_error</td><td>⚠️ Could not create task Subject is required.</td></tr><tr><td><code>create_work_order</code></td><td>handler_error</td><td>⚠️ Could not create work order Subject is required.</td></tr><tr><td><code>fetch_case_entitlements</code></td><td>handler_error</td><td>Missing required parameter: case_id</td></tr><tr><td><code>fetch_case_milestones</code></td><td>handler_error</td><td>Missing required parameter: case_id</td></tr><tr><td><code>fetch_case_team</code></td><td>handler_error</td><td>Missing required parameter: case_id</td></tr><tr><td><code>fetch_contact_details</code></td><td>handler_error</td><td>Missing required parameter: Id (Contact Id).</td></tr><tr><td><code>fetch_contract_details</code></td><td>handler_error</td><td>Missing required parameter: Id (Contract Id).</td></tr><tr><td><code>fetch_picklist_values</code></td><td>handler_error</td><td>Missing required parameter: object_api_name</td></tr><tr><td><code>fuzzy_search_campaigns</code></td><td>handler_error</td><td>Missing required parameter: search_term</td></tr><tr><td><code>fuzzy_search_cases</code></td><td>handler_error</td><td>Missing required parameter: search_term</td></tr><tr><td><code>fuzzy_search_leads</code></td><td>handler_error</td><td>Missing required parameter: search_term</td></tr><tr><td><code>fuzzy_search_products</code></td><td>handler_error</td><td>Missing required parameter: search_term</td></tr><tr><td><code>link_knowledge_article_to_case</code></td><td>handler_error</td><td>⚠️ Could not link article Missing parameter: case_id</td></tr><tr><td><code>search_knowledge_articles</code></td><td>handler_error</td><td>Missing required parameter: search_term</td></tr><tr><td><code>update_campaign_fields</code></td><td>handler_error</td><td>⚠️ Could not update campaign Missing parameter: at least one field to update</td></tr><tr><td><code>update_contract_fields</code></td><td>handler_error</td><td>⚠️ Could not update contract Missing parameter: Id (Contract Id).</td></tr><tr><td><code>update_event</code></td><td>handler_error</td><td>⚠️ Could not update event Missing parameter: at least one field to update</td></tr><tr><td><code>update_order_fields</code></td><td>handler_error</td><td>⚠️ Could not update order Missing parameter: at least one field to update</td></tr><tr><td><code>update_order_item</code></td><td>handler_error</td><td>⚠️ Could not update order item Missing parameter: at least one field to update</td></tr><tr><td><code>update_task</code></td><td>handler_error</td><td>⚠️ Could not update task Missing parameter: at least one field to update</td></tr><tr><td><code>update_work_order_fields</code></td><td>handler_error</td><td>⚠️ Could not update work order Missing parameter: at least one field to update</td></tr></tbody></table></details><details open class="bucket"><summary><strong>E. No matching data</strong> <span class="badge">15</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>close_case</code></td><td>handler_error</td><td>⚠️ Could not close case No case found for provided Id.</td></tr><tr><td><code>complete_task</code></td><td>handler_error</td><td>⚠️ Could not complete task No task found for provided Id.</td></tr><tr><td><code>convert_lead</code></td><td>handler_error</td><td>⚠️ Could not convert lead No lead found for provided Id.</td></tr><tr><td><code>fetch_campaign_details</code></td><td>handler_error</td><td>No campaign found for provided Id.</td></tr><tr><td><code>fetch_case_details</code></td><td>handler_error</td><td>No case found for provided Id/Number.</td></tr><tr><td><code>fetch_contact_engagement_history</code></td><td>handler_error</td><td>No contact found for provided Id.</td></tr><tr><td><code>fetch_lead_details</code></td><td>handler_error</td><td>No lead found for provided Id.</td></tr><tr><td><code>fetch_order_details</code></td><td>handler_error</td><td>No order found for provided Id.</td></tr><tr><td><code>fetch_product_details</code></td><td>handler_error</td><td>No product found for provided Id.</td></tr><tr><td><code>fuzzy_search_accounts</code></td><td>handler_error</td><td>No account found matching &quot;Acme&quot;.</td></tr><tr><td><code>fuzzy_search_contacts</code></td><td>handler_error</td><td>No contact found matching &quot;Test&quot;.</td></tr><tr><td><code>remove_campaign_member</code></td><td>handler_error</td><td>⚠️ Could not remove campaign member No campaign member found for provided Id.</td></tr><tr><td><code>update_campaign_member_status</code></td><td>handler_error</td><td>⚠️ Could not update member status No campaign member found for provided Id.</td></tr><tr><td><code>update_case_fields</code></td><td>handler_error</td><td>⚠️ Could not update case No case found for provided Id.</td></tr><tr><td><code>update_lead_fields</code></td><td>handler_error</td><td>⚠️ Could not update lead No lead found for provided Id.</td></tr></tbody></table></details><details open class="bucket"><summary><strong>F. Invalid Id / input</strong> <span class="badge">4</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>assign_to_queue</code></td><td>handler_error</td><td>⚠️ Could not assign to queue Invalid record_id or queue_id.</td></tr><tr><td><code>create_order</code></td><td>handler_error</td><td>⚠️ Could not create order Insert failed. First exception on row 0; first error: INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST, Status: bad value for restricted picklist field: Closed: [S</td></tr><tr><td><code>fetch_queue_cases</code></td><td>handler_error</td><td>Invalid queue_id.</td></tr><tr><td><code>transfer_record_owner</code></td><td>handler_error</td><td>⚠️ Could not transfer owner Invalid record_id or new_owner_id.</td></tr></tbody></table></details><details open class="bucket"><summary><strong>G. Handler business error</strong> <span class="badge">2</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>add_campaign_member</code></td><td>handler_error</td><td>⚠️ Could not add campaign member Provide ContactId or LeadId (CampaignMember relationship fields).</td></tr><tr><td><code>update_service_appointment</code></td><td>handler_error</td><td>⚠️ Could not update appointment ServiceAppointment is not updateable in this org.</td></tr></tbody></table></details><details open class="bucket"><summary><strong>H. Other</strong> <span class="badge">1</span></summary><table><thead><tr><th>Skill</th><th>Category</th><th>Error</th></tr></thead><tbody><tr><td><code>fetch_work_order_details</code></td><td>handler_error</td><td>No such column &#x27;ServiceTerritoryId&#x27; on entity &#x27;WorkOrder&#x27;. If you are attempting to use a custom field, be sure to append the &#x27;__c&#x27; after the custom field name. Please reference yo</td></tr></tbody></table></details>
+  </section>
+
+  <h2>Pass bar used</h2>
+  <section class="card">
+    <ul>
+      <li><strong>handler_ok</strong> — HTTP 200, API Success, Apex success/true</li>
+      <li><strong>handler_error</strong> — API Success, Apex error / empty / missing param</li>
+      <li><strong>api_fail</strong> — REST non-Success (e.g. Agentic function class not found)</li>
+    </ul>
+    <p class="note">Bucket D/E contain harness noise; Bucket C is expected N/A without packages; Bucket A is deploy-gated.</p>
+  </section>
+
+  <h2>Side effects on Master Dev</h2>
+  <section class="card">
+    <ul>
+      <li>Created account: <code>E2E Smoke Account DO NOT USE</code></li>
+      <li>Possible mutations: campaign create, care task, case comment, activity log, account/contact description updates</li>
+    </ul>
+  </section>
+
+  <h2>Artifacts</h2>
+  <section class="card">
+    <ul>
+      <li><code>api-skill-e2e-tests/E2E_TEST_REPORT.html</code> (this file)</li>
+      <li><code>api-skill-e2e-tests/E2E_TEST_REPORT.md</code></li>
+      <li><code>api-skill-e2e-tests/scripts/results/matrix_report.json</code></li>
+      <li><code>api-skill-e2e-tests/scripts/results/seed_log.json</code></li>
+      <li><code>api-skill-e2e-tests/scripts/results/deploy_summary.json</code></li>
+    </ul>
+  </section>
+
+  <footer>
+    GPTfy Agent Skills Library · E2E harness · Report is a snapshot of Master Dev prior to code fixes.
+  </footer>
+</div>
+</body>
+</html>

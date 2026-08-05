@@ -1,0 +1,19 @@
+PRODUCTION NOTES (short)
+========================
+- Deploy Apex with tests when promoting to prod:
+    .\install.ps1 -RunTests
+  or:
+    sf project deploy start --manifest package.xml --test-level RunSpecifiedTests \
+      --tests AgenticSkillsBaseTest --tests <Handler>Test --target-org <alias>
+- Sharing: handlers are with sharing; user of the agent is the run-as context.
+- Mutating skills expect the agent / system prompt to collect confirmation first.
+- Mapping Id + Connection Id must be from THIS org (filled at download).
+- Re-run seed is safe (existing skill Names skipped; missing agent links added).
+- Apex re-deploy updates classes by name (does not create duplicate Apex types).
+- Optional: apply system prompt only if toggle was on at download.
+
+Verify after install:
+1) Apex classes present (Setup → Apex Classes)
+2) ccai AI Prompts for installed skill Names
+3) Skills linked on the agent in GPTfy
+4) Smoke chat on a sandbox record page

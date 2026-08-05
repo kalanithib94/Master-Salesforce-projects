@@ -1,0 +1,13 @@
+{
+  "targetOrg": "Master Dev",
+  "comment": "Copy to config.local.json. agentName must match API resolution — use Developer_Name from inventory_org.py when possible.",
+  "agentName": "GPTfy Master Agent",
+  "agentDeveloperName": "",
+  "dataMappingId": "",
+  "aiModelId": "",
+  "apiVersion": "67.0",
+  "forceAppPath": "../Deliverables/force-app",
+  "packagesPath": "../Deliverables/kb-catalog/packages",
+  "promptsDocPath": "../Deliverables/docs/PROMPT_COMMANDS_BY_SKILL.json",
+  "preferReadOnlySmoke": true
+}

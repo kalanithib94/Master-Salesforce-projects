@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-update_contact_fields",
+  "sourceApiVersion": "66.0"
+}

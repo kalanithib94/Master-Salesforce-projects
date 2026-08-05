@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>GPTfy Agent Skills — E2E request / response report</title>
+<style>
+body{font-family:Segoe UI,system-ui,sans-serif;background:#0f1419;color:#e7eef8;margin:0;padding:1.25rem 1.5rem 3rem;line-height:1.45}
+.wrap{max-width:1200px;margin:0 auto}
+.hero{background:linear-gradient(145deg,#1a2332,#15202e);border:1px solid #2e3f56;border-radius:14px;padding:1.2rem 1.35rem;margin-bottom:1rem}
+.banner{background:#1e3a2f;border:1px solid #2a5c44;color:#3dd68c;border-radius:10px;padding:.65rem .9rem;margin:.75rem 0 0;font-size:.9rem}
+h1{margin:0 0 .35rem;font-size:1.4rem}
+.muted{color:#9db0c9;font-size:.92rem}
+section.intro,article.card{background:#1a2332;border:1px solid #2e3f56;border-radius:12px;padding:1rem 1.15rem;margin:.85rem 0;border-left:4px solid #2e3f56}
+article.card.ok{border-left-color:#3dd68c} article.card.warn{border-left-color:#f0b429}
+article.card.bad{border-left-color:#f07178} article.card.mute{border-left-color:#6b7c93}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:900px){.pair{grid-template-columns:1fr}}
+.col h3{margin:.1rem 0 .4rem;font-size:.95rem;color:#c5d4e8}
+pre{background:#0d1218;padding:.75rem .85rem;border-radius:8px;white-space:pre-wrap;word-break:break-word;
+  font-size:.8rem;line-height:1.4;max-height:none;overflow:auto;border:1px solid #243044;margin:0}
+.pill{font-size:.72rem;font-weight:700;padding:.12rem .5rem;border-radius:999px}
+.pill.ok{background:#14352a;color:#3dd68c}.pill.warn{background:#3a2e0e;color:#f0b429}
+.pill.bad{background:#3a1518;color:#f07178}.pill.mute{background:#2a3340;color:#9db0c9}
+code{color:#b8e0ff} header{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
+.toc{columns:2} @media(max-width:700px){.toc{columns:1}} ul{margin:.35rem 0 .2rem 1.15rem}
+</style></head><body><div class="wrap">
+<header class="hero">
+  <h1>GPTfy Agent Skills — E2E request / response report</h1>
+  <p class="muted">2026-08-05 21:01:24 India Standard Time · 2026-08-05 15:31:24 UTC</p>
+  <p class="muted">Org <b>Master Dev</b> · Agent <code>IT_Helpdesk_Assistant05/08/2026, 11:47</code></p>
+  <div class="banner">MAIN report — always overwritten with the latest full run. Dated snapshots live under reports/archive/.</div>
+  <p class="muted" style="margin-top:.65rem">This MAIN file is overwritten on every run. Snapshot: 2026-08-05_210124_full-seeded-matrix.html</p>
+</header>
+<section class="intro">
+  <h2 style="margin:0 0 .5rem;font-size:1rem">Why this update</h2>
+  <ul><li>Full Master Dev seeded skill matrix — boss-facing always-latest report</li><li>Strict pass = real Apex business success; request/response detail for every skill</li></ul>
+  <h2 style="margin:1rem 0 .5rem;font-size:1rem">Skills in this report</h2>
+  <ul class="toc"><li><a href="#add_campaign_member">add_campaign_member</a> <span class="pill ok">pass</span></li><li><a href="#add_case_comment">add_case_comment</a> <span class="pill ok">pass</span></li><li><a href="#add_case_team_member">add_case_team_member</a> <span class="pill ok">pass</span></li><li><a href="#add_cpq_quote_line">add_cpq_quote_line</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#add_opportunity_contact_role">add_opportunity_contact_role</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_line_item">add_opportunity_line_item</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_partner">add_opportunity_partner</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_team_member">add_opportunity_team_member</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#add_order_item">add_order_item</a> <span class="pill ok">pass</span></li><li><a href="#add_quote_line_item">add_quote_line_item</a> <span class="pill warn">fail_data</span></li><li><a href="#assign_to_queue">assign_to_queue</a> <span class="pill ok">pass</span></li><li><a href="#calculate_cpq_quote">calculate_cpq_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#clone_opportunity">clone_opportunity</a> <span class="pill ok">pass</span></li><li><a href="#close_case">close_case</a> <span class="pill ok">pass</span></li><li><a href="#complete_task">complete_task</a> <span class="pill ok">pass</span></li><li><a href="#convert_lead">convert_lead</a> <span class="pill ok">pass</span></li><li><a href="#create_account">create_account</a> <span class="pill ok">pass</span></li><li><a href="#create_campaign">create_campaign</a> <span class="pill ok">pass</span></li><li><a href="#create_care_task">create_care_task</a> <span class="pill ok">pass</span></li><li><a href="#create_case">create_case</a> <span class="pill ok">pass</span></li><li><a href="#create_contact">create_contact</a> <span class="pill ok">pass</span></li><li><a href="#create_contract">create_contract</a> <span class="pill ok">pass</span></li><li><a href="#create_cpq_quote">create_cpq_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#create_event">create_event</a> <span class="pill ok">pass</span></li><li><a href="#create_lead">create_lead</a> <span class="pill ok">pass</span></li><li><a href="#create_opportunity">create_opportunity</a> <span class="pill ok">pass</span></li><li><a href="#create_order">create_order</a> <span class="pill ok">pass</span></li><li><a href="#create_quote">create_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#create_task">create_task</a> <span class="pill ok">pass</span></li><li><a href="#create_work_order">create_work_order</a> <span class="pill ok">pass</span></li><li><a href="#fetch_account_plan">fetch_account_plan</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_account_related_lists">fetch_account_related_lists</a> <span class="pill ok">pass</span></li><li><a href="#fetch_asset_details">fetch_asset_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_campaign_details">fetch_campaign_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_campaign_members">fetch_campaign_members</a> <span class="pill ok">pass</span></li><li><a href="#fetch_care_plan">fetch_care_plan</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_case_details">fetch_case_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_entitlements">fetch_case_entitlements</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_milestones">fetch_case_milestones</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_team">fetch_case_team</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contact_details">fetch_contact_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contact_engagement_history">fetch_contact_engagement_history</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contract_details">fetch_contract_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_cpq_quote_details">fetch_cpq_quote_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_financial_account">fetch_financial_account</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_knowledge_article">fetch_knowledge_article</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_lead_details">fetch_lead_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_my_open_opportunities">fetch_my_open_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_my_open_tasks">fetch_my_open_tasks</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_contact_roles">fetch_opportunity_contact_roles</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_details">fetch_opportunity_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_partners">fetch_opportunity_partners</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_team">fetch_opportunity_team</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_order_details">fetch_order_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_partner_account">fetch_partner_account</a> <span class="pill ok">pass</span></li><li><a href="#fetch_picklist_values">fetch_picklist_values</a> <span class="pill ok">pass</span></li><li><a href="#fetch_pricebook_entries">fetch_pricebook_entries</a> <span class="pill ok">pass</span></li><li><a href="#fetch_product_details">fetch_product_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_queue_cases">fetch_queue_cases</a> <span class="pill ok">pass</span></li><li><a href="#fetch_quote_details">fetch_quote_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_record_approvals">fetch_record_approvals</a> <span class="pill ok">pass</span></li><li><a href="#fetch_renewal_opportunities">fetch_renewal_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_service_appointment">fetch_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_service_resource_availability">fetch_service_resource_availability</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_session_context">fetch_session_context</a> <span class="pill ok">pass</span></li><li><a href="#fetch_stale_opportunities">fetch_stale_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_subscription_details">fetch_subscription_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_upcoming_renewals">fetch_upcoming_renewals</a> <span class="pill ok">pass</span></li><li><a href="#fetch_work_order_details">fetch_work_order_details</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_accounts">fuzzy_search_accounts</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_assets">fuzzy_search_assets</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_campaigns">fuzzy_search_campaigns</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_cases">fuzzy_search_cases</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_contacts">fuzzy_search_contacts</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_leads">fuzzy_search_leads</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_opportunities">fuzzy_search_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_partners">fuzzy_search_partners</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_products">fuzzy_search_products</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_quotes">fuzzy_search_quotes</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#link_knowledge_article_to_case">link_knowledge_article_to_case</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#log_activity">log_activity</a> <span class="pill ok">pass</span></li><li><a href="#remove_campaign_member">remove_campaign_member</a> <span class="pill ok">pass</span></li><li><a href="#run_internal_prompt">run_internal_prompt</a> <span class="pill ok">pass</span></li><li><a href="#schedule_service_appointment">schedule_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#search_knowledge_articles">search_knowledge_articles</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#transfer_record_owner">transfer_record_owner</a> <span class="pill bad">fail_business</span></li><li><a href="#update_account_fields">update_account_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_asset_fields">update_asset_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_campaign_fields">update_campaign_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_campaign_member_status">update_campaign_member_status</a> <span class="pill ok">pass</span></li><li><a href="#update_care_plan_fields">update_care_plan_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_case_fields">update_case_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_contact_fields">update_contact_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_contract_fields">update_contract_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_cpq_quote_fields">update_cpq_quote_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_cpq_quote_line">update_cpq_quote_line</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_event">update_event</a> <span class="pill ok">pass</span></li><li><a href="#update_financial_account_fields">update_financial_account_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_lead_fields">update_lead_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_opportunity_contact_role">update_opportunity_contact_role</a> <span class="pill ok">pass</span></li><li><a href="#update_opportunity_fields">update_opportunity_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_opportunity_line_item">update_opportunity_line_item</a> <span class="pill ok">pass</span></li><li><a href="#update_order_fields">update_order_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_order_item">update_order_item</a> <span class="pill ok">pass</span></li><li><a href="#update_quote_fields">update_quote_fields</a> <span class="pill warn">fail_data</span></li><li><a href="#update_quote_line_item">update_quote_line_item</a> <span class="pill warn">fail_data</span></li><li><a href="#update_service_appointment">update_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_subscription_fields">update_subscription_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_task">update_task</a> <span class="pill ok">pass</span></li><li><a href="#update_work_order_fields">update_work_order_fields</a> <span class="pill ok">pass</span></li></ul>
+</section>
+<article class="card ok" id="add_campaign_member"><header><h2><code>add_campaign_member</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CampaignId&quot;: &quot;701QH00002FpbTlYAJ&quot;,
+  &quot;ContactId&quot;: &quot;003QH00000RYCbuYAH&quot;,
+  &quot;Status&quot;: &quot;Sent&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00vQH00000IZ9Z7YAL&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Campaign Member Added Campaign member added Member type: Contact Status: Sent 👉 View Member&quot;
+}</pre></div></div></article><article class="card ok" id="add_case_comment"><header><h2><code>add_case_comment</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;ParentId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;CommentBody&quot;: &quot;E2E seeded case comment&quot;,
+  &quot;IsPublished&quot;: true
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Case Comment Added Case #: 00001026 Comment: E2E seeded case comment 👉 View Case&quot;
+}</pre></div></div></article><article class="card ok" id="add_case_team_member"><header><h2><code>add_case_team_member</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;UserId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;user_id&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;team_role_id&quot;: &quot;0B7QH0000005bDR0AY&quot;,
+  &quot;TeamRoleId&quot;: &quot;0B7QH0000005bDR0AY&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;0B6QH000000150r0AA&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Case Team Member Added Case #: 00001026 👉 View Team Member&quot;
+}</pre></div></div></article><article class="card mute" id="add_cpq_quote_line"><header><h2><code>add_cpq_quote_line</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not add CPQ quote line Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="add_opportunity_contact_role"><header><h2><code>add_opportunity_contact_role</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;ContactId&quot;: &quot;003QH00000RYCbuYAH&quot;,
+  &quot;Role&quot;: &quot;Evaluator&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00KQH00000Hcxuw2AB&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Contact Role Added Role: Evaluator 👉 View Contact Role&quot;
+}</pre></div></div></article><article class="card ok" id="add_opportunity_line_item"><header><h2><code>add_opportunity_line_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;PricebookEntryId&quot;: &quot;01uQH000003sGBCYA2&quot;,
+  &quot;Quantity&quot;: 1,
+  &quot;UnitPrice&quot;: 100
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00kQH00000BVqaHYAT&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Product Added to Opportunity Quantity: 1 Unit Price: 100 👉 View Line Item&quot;
+}</pre></div></div></article><article class="card ok" id="add_opportunity_partner"><header><h2><code>add_opportunity_partner</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;AccountId&quot;: &quot;001QH00002FpcuTYAR&quot;,
+  &quot;AccountToId&quot;: &quot;001QH00002FpcuTYAR&quot;,
+  &quot;Role&quot;: &quot;Agency&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00IQH000002Hy0D2AS&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Opportunity Partner Added Opportunity: 006QH00000Kz3yLYAR Partner Account: 001QH00002FpcuTYAR 👉 View Partner Role&quot;
+}</pre></div></div></article><article class="card mute" id="add_opportunity_team_member"><header><h2><code>add_opportunity_team_member</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;opportunity_id&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;UserId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;user_id&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;TeamMemberRole&quot;: &quot;Account Manager&quot;,
+  &quot;team_member_role&quot;: &quot;Account Manager&quot;,
+  &quot;Role&quot;: &quot;Account Manager&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not add team member OpportunityTeamMember is not creatable (Team Selling may be disabled).&quot;
+}</pre></div></div></article><article class="card ok" id="add_order_item"><header><h2><code>add_order_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OrderId&quot;: &quot;801QH00002FpacWYAR&quot;,
+  &quot;PricebookEntryId&quot;: &quot;01uQH000003sGBCYA2&quot;,
+  &quot;Quantity&quot;: 1,
+  &quot;UnitPrice&quot;: 25
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;802QH00000OlbzDYAR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Order Item Added Quantity: 1 Unit Price: 25 👉 View Order Item&quot;
+}</pre></div></div></article><article class="card warn" id="add_quote_line_item"><header><h2><code>add_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Quantity&quot;: 1,
+  &quot;UnitPrice&quot;: 10,
+  &quot;PricebookEntryId&quot;: &quot;01uQH000003sGBCYA2&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not add quote line item Missing parameter: QuoteId&quot;
+}</pre></div></div></article><article class="card ok" id="assign_to_queue"><header><h2><code>assign_to_queue</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;record_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;queue_id&quot;: &quot;00GQH000006KGhu2AG&quot;,
+  &quot;QueueId&quot;: &quot;00GQH000006KGhu2AG&quot;,
+  &quot;OwnerId&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Assigned to Queue 00001026 OwnerId: 00GQH000006KGhu2AG → 00GQH000006KGhu2AG 👉 View Record&quot;
+}</pre></div></div></article><article class="card mute" id="calculate_cpq_quote"><header><h2><code>calculate_cpq_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not calculate CPQ quote Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="clone_opportunity"><header><h2><code>clone_opportunity</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;006QH00000Kz4mLYAR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Opportunity Cloned Name: E2E Skill Test Opp Copy Stage: Prospecting Cloned from: E2E Skill Test Opp 👉 View Opportunity&quot;
+}</pre></div></div></article><article class="card ok" id="close_case"><header><h2><code>close_case</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Status&quot;: &quot;Closed&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Case Closed Case #: 00001026 Status: Closed 👉 View Case&quot;
+}</pre></div></div></article><article class="card ok" id="complete_task"><header><h2><code>complete_task</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00TQH00000FPL732AH&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00TQH00000FPL732AH&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Task Completed Subject: E2E Skill Test Task 👉 View Task&quot;
+}</pre></div></div></article><article class="card ok" id="convert_lead"><header><h2><code>convert_lead</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00QQH00000M9xyg2AB&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00QQH00000M9xyg2AB&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Lead Converted Account Id: 001QH00002FpD1cYAF Contact Id: 003QH00000RY0ZAYA1 Opportunity Id: 006QH00000KyuQQYAZ 👉 View Lead&quot;
+}</pre></div></div></article><article class="card ok" id="create_account"><header><h2><code>create_account</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Name&quot;: &quot;E2E Created Account 942034&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;001QH00002FpgjVYAR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Account Created Name: E2E Created Account 942034 👉 View Account&quot;
+}</pre></div></div></article><article class="card ok" id="create_campaign"><header><h2><code>create_campaign</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Name&quot;: &quot;E2E Created Campaign 2099&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;701QH00002FpLk0YAF&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Campaign Created Name: E2E Created Campaign 2099 👉 View Campaign&quot;
+}</pre></div></div></article><article class="card ok" id="create_care_task"><header><h2><code>create_care_task</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;WhatId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;Subject&quot;: &quot;E2E Subject&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00TQH00000FPJLQ2A5&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Care Task Created Subject: E2E Subject WhatId: 001QH00002FpbIdYAJ 👉 View Task&quot;
+}</pre></div></div></article><article class="card ok" id="create_case"><header><h2><code>create_case</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+  &quot;fields&quot;: {
+    &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+    &quot;Status&quot;: &quot;New&quot;,
+    &quot;Origin&quot;: &quot;Web&quot;,
+    &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;500QH00000VaImGYAV&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Case Created Case #: 00001029 Subject: E2E Created Case 👉 View Case&quot;
+}</pre></div></div></article><article class="card ok" id="create_contact"><header><h2><code>create_contact</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;fields&quot;: {
+    &quot;FirstName&quot;: &quot;E2E&quot;,
+    &quot;LastName&quot;: &quot;CreatedContact2033&quot;,
+    &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+    &quot;Email&quot;: &quot;e2e.created@example.com&quot;
+  },
+  &quot;LastName&quot;: &quot;CreatedContact2033&quot;,
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;003QH00000RYConYAH&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Contact Created Name: CreatedContact2033 👉 View Contact&quot;
+}</pre></div></div></article><article class="card ok" id="create_contract"><header><h2><code>create_contract</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;Status&quot;: &quot;Draft&quot;,
+  &quot;StartDate&quot;: &quot;2026-08-05&quot;,
+  &quot;ContractTerm&quot;: 12
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;800QH00000Va9PZYAZ&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Contract Created Contract #: Status: Draft Start Date: 2026-08-05 👉 View Contract&quot;
+}</pre></div></div></article><article class="card mute" id="create_cpq_quote"><header><h2><code>create_cpq_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not create CPQ quote Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="create_event"><header><h2><code>create_event</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Subject&quot;: &quot;E2E Created Event&quot;,
+  &quot;WhatId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;StartDateTime&quot;: &quot;2026-08-06T10:00:00.000Z&quot;,
+  &quot;EndDateTime&quot;: &quot;2026-08-06T11:00:00.000Z&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E fixture field&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00UQH0000076NsL2AU&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Event Created Subject: E2E Created Event 👉 View Event&quot;
+}</pre></div></div></article><article class="card ok" id="create_lead"><header><h2><code>create_lead</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;LastName&quot;: &quot;CreatedLead2100&quot;,
+  &quot;Company&quot;: &quot;E2E Co&quot;,
+  &quot;fields&quot;: {
+    &quot;LastName&quot;: &quot;CreatedLead&quot;,
+    &quot;Company&quot;: &quot;E2E Co&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00QQH00000M9zna2AB&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Lead Created Name: CreatedLead2100 Company: E2E Co 👉 View Lead&quot;
+}</pre></div></div></article><article class="card ok" id="create_opportunity"><header><h2><code>create_opportunity</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Name&quot;: &quot;E2E Created Opp 2032&quot;,
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;StageName&quot;: &quot;Prospecting&quot;,
+  &quot;CloseDate&quot;: &quot;2026-09-01&quot;,
+  &quot;fields&quot;: {
+    &quot;Name&quot;: &quot;E2E Created Opp&quot;,
+    &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+    &quot;StageName&quot;: &quot;Prospecting&quot;,
+    &quot;CloseDate&quot;: &quot;2026-09-01&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;006QH00000Kz4j7YAB&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Opportunity Created Name: E2E Created Opp 2032 Stage: Prospecting Close Date: 2026-09-01 👉 View Opportunity&quot;
+}</pre></div></div></article><article class="card ok" id="create_order"><header><h2><code>create_order</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;EffectiveDate&quot;: &quot;2026-08-05&quot;,
+  &quot;Status&quot;: &quot;Draft&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;801QH00002FpbIeYAJ&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Order Created Status: Draft Effective Date: 2026-08-05 👉 View Order&quot;
+}</pre></div></div></article><article class="card mute" id="create_quote"><header><h2><code>create_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Name&quot;: &quot;E2E Quote&quot;,
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not create quote Quote is not creatable (enable Quotes).&quot;
+}</pre></div></div></article><article class="card ok" id="create_task"><header><h2><code>create_task</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Subject&quot;: &quot;E2E Created Task&quot;,
+  &quot;WhatId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;WhoId&quot;: &quot;003QH00000RYCbtYAH&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E fixture field&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00TQH00000FPLzt2AH&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Task Created Subject: E2E Created Task 👉 View Task&quot;
+}</pre></div></div></article><article class="card ok" id="create_work_order"><header><h2><code>create_work_order</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Subject&quot;: &quot;E2E Work Order&quot;,
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;0WOQH000006HZfR4AW&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Work Order Created Subject: E2E Work Order 👉 View Work Order&quot;
+}</pre></div></div></article><article class="card mute" id="fetch_account_plan"><header><h2><code>fetch_account_plan</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;Account Plan is not available in this org.&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;Account Plan is not available in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_account_related_lists"><header><h2><code>fetch_account_related_lists</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;cases&quot;: [],
+  &quot;opportunities&quot;: [
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Opportunity&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Opportunity/006QH00000Kz4WDYAZ&quot;
+      },
+      &quot;Id&quot;: &quot;006QH00000Kz4WDYAZ&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;CloseDate&quot;: &quot;2026-09-30&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Opportunity&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Opportunity/006QH00000Kz4j7YAB&quot;
+      },
+      &quot;Id&quot;: &quot;006QH00000Kz4j7YAB&quot;,
+      &quot;Name&quot;: &quot;E2E Created Opp 2032&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;CloseDate&quot;: &quot;2026-09-01&quot;
+    }
+  ],
+  &quot;contacts&quot;: [
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Contact&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Contact/003QH00000RYAC0YAP&quot;
+      },
+      &quot;Id&quot;: &quot;003QH00000RYAC0YAP&quot;,
+      &quot;Name&quot;: &quot;E2E E2ELead&quot;,
+      &quot;Email&quot;: &quot;e2e.lead.1785941760497@example.com&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Contact&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Contact/003QH00000RYCbtYAH&quot;
+      },
+      &quot;Id&quot;: &quot;003QH00000RYCbtYAH&quot;,
+      &quot;Name&quot;: &quot;Rose E2EContact&quot;,
+      &quot;Email&quot;: &quot;e2e.contact@example.com&quot;,
+      &quot;Phone&quot;: &quot;555-0101&quot;,
+      &quot;Title&quot;: &quot;E2E Title&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Contact&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Contact/003QH00000RYCbuYAH&quot;
+      },
+      &quot;Id&quot;: &quot;003QH00000RYCbuYAH&quot;,
+      &quot;Name&quot;: &quot;Sam E2EContactB&quot;,
+      &quot;Email&quot;: &quot;e2e.b@example.com&quot;
+    },
+    {
+      &quot;attributes&quot;: {
+        &quot;type&quot;: &quot;Contact&quot;,
+        &quot;url&quot;: &quot;/services/data/v67.0/sobjects/Contact/003QH00000RYConYAH&quot;
+      },
+      &quot;Id&quot;: &quot;003QH00000RYConYAH&quot;,
+      &quot;Name&quot;: &quot;E2E CreatedContact2033&quot;,
+      &quot;Email&quot;: &quot;e2e.created@example.com&quot;
+    }
+  ],
+  &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_asset_details"><header><h2><code>fetch_asset_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;02iQH000002k7RxYAI&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Asset/02iQH000002k7RxYAI/view&quot;,
+  &quot;Description&quot;: &quot;E2E asset update&quot;,
+  &quot;ProductName&quot;: &quot;GenWatt Diesel 200kW&quot;,
+  &quot;Product2Id&quot;: &quot;01tQH00000Hh6GVYAZ&quot;,
+  &quot;ContactName&quot;: &quot;Rose E2EContact&quot;,
+  &quot;ContactId&quot;: &quot;003QH00000RYC0nYAH&quot;,
+  &quot;AccountName&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;AccountId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+  &quot;Price&quot;: null,
+  &quot;PurchaseDate&quot;: null,
+  &quot;InstallDate&quot;: null,
+  &quot;Status&quot;: null,
+  &quot;SerialNumber&quot;: null,
+  &quot;Name&quot;: &quot;E2E Skill Test Asset&quot;,
+  &quot;Id&quot;: &quot;02iQH000002k7RxYAI&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_campaign_details"><header><h2><code>fetch_campaign_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;701QH00002FpbTlYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Campaign/701QH00002FpbTlYAJ/view&quot;,
+  &quot;Owner&quot;: &quot;Kalanithi Balasubramanian&quot;,
+  &quot;NumberOfResponses&quot;: 0,
+  &quot;NumberOfLeads&quot;: 0,
+  &quot;NumberOfContacts&quot;: 2,
+  &quot;Description&quot;: &quot;E2E campaign update&quot;,
+  &quot;EndDate&quot;: null,
+  &quot;StartDate&quot;: null,
+  &quot;IsActive&quot;: true,
+  &quot;Status&quot;: &quot;Planned&quot;,
+  &quot;Type&quot;: &quot;Conference&quot;,
+  &quot;Name&quot;: &quot;E2E Skill Test Campaign&quot;,
+  &quot;Id&quot;: &quot;701QH00002FpbTlYAJ&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_campaign_members"><header><h2><code>fetch_campaign_members</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CampaignId&quot;: &quot;701QH00002FpbTlYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;members&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/CampaignMember/00vQH00000IZ9Z7YAL/view&quot;,
+      &quot;LeadCompany&quot;: null,
+      &quot;LeadName&quot;: null,
+      &quot;LeadId&quot;: null,
+      &quot;ContactName&quot;: &quot;Sam E2EContactB&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYCbuYAH&quot;,
+      &quot;Status&quot;: &quot;Sent&quot;,
+      &quot;CampaignId&quot;: &quot;701QH00002FpbTlYAJ&quot;,
+      &quot;Id&quot;: &quot;00vQH00000IZ9Z7YAL&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/CampaignMember/00vQH00000IYwldYAD/view&quot;,
+      &quot;LeadCompany&quot;: null,
+      &quot;LeadName&quot;: null,
+      &quot;LeadId&quot;: null,
+      &quot;ContactName&quot;: &quot;Sam E2EContactB&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYCK9YAP&quot;,
+      &quot;Status&quot;: &quot;Sent&quot;,
+      &quot;CampaignId&quot;: &quot;701QH00002FpbTlYAJ&quot;,
+      &quot;Id&quot;: &quot;00vQH00000IYwldYAD&quot;
+    }
+  ],
+  &quot;count&quot;: 2,
+  &quot;CampaignId&quot;: &quot;701QH00002FpbTlYAJ&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="fetch_care_plan"><header><h2><code>fetch_care_plan</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;Care Plan object is not available in this org.&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;Care Plan object is not available in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_case_details"><header><h2><code>fetch_case_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view&quot;,
+  &quot;IsClosed&quot;: true,
+  &quot;Contact&quot;: &quot;Rose E2EContact&quot;,
+  &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;Reason&quot;: null,
+  &quot;Origin&quot;: &quot;Web&quot;,
+  &quot;Type&quot;: null,
+  &quot;Priority&quot;: &quot;Medium&quot;,
+  &quot;Status&quot;: &quot;Closed&quot;,
+  &quot;Description&quot;: &quot;E2E_SKILL_TEST&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+  &quot;CaseNumber&quot;: &quot;00001026&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_case_entitlements"><header><h2><code>fetch_case_entitlements</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;entityMilestonesStatus&quot;: &quot;unavailable&quot;,
+  &quot;caseNumber&quot;: &quot;00001026&quot;,
+  &quot;caseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_case_milestones"><header><h2><code>fetch_case_milestones</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;milestones&quot;: [],
+  &quot;count&quot;: 0,
+  &quot;caseNumber&quot;: &quot;00001026&quot;,
+  &quot;caseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_case_team"><header><h2><code>fetch_case_team</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;teamMembers&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/CaseTeamMember/0B6QH000000150r0AA/view&quot;,
+      &quot;TeamRole&quot;: &quot;E2E Role&quot;,
+      &quot;MemberName&quot;: &quot;Kalanithi Balasubramanian&quot;,
+      &quot;MemberId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+      &quot;Id&quot;: &quot;0B6QH000000150r0AA&quot;
+    }
+  ],
+  &quot;count&quot;: 1,
+  &quot;caseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_contact_details"><header><h2><code>fetch_contact_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;003QH00000RYCbtYAH&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contact/003QH00000RYCbtYAH/view&quot;,
+  &quot;MailingAddress&quot;: &quot;&quot;,
+  &quot;Owner&quot;: &quot;Kalanithi Balasubramanian&quot;,
+  &quot;OwnerId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;Department&quot;: null,
+  &quot;Title&quot;: &quot;E2E Title&quot;,
+  &quot;MobilePhone&quot;: null,
+  &quot;Phone&quot;: &quot;555-0101&quot;,
+  &quot;Email&quot;: &quot;e2e.contact@example.com&quot;,
+  &quot;LastName&quot;: &quot;E2EContact&quot;,
+  &quot;FirstName&quot;: &quot;Rose&quot;,
+  &quot;Name&quot;: &quot;Rose E2EContact&quot;,
+  &quot;Id&quot;: &quot;003QH00000RYCbtYAH&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_contact_engagement_history"><header><h2><code>fetch_contact_engagement_history</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;003QH00000RYCbtYAH&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;engagement&quot;: [],
+  &quot;displayed&quot;: 0,
+  &quot;totalFound&quot;: 0,
+  &quot;daysBack&quot;: 90,
+  &quot;contactName&quot;: &quot;Rose E2EContact&quot;,
+  &quot;contactId&quot;: &quot;003QH00000RYCbtYAH&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_contract_details"><header><h2><code>fetch_contract_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;800QH00000VaOQ9YAN&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contract/800QH00000VaOQ9YAN/view&quot;,
+  &quot;SpecialTerms&quot;: null,
+  &quot;CompanySignedDate&quot;: null,
+  &quot;CustomerSignedDate&quot;: null,
+  &quot;Description&quot;: null,
+  &quot;Owner&quot;: &quot;Kalanithi Balasubramanian&quot;,
+  &quot;ContractTerm&quot;: 12,
+  &quot;EndDate&quot;: &quot;2027-08-04&quot;,
+  &quot;StartDate&quot;: &quot;2026-08-05&quot;,
+  &quot;Status&quot;: &quot;Draft&quot;,
+  &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;ContractNumber&quot;: &quot;00000104&quot;,
+  &quot;Id&quot;: &quot;800QH00000VaOQ9YAN&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="fetch_cpq_quote_details"><header><h2><code>fetch_cpq_quote_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
+}</pre></div></div></article><article class="card mute" id="fetch_financial_account"><header><h2><code>fetch_financial_account</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;Financial Account object (FinServ__FinancialAccount__c) is not available in this org.&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;Financial Account object (FinServ__FinancialAccount__c) is not available in this org.&quot;
+}</pre></div></div></article><article class="card mute" id="fetch_knowledge_article"><header><h2><code>fetch_knowledge_article</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;status&quot;: &quot;unavailable&quot;,
+  &quot;message&quot;: &quot;Knowledge is not enabled in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_lead_details"><header><h2><code>fetch_lead_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00QQH00000M9xyg2AB&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000M9xyg2AB/view&quot;,
+  &quot;Owner&quot;: &quot;Kalanithi Balasubramanian&quot;,
+  &quot;ConvertedOpportunityId&quot;: &quot;006QH00000KyuQQYAZ&quot;,
+  &quot;ConvertedContactId&quot;: &quot;003QH00000RY0ZAYA1&quot;,
+  &quot;ConvertedAccountId&quot;: &quot;001QH00002FpD1cYAF&quot;,
+  &quot;IsConverted&quot;: true,
+  &quot;AnnualRevenue&quot;: null,
+  &quot;Industry&quot;: null,
+  &quot;LeadSource&quot;: null,
+  &quot;Status&quot;: &quot;Closed - Converted&quot;,
+  &quot;Phone&quot;: null,
+  &quot;Email&quot;: &quot;e2e.lead.1785941912169@example.com&quot;,
+  &quot;Title&quot;: null,
+  &quot;Company&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;LastName&quot;: &quot;E2ELead&quot;,
+  &quot;FirstName&quot;: &quot;E2E&quot;,
+  &quot;Name&quot;: &quot;E2E E2ELead&quot;,
+  &quot;Id&quot;: &quot;00QQH00000M9xyg2AB&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_my_open_opportunities"><header><h2><code>fetch_my_open_opportunities</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;opportunities&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkZYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkZYAR/view&quot;,
+      &quot;Account&quot;: &quot;Grand Hotels &amp; Resorts Ltd&quot;,
+      &quot;Amount&quot;: 15000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Grand Hotels Kitchen Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkZYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkbYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkbYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;Amount&quot;: 80000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Value Proposition&quot;,
+      &quot;Name&quot;: &quot;Express Logistics Portable Truck Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkbYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkcYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkcYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;Amount&quot;: 120000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Perception Analysis&quot;,
+      &quot;Name&quot;: &quot;Express Logistics SLA&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkcYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkfYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkfYAB/view&quot;,
+      &quot;Account&quot;: &quot;University of Arizona&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;University of AZ Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkfYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkjYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkjYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkjYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkkYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkkYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 125000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Office Portable Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkkYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkpYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkpYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;United Oil Refinery Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkpYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkqYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkqYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;Amount&quot;: 675000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Needs Analysis&quot;,
+      &quot;Name&quot;: &quot;United Oil Plant Standby Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkqYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydktYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydktYAB/view&quot;,
+      &quot;Account&quot;: &quot;GenePoint&quot;,
+      &quot;Amount&quot;: 60000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;GenePoint Lab Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydktYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkwYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkwYAB/view&quot;,
+      &quot;Account&quot;: &quot;Edge Communications&quot;,
+      &quot;Amount&quot;: 35000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Edge Emergency Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkwYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkzYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkzYAB/view&quot;,
+      &quot;Account&quot;: &quot;Pyramid Construction Inc.&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;Pyramid Emergency Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkzYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl0YAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl0YAB/view&quot;,
+      &quot;Account&quot;: &quot;Dickenson plc&quot;,
+      &quot;Amount&quot;: 15000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Qualification&quot;,
+      &quot;Name&quot;: &quot;Dickenson Mobile Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kydl0YAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl2YAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl2YAB/view&quot;,
+      &quot;Account&quot;: &quot;Grand Hotels &amp; Resorts Ltd&quot;,
+      &quot;Amount&quot;: 250000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Value Proposition&quot;,
+      &quot;Name&quot;: &quot;Grand Hotels Guest Portable Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kydl2YAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz1WqYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz1WqYAJ/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: null,
+      &quot;CloseDate&quot;: &quot;2026-09-01&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Created Opp 1067&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz1WqYAJ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz2PhYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz2PhYAJ/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: null,
+      &quot;CloseDate&quot;: &quot;2026-09-01&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Created Opp 1776&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz2PhYAJ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4j7YAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4j7YAB/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: null,
+      &quot;CloseDate&quot;: &quot;2026-09-01&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Created Opp 2032&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz4j7YAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz3yLYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz3yLYAR/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: 400.0,
+      &quot;CloseDate&quot;: &quot;2026-09-04&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Opp&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz46PYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz46PYAR/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: 100.0,
+      &quot;CloseDate&quot;: &quot;2026-09-04&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Opp Copy&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz46PYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4XpYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4XpYAJ/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: 300.0,
+      &quot;CloseDate&quot;: &quot;2026-09-04&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Opp Copy&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz4XpYAJ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz3xCYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz3xCYAR/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: 200.0,
+      &quot;CloseDate&quot;: &quot;2026-09-04&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Opp Copy&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz3xCYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz41ZYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz41ZYAR/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: null,
+      &quot;CloseDate&quot;: &quot;2026-09-30&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz41ZYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4WDYAZ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4WDYAZ/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Amount&quot;: null,
+      &quot;CloseDate&quot;: &quot;2026-09-30&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz4WDYAZ&quot;
+    }
+  ],
+  &quot;count&quot;: 22,
+  &quot;ownerId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_my_open_tasks"><header><h2><code>fetch_my_open_tasks</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00TQH00000FPL732AH&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;tasks&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPKPV2A5/view&quot;,
+      &quot;WhoId&quot;: null,
+      &quot;WhatId&quot;: &quot;001QH00002FoLakYAF&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E smoke — ignore&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPKPV2A5&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPJoQ2AX/view&quot;,
+      &quot;WhoId&quot;: null,
+      &quot;WhatId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E Subject&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPJoQ2AX&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPLF72AP/view&quot;,
+      &quot;WhoId&quot;: &quot;003QH00000RYC0nYAH&quot;,
+      &quot;WhatId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E Created Task&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPLF72AP&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPLYT2A5/view&quot;,
+      &quot;WhoId&quot;: null,
+      &quot;WhatId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E Subject&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPLYT2A5&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPLdJ2AX/view&quot;,
+      &quot;WhoId&quot;: null,
+      &quot;WhatId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E Subject&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPLdJ2AX&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPCi62AH/view&quot;,
+      &quot;WhoId&quot;: &quot;003QH00000RYC0nYAH&quot;,
+      &quot;WhatId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E Created Task&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPCi62AH&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Task/00TQH00000FPJLQ2A5/view&quot;,
+      &quot;WhoId&quot;: null,
+      &quot;WhatId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+      &quot;DueDate&quot;: null,
+      &quot;Priority&quot;: &quot;Normal&quot;,
+      &quot;Status&quot;: &quot;Not Started&quot;,
+      &quot;Subject&quot;: &quot;E2E Subject&quot;,
+      &quot;Id&quot;: &quot;00TQH00000FPJLQ2A5&quot;
+    }
+  ],
+  &quot;count&quot;: 7,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_opportunity_contact_roles"><header><h2><code>fetch_opportunity_contact_roles</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;Id&quot;: &quot;00KQH00000HcypP2AR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;contactRoles&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OpportunityContactRole/00KQH00000HcypP2AR/view&quot;,
+      &quot;IsPrimary&quot;: true,
+      &quot;Role&quot;: &quot;Decision Maker&quot;,
+      &quot;ContactName&quot;: &quot;Rose E2EContact&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYCbtYAH&quot;,
+      &quot;Id&quot;: &quot;00KQH00000HcypP2AR&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OpportunityContactRole/00KQH00000Hd0nx2AB/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Decision Maker&quot;,
+      &quot;ContactName&quot;: &quot;Rose E2EContact&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYC0nYAH&quot;,
+      &quot;Id&quot;: &quot;00KQH00000Hd0nx2AB&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OpportunityContactRole/00KQH00000Hd0rB2AR/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Decision Maker&quot;,
+      &quot;ContactName&quot;: &quot;Rose E2EContact&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYC0nYAH&quot;,
+      &quot;Id&quot;: &quot;00KQH00000Hd0rB2AR&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OpportunityContactRole/00KQH00000Hcxuw2AB/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Evaluator&quot;,
+      &quot;ContactName&quot;: &quot;Sam E2EContactB&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYCbuYAH&quot;,
+      &quot;Id&quot;: &quot;00KQH00000Hcxuw2AB&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OpportunityContactRole/00KQH00000Hd0zF2AR/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Evaluator&quot;,
+      &quot;ContactName&quot;: &quot;Sam E2EContactB&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYCK9YAP&quot;,
+      &quot;Id&quot;: &quot;00KQH00000Hd0zF2AR&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OpportunityContactRole/00KQH00000Hd1452AB/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Evaluator&quot;,
+      &quot;ContactName&quot;: &quot;Sam E2EContactB&quot;,
+      &quot;ContactId&quot;: &quot;003QH00000RYCK9YAP&quot;,
+      &quot;Id&quot;: &quot;00KQH00000Hd1452AB&quot;
+    }
+  ],
+  &quot;count&quot;: 6,
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_opportunity_details"><header><h2><code>fetch_opportunity_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz3yLYAR/view&quot;,
+  &quot;currentdate__c&quot;: &quot;2026-08-05&quot;,
+  &quot;LeadSource&quot;: null,
+  &quot;Type&quot;: null,
+  &quot;Description&quot;: &quot;E2E opp update&quot;,
+  &quot;Owner&quot;: &quot;Kalanithi Balasubramanian&quot;,
+  &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;ForecastCategory&quot;: &quot;Pipeline&quot;,
+  &quot;Probability&quot;: 10,
+  &quot;CloseDate&quot;: &quot;2026-09-04&quot;,
+  &quot;Amount&quot;: 400.0,
+  &quot;StageName&quot;: &quot;Prospecting&quot;,
+  &quot;Name&quot;: &quot;E2E Skill Test Opp&quot;,
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_opportunity_partners"><header><h2><code>fetch_opportunity_partners</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;opportunity_id&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;partners&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Partner/00IQH000002HxvN2AS/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Agency&quot;,
+      &quot;AccountName&quot;: &quot;E2E Partner Account&quot;,
+      &quot;AccountToId&quot;: &quot;001QH00002FpcuTYAR&quot;,
+      &quot;Id&quot;: &quot;00IQH000002HxvN2AS&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Partner/00IQH000002HxvO2AS/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Client&quot;,
+      &quot;AccountName&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;AccountToId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;Id&quot;: &quot;00IQH000002HxvO2AS&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Partner/00IQH000002Hxwz2AC/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Agency&quot;,
+      &quot;AccountName&quot;: &quot;E2E Partner Account&quot;,
+      &quot;AccountToId&quot;: &quot;001QH00002FpcuTYAR&quot;,
+      &quot;Id&quot;: &quot;00IQH000002Hxwz2AC&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Partner/00IQH000002Hxx02AC/view&quot;,
+      &quot;IsPrimary&quot;: false,
+      &quot;Role&quot;: &quot;Client&quot;,
+      &quot;AccountName&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;AccountToId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;Id&quot;: &quot;00IQH000002Hxx02AC&quot;
+    }
+  ],
+  &quot;count&quot;: 4,
+  &quot;opportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="fetch_opportunity_team"><header><h2><code>fetch_opportunity_team</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;OpportunityTeamMember is not accessible (Team Selling may be disabled).&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;OpportunityTeamMember is not accessible (Team Selling may be disabled).&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_order_details"><header><h2><code>fetch_order_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;801QH00002FpacWYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Order/801QH00002FpacWYAR/view&quot;,
+  &quot;items&quot;: [
+    {
+      &quot;TotalPrice&quot;: 50.0,
+      &quot;UnitPrice&quot;: 50.0,
+      &quot;Quantity&quot;: 1.0,
+      &quot;ProductName&quot;: &quot;GenWatt Diesel 200kW&quot;,
+      &quot;OrderItemNumber&quot;: &quot;0000000004&quot;,
+      &quot;Id&quot;: &quot;802QH00000Olf3VYAR&quot;
+    }
+  ],
+  &quot;itemCount&quot;: 1,
+  &quot;Description&quot;: null,
+  &quot;Type&quot;: null,
+  &quot;ContractId&quot;: null,
+  &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;TotalAmount&quot;: 50.0,
+  &quot;EndDate&quot;: null,
+  &quot;EffectiveDate&quot;: &quot;2026-08-05&quot;,
+  &quot;Status&quot;: &quot;Draft&quot;,
+  &quot;OrderNumber&quot;: &quot;00000103&quot;,
+  &quot;Id&quot;: &quot;801QH00002FpacWYAR&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_partner_account"><header><h2><code>fetch_partner_account</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;Website&quot;: null,
+  &quot;Industry&quot;: null,
+  &quot;Type&quot;: null,
+  &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpbIdYAJ/view&quot;,
+  &quot;object&quot;: &quot;Account&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_picklist_values"><header><h2><code>fetch_picklist_values</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;object_api_name&quot;: &quot;Account&quot;,
+  &quot;field_api_name&quot;: &quot;Industry&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;values&quot;: [
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Agriculture&quot;,
+      &quot;label&quot;: &quot;Agriculture&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Apparel&quot;,
+      &quot;label&quot;: &quot;Apparel&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Banking&quot;,
+      &quot;label&quot;: &quot;Banking&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Biotechnology&quot;,
+      &quot;label&quot;: &quot;Biotechnology&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Chemicals&quot;,
+      &quot;label&quot;: &quot;Chemicals&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Communications&quot;,
+      &quot;label&quot;: &quot;Communications&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Construction&quot;,
+      &quot;label&quot;: &quot;Construction&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Consulting&quot;,
+      &quot;label&quot;: &quot;Consulting&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Education&quot;,
+      &quot;label&quot;: &quot;Education&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Electronics&quot;,
+      &quot;label&quot;: &quot;Electronics&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Energy&quot;,
+      &quot;label&quot;: &quot;Energy&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Engineering&quot;,
+      &quot;label&quot;: &quot;Engineering&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Entertainment&quot;,
+      &quot;label&quot;: &quot;Entertainment&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Environmental&quot;,
+      &quot;label&quot;: &quot;Environmental&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Finance&quot;,
+      &quot;label&quot;: &quot;Finance&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Food &amp; Beverage&quot;,
+      &quot;label&quot;: &quot;Food &amp; Beverage&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Government&quot;,
+      &quot;label&quot;: &quot;Government&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Healthcare&quot;,
+      &quot;label&quot;: &quot;Healthcare&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Hospitality&quot;,
+      &quot;label&quot;: &quot;Hospitality&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Insurance&quot;,
+      &quot;label&quot;: &quot;Insurance&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Machinery&quot;,
+      &quot;label&quot;: &quot;Machinery&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Manufacturing&quot;,
+      &quot;label&quot;: &quot;Manufacturing&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Media&quot;,
+      &quot;label&quot;: &quot;Media&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Not For Profit&quot;,
+      &quot;label&quot;: &quot;Not For Profit&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Recreation&quot;,
+      &quot;label&quot;: &quot;Recreation&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Retail&quot;,
+      &quot;label&quot;: &quot;Retail&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Shipping&quot;,
+      &quot;label&quot;: &quot;Shipping&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Technology&quot;,
+      &quot;label&quot;: &quot;Technology&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Telecommunications&quot;,
+      &quot;label&quot;: &quot;Telecommunications&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Transportation&quot;,
+      &quot;label&quot;: &quot;Transportation&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Utilities&quot;,
+      &quot;label&quot;: &quot;Utilities&quot;
+    },
+    {
+      &quot;default&quot;: false,
+      &quot;active&quot;: true,
+      &quot;value&quot;: &quot;Other&quot;,
+      &quot;label&quot;: &quot;Other&quot;
+    }
+  ],
+  &quot;count&quot;: 32,
+  &quot;controllerValue&quot;: null,
+  &quot;isDependent&quot;: false,
+  &quot;field&quot;: &quot;Industry&quot;,
+  &quot;object&quot;: &quot;Account&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_pricebook_entries"><header><h2><code>fetch_pricebook_entries</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;entries&quot;: [
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBKYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 100000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Diesel 1000kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GdYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBKYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBDYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 5000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Diesel 10kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GWYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBDYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBCYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 25000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Diesel 200kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GVYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBCYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBRYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 150000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Gasoline 2000kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GkYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBRYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBPYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 35000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Gasoline 300kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GiYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBPYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBMYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 75000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Gasoline 750kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GfYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBMYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBIYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 15000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Propane 100kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GbYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBIYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBJYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 120000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Propane 1500kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GcYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBJYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBGYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 50000.0,
+      &quot;ProductName&quot;: &quot;GenWatt Propane 500kW&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GZYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBGYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBEYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 85000.0,
+      &quot;ProductName&quot;: &quot;Installation: Industrial - High&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GXYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBEYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBQYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 20000.0,
+      &quot;ProductName&quot;: &quot;Installation: Industrial - Low&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GjYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBQYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBSYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 50000.0,
+      &quot;ProductName&quot;: &quot;Installation: Industrial - Medium&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GlYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBSYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBNYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 5000.0,
+      &quot;ProductName&quot;: &quot;Installation: Portable&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GgYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBNYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBLYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 10000.0,
+      &quot;ProductName&quot;: &quot;SLA: Bronze&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GeYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBLYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBOYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 30000.0,
+      &quot;ProductName&quot;: &quot;SLA: Gold&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GhYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBOYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBHYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 40000.0,
+      &quot;ProductName&quot;: &quot;SLA: Platinum&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GaYAJ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBHYA2&quot;
+    },
+    {
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/PricebookEntry/01uQH000003sGBFYA2/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;UnitPrice&quot;: 20000.0,
+      &quot;ProductName&quot;: &quot;SLA: Silver&quot;,
+      &quot;Product2Id&quot;: &quot;01tQH00000Hh6GYYAZ&quot;,
+      &quot;Id&quot;: &quot;01uQH000003sGBFYA2&quot;
+    }
+  ],
+  &quot;count&quot;: 17,
+  &quot;pricebookId&quot;: &quot;01sQH000004ETvuYAG&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_product_details"><header><h2><code>fetch_product_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;01tQH00000Hh6GVYAZ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GVYAZ/view&quot;,
+  &quot;IsActive&quot;: true,
+  &quot;Family&quot;: null,
+  &quot;Description&quot;: null,
+  &quot;ProductCode&quot;: &quot;GC1040&quot;,
+  &quot;Name&quot;: &quot;GenWatt Diesel 200kW&quot;,
+  &quot;Id&quot;: &quot;01tQH00000Hh6GVYAZ&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_queue_cases"><header><h2><code>fetch_queue_cases</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;queue_id&quot;: &quot;00GQH000006KGhu2AG&quot;,
+  &quot;QueueId&quot;: &quot;00GQH000006KGhu2AG&quot;,
+  &quot;OwnerId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;cases&quot;: [],
+  &quot;count&quot;: 0,
+  &quot;queueId&quot;: &quot;00GQH000006KGhu2AG&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="fetch_quote_details"><header><h2><code>fetch_quote_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;Quote is not available or accessible in this org (enable Quotes).&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;Quote is not available or accessible in this org (enable Quotes).&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_record_approvals"><header><h2><code>fetch_record_approvals</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;approvals&quot;: [],
+  &quot;count&quot;: 0,
+  &quot;recordId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_renewal_opportunities"><header><h2><code>fetch_renewal_opportunities</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [],
+  &quot;ownerId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;count&quot;: 0,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="fetch_service_appointment"><header><h2><code>fetch_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;ServiceAppointment object is not available in this org.&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;ServiceAppointment object is not available in this org.&quot;
+}</pre></div></div></article><article class="card mute" id="fetch_service_resource_availability"><header><h2><code>fetch_service_resource_availability</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;ServiceResource object is not available in this org.&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;ServiceResource object is not available in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_session_context"><header><h2><code>fetch_session_context</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;objectType&quot;: null,
+  &quot;relationType&quot;: null,
+  &quot;WhatId&quot;: null,
+  &quot;WhoId&quot;: null,
+  &quot;recordId&quot;: null,
+  &quot;userId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;userContextId&quot;: &quot;A-00008&quot;,
+  &quot;message&quot;: &quot;User Context Id: A-00008 | Record Id: none&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_stale_opportunities"><header><h2><code>fetch_stale_opportunities</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;opportunities&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkZYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkZYAR/view&quot;,
+      &quot;Account&quot;: &quot;Grand Hotels &amp; Resorts Ltd&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 15000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Grand Hotels Kitchen Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkZYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkbYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkbYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 80000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Value Proposition&quot;,
+      &quot;Name&quot;: &quot;Express Logistics Portable Truck Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkbYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkcYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkcYAB/view&quot;,
+      &quot;Account&quot;: &quot;Express Logistics and Transport&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 120000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Perception Analysis&quot;,
+      &quot;Name&quot;: &quot;Express Logistics SLA&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkcYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkfYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkfYAB/view&quot;,
+      &quot;Account&quot;: &quot;University of Arizona&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;University of AZ Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkfYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkjYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkjYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Installations&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkjYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkkYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkkYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 125000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Negotiation/Review&quot;,
+      &quot;Name&quot;: &quot;United Oil Office Portable Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkkYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkpYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkpYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 270000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Proposal/Price Quote&quot;,
+      &quot;Name&quot;: &quot;United Oil Refinery Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkpYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkqYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkqYAB/view&quot;,
+      &quot;Account&quot;: &quot;United Oil &amp; Gas Corp.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 675000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Needs Analysis&quot;,
+      &quot;Name&quot;: &quot;United Oil Plant Standby Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkqYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydktYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydktYAB/view&quot;,
+      &quot;Account&quot;: &quot;GenePoint&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 60000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;GenePoint Lab Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydktYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkwYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkwYAB/view&quot;,
+      &quot;Account&quot;: &quot;Edge Communications&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 35000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Id. Decision Makers&quot;,
+      &quot;Name&quot;: &quot;Edge Emergency Generator&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkwYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkzYAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KydkzYAB/view&quot;,
+      &quot;Account&quot;: &quot;Pyramid Construction Inc.&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 100000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;Pyramid Emergency Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000KydkzYAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl0YAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl0YAB/view&quot;,
+      &quot;Account&quot;: &quot;Dickenson plc&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 15000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Qualification&quot;,
+      &quot;Name&quot;: &quot;Dickenson Mobile Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kydl0YAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl2YAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kydl2YAB/view&quot;,
+      &quot;Account&quot;: &quot;Grand Hotels &amp; Resorts Ltd&quot;,
+      &quot;LastModifiedDate&quot;: &quot;2026-08-05 09:15:37&quot;,
+      &quot;Amount&quot;: 250000.0,
+      &quot;CloseDate&quot;: &quot;2024-07-14&quot;,
+      &quot;StageName&quot;: &quot;Value Proposition&quot;,
+      &quot;Name&quot;: &quot;Grand Hotels Guest Portable Generators&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kydl2YAB&quot;
+    }
+  ],
+  &quot;count&quot;: 13,
+  &quot;scopedToCurrentUser&quot;: true,
+  &quot;staleDefinition&quot;: &quot;Open opportunities with CloseDate before today&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="fetch_subscription_details"><header><h2><code>fetch_subscription_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;Subscription object is not available in this org.&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;Subscription object is not available in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="fetch_upcoming_renewals"><header><h2><code>fetch_upcoming_renewals</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [],
+  &quot;count&quot;: 0,
+  &quot;toDate&quot;: &quot;2026-11-03&quot;,
+  &quot;fromDate&quot;: &quot;2026-08-05&quot;,
+  &quot;daysAhead&quot;: 90,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fetch_work_order_details"><header><h2><code>fetch_work_order_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;0WOQH000006HZdp4AG&quot;,
+  &quot;work_order_id&quot;: &quot;0WOQH000006HZdp4AG&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;EndDate&quot;: null,
+  &quot;StartDate&quot;: null,
+  &quot;Description&quot;: &quot;E2E WO update&quot;,
+  &quot;AssetId&quot;: null,
+  &quot;ContactId&quot;: null,
+  &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;Priority&quot;: &quot;Low&quot;,
+  &quot;Status&quot;: &quot;New&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Work Order Updated&quot;,
+  &quot;WorkOrderNumber&quot;: &quot;00000005&quot;,
+  &quot;Id&quot;: &quot;0WOQH000006HZdp4AG&quot;,
+  &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/WorkOrder/0WOQH000006HZdp4AG/view&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_accounts"><header><h2><code>fuzzy_search_accounts</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2E Skill&quot;,
+  &quot;search_term&quot;: &quot;E2E Skill&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpD1cYAF/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpD1cYAF/view&quot;,
+      &quot;Website&quot;: null,
+      &quot;Industry&quot;: null,
+      &quot;Type&quot;: null,
+      &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Id&quot;: &quot;001QH00002FpD1cYAF&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpbIdYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpbIdYAJ/view&quot;,
+      &quot;Website&quot;: null,
+      &quot;Industry&quot;: null,
+      &quot;Type&quot;: null,
+      &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpgjVYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpgjVYAR/view&quot;,
+      &quot;Website&quot;: null,
+      &quot;Industry&quot;: null,
+      &quot;Type&quot;: null,
+      &quot;Name&quot;: &quot;E2E Created Account 942034&quot;,
+      &quot;Id&quot;: &quot;001QH00002FpgjVYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpbTkYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpbTkYAJ/view&quot;,
+      &quot;Website&quot;: &quot;https://e2e.example.com&quot;,
+      &quot;Industry&quot;: null,
+      &quot;Type&quot;: null,
+      &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Id&quot;: &quot;001QH00002FpbTkYAJ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpbGpYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpbGpYAJ/view&quot;,
+      &quot;Website&quot;: null,
+      &quot;Industry&quot;: null,
+      &quot;Type&quot;: null,
+      &quot;Name&quot;: &quot;E2E Created Account 941778&quot;,
+      &quot;Id&quot;: &quot;001QH00002FpbGpYAJ&quot;
+    }
+  ],
+  &quot;remaining&quot;: 5,
+  &quot;displayed&quot;: 5,
+  &quot;totalFound&quot;: 10,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_assets"><header><h2><code>fuzzy_search_assets</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2E Skill&quot;,
+  &quot;search_term&quot;: &quot;E2E Skill&quot;,
+  &quot;Id&quot;: &quot;02iQH000002k7RxYAI&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Asset/02iQH000002k7RxYAI/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Asset/02iQH000002k7RxYAI/view&quot;,
+      &quot;AccountId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;Status&quot;: null,
+      &quot;SerialNumber&quot;: null,
+      &quot;Name&quot;: &quot;E2E Skill Test Asset&quot;,
+      &quot;Id&quot;: &quot;02iQH000002k7RxYAI&quot;
+    }
+  ],
+  &quot;remaining&quot;: 0,
+  &quot;displayed&quot;: 1,
+  &quot;totalFound&quot;: 1,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_campaigns"><header><h2><code>fuzzy_search_campaigns</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2E Skill&quot;,
+  &quot;search_term&quot;: &quot;E2E Skill&quot;,
+  &quot;Id&quot;: &quot;701QH00002FpbTlYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Campaign/701QH00002FpbTlYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Campaign/701QH00002FpbTlYAJ/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;Status&quot;: &quot;Planned&quot;,
+      &quot;Type&quot;: &quot;Conference&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Campaign&quot;,
+      &quot;Id&quot;: &quot;701QH00002FpbTlYAJ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Campaign/701QH00002FpME7YAN/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Campaign/701QH00002FpME7YAN/view&quot;,
+      &quot;IsActive&quot;: false,
+      &quot;Status&quot;: &quot;Planned&quot;,
+      &quot;Type&quot;: &quot;Conference&quot;,
+      &quot;Name&quot;: &quot;E2E Created Campaign 1842&quot;,
+      &quot;Id&quot;: &quot;701QH00002FpME7YAN&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Campaign/701QH00002FpZv0YAF/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Campaign/701QH00002FpZv0YAF/view&quot;,
+      &quot;IsActive&quot;: false,
+      &quot;Status&quot;: &quot;Planned&quot;,
+      &quot;Type&quot;: &quot;Conference&quot;,
+      &quot;Name&quot;: &quot;E2E Created Campaign 1147&quot;,
+      &quot;Id&quot;: &quot;701QH00002FpZv0YAF&quot;
+    }
+  ],
+  &quot;remaining&quot;: 0,
+  &quot;displayed&quot;: 3,
+  &quot;totalFound&quot;: 3,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_cases"><header><h2><code>fuzzy_search_cases</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2E Skill&quot;,
+  &quot;search_term&quot;: &quot;E2E Skill&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view&quot;,
+      &quot;Priority&quot;: &quot;Medium&quot;,
+      &quot;Status&quot;: &quot;Closed&quot;,
+      &quot;Subject&quot;: &quot;E2E Skill Test Case&quot;,
+      &quot;CaseNumber&quot;: &quot;00001026&quot;,
+      &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaFedYAF/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaFedYAF/view&quot;,
+      &quot;Priority&quot;: &quot;Medium&quot;,
+      &quot;Status&quot;: &quot;New&quot;,
+      &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+      &quot;CaseNumber&quot;: &quot;00001028&quot;,
+      &quot;Id&quot;: &quot;500QH00000VaFedYAF&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNNdYAN/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNNdYAN/view&quot;,
+      &quot;Priority&quot;: &quot;Medium&quot;,
+      &quot;Status&quot;: &quot;New&quot;,
+      &quot;Subject&quot;: &quot;E2E Created Case&quot;,
+      &quot;CaseNumber&quot;: &quot;00001027&quot;,
+      &quot;Id&quot;: &quot;500QH00000VaNNdYAN&quot;
+    }
+  ],
+  &quot;remaining&quot;: 0,
+  &quot;displayed&quot;: 3,
+  &quot;totalFound&quot;: 3,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_contacts"><header><h2><code>fuzzy_search_contacts</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;Rose&quot;,
+  &quot;search_term&quot;: &quot;Rose&quot;,
+  &quot;Id&quot;: &quot;003QH00000RYCbtYAH&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contact/003QH00000RYCbtYAH/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contact/003QH00000RYCbtYAH/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;AccountId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+      &quot;Title&quot;: null,
+      &quot;Phone&quot;: &quot;555-0101&quot;,
+      &quot;Email&quot;: &quot;e2e.contact@example.com&quot;,
+      &quot;Name&quot;: &quot;Rose E2EContact&quot;,
+      &quot;Id&quot;: &quot;003QH00000RYCbtYAH&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contact/003QH00000RYC0nYAH/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contact/003QH00000RYC0nYAH/view&quot;,
+      &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;AccountId&quot;: &quot;001QH00002FpbTkYAJ&quot;,
+      &quot;Title&quot;: &quot;E2E Title&quot;,
+      &quot;Phone&quot;: &quot;555-0101&quot;,
+      &quot;Email&quot;: &quot;e2e.contact@example.com&quot;,
+      &quot;Name&quot;: &quot;Rose E2EContact&quot;,
+      &quot;Id&quot;: &quot;003QH00000RYC0nYAH&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contact/003QH00000RXZdnYAH/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Contact/003QH00000RXZdnYAH/view&quot;,
+      &quot;Account&quot;: &quot;Edge Communications&quot;,
+      &quot;AccountId&quot;: &quot;001QH00002FoLakYAF&quot;,
+      &quot;Title&quot;: &quot;SVP, Procurement&quot;,
+      &quot;Phone&quot;: &quot;(512) 757-6000&quot;,
+      &quot;Email&quot;: &quot;rose@edge.com&quot;,
+      &quot;Name&quot;: &quot;Rose Gonzalez&quot;,
+      &quot;Id&quot;: &quot;003QH00000RXZdnYAH&quot;
+    }
+  ],
+  &quot;remaining&quot;: 0,
+  &quot;displayed&quot;: 3,
+  &quot;totalFound&quot;: 3,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_leads"><header><h2><code>fuzzy_search_leads</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2ELead&quot;,
+  &quot;search_term&quot;: &quot;E2ELead&quot;,
+  &quot;Id&quot;: &quot;00QQH00000M9ybZ2AR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000M9ybZ2AR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000M9ybZ2AR/view&quot;,
+      &quot;IsConverted&quot;: false,
+      &quot;Status&quot;: &quot;Open - Not Contacted&quot;,
+      &quot;Phone&quot;: null,
+      &quot;Email&quot;: &quot;e2e.lead.open@example.com&quot;,
+      &quot;Company&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Name&quot;: &quot;Open E2ELeadOpen&quot;,
+      &quot;Id&quot;: &quot;00QQH00000M9ybZ2AR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000M9xyg2AB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000M9xyg2AB/view&quot;,
+      &quot;IsConverted&quot;: true,
+      &quot;Status&quot;: &quot;Closed - Converted&quot;,
+      &quot;Phone&quot;: null,
+      &quot;Email&quot;: &quot;e2e.lead.1785941912169@example.com&quot;,
+      &quot;Company&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Name&quot;: &quot;E2E E2ELead&quot;,
+      &quot;Id&quot;: &quot;00QQH00000M9xyg2AB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000M9z9G2AR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000M9z9G2AR/view&quot;,
+      &quot;IsConverted&quot;: true,
+      &quot;Status&quot;: &quot;Closed - Converted&quot;,
+      &quot;Phone&quot;: null,
+      &quot;Email&quot;: &quot;e2e.lead.1785941760497@example.com&quot;,
+      &quot;Company&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Name&quot;: &quot;E2E E2ELead&quot;,
+      &quot;Id&quot;: &quot;00QQH00000M9z9G2AR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000MA0ID2A1/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Lead/00QQH00000MA0ID2A1/view&quot;,
+      &quot;IsConverted&quot;: true,
+      &quot;Status&quot;: &quot;Closed - Converted&quot;,
+      &quot;Phone&quot;: null,
+      &quot;Email&quot;: &quot;e2e.lead@example.com&quot;,
+      &quot;Company&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Name&quot;: &quot;E2E E2ELead&quot;,
+      &quot;Id&quot;: &quot;00QQH00000MA0ID2A1&quot;
+    }
+  ],
+  &quot;remaining&quot;: 0,
+  &quot;displayed&quot;: 4,
+  &quot;totalFound&quot;: 4,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_opportunities"><header><h2><code>fuzzy_search_opportunities</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2E Skill&quot;,
+  &quot;search_term&quot;: &quot;E2E Skill&quot;,
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4mLYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4mLYAR/view&quot;,
+      &quot;Amount&quot;: 400.0,
+      &quot;CloseDate&quot;: &quot;2026-09-04 00:00:00&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Opp Copy&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz4mLYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz3yLYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz3yLYAR/view&quot;,
+      &quot;Amount&quot;: 400.0,
+      &quot;CloseDate&quot;: &quot;2026-09-04 00:00:00&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Opp&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KyuQQYAZ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000KyuQQYAZ/view&quot;,
+      &quot;Amount&quot;: null,
+      &quot;CloseDate&quot;: &quot;2026-09-30 00:00:00&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Account&quot;,
+      &quot;Id&quot;: &quot;006QH00000KyuQQYAZ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4j7YAB/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4j7YAB/view&quot;,
+      &quot;Amount&quot;: null,
+      &quot;CloseDate&quot;: &quot;2026-09-01 00:00:00&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Created Opp 2032&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz4j7YAB&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4XpYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Opportunity/006QH00000Kz4XpYAJ/view&quot;,
+      &quot;Amount&quot;: 300.0,
+      &quot;CloseDate&quot;: &quot;2026-09-04 00:00:00&quot;,
+      &quot;StageName&quot;: &quot;Prospecting&quot;,
+      &quot;Name&quot;: &quot;E2E Skill Test Opp Copy&quot;,
+      &quot;Id&quot;: &quot;006QH00000Kz4XpYAJ&quot;
+    }
+  ],
+  &quot;remaining&quot;: 6,
+  &quot;displayed&quot;: 5,
+  &quot;totalFound&quot;: 11,
+  &quot;matchedVia&quot;: &quot;name&quot;,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_partners"><header><h2><code>fuzzy_search_partners</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;E2E Partner Account&quot;,
+  &quot;search_term&quot;: &quot;E2E Partner Account&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;Website&quot;: null,
+      &quot;Industry&quot;: null,
+      &quot;Type&quot;: &quot;Partner Reseller&quot;,
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpcuTYAR/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Account/001QH00002FpcuTYAR/view&quot;,
+      &quot;object&quot;: &quot;Account&quot;,
+      &quot;Name&quot;: &quot;E2E Partner Account&quot;,
+      &quot;Id&quot;: &quot;001QH00002FpcuTYAR&quot;
+    }
+  ],
+  &quot;remaining&quot;: 0,
+  &quot;displayed&quot;: 1,
+  &quot;totalFound&quot;: 1,
+  &quot;sourceObject&quot;: &quot;Account&quot;,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_products"><header><h2><code>fuzzy_search_products</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;GenWatt&quot;,
+  &quot;search_term&quot;: &quot;GenWatt&quot;,
+  &quot;Id&quot;: &quot;01tQH00000Hh6GVYAZ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;records&quot;: [
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GVYAZ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GVYAZ/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;Family&quot;: null,
+      &quot;ProductCode&quot;: &quot;GC1040&quot;,
+      &quot;Name&quot;: &quot;GenWatt Diesel 200kW&quot;,
+      &quot;Id&quot;: &quot;01tQH00000Hh6GVYAZ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GWYAZ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GWYAZ/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;Family&quot;: null,
+      &quot;ProductCode&quot;: &quot;GC1020&quot;,
+      &quot;Name&quot;: &quot;GenWatt Diesel 10kW&quot;,
+      &quot;Id&quot;: &quot;01tQH00000Hh6GWYAZ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GZYAZ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GZYAZ/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;Family&quot;: null,
+      &quot;ProductCode&quot;: &quot;GC3040&quot;,
+      &quot;Name&quot;: &quot;GenWatt Propane 500kW&quot;,
+      &quot;Id&quot;: &quot;01tQH00000Hh6GZYAZ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GbYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GbYAJ/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;Family&quot;: null,
+      &quot;ProductCode&quot;: &quot;GC3020&quot;,
+      &quot;Name&quot;: &quot;GenWatt Propane 100kW&quot;,
+      &quot;Id&quot;: &quot;01tQH00000Hh6GbYAJ&quot;
+    },
+    {
+      &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GcYAJ/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+      &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Product2/01tQH00000Hh6GcYAJ/view&quot;,
+      &quot;IsActive&quot;: true,
+      &quot;Family&quot;: null,
+      &quot;ProductCode&quot;: &quot;GC3060&quot;,
+      &quot;Name&quot;: &quot;GenWatt Propane 1500kW&quot;,
+      &quot;Id&quot;: &quot;01tQH00000Hh6GcYAJ&quot;
+    }
+  ],
+  &quot;remaining&quot;: 4,
+  &quot;displayed&quot;: 5,
+  &quot;totalFound&quot;: 9,
+  &quot;status&quot;: &quot;found&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="fuzzy_search_quotes"><header><h2><code>fuzzy_search_quotes</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;Quote&quot;,
+  &quot;search_term&quot;: &quot;Quote&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;error&quot;: &quot;Quote is not available or accessible in this org (enable Quotes).&quot;,
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;Quote is not available or accessible in this org (enable Quotes).&quot;
+}</pre></div></div></article><article class="card mute" id="link_knowledge_article_to_case"><header><h2><code>link_knowledge_article_to_case</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;CaseId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;KnowledgeArticleId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not link article CaseArticle is not available in this org (Knowledge may not be enabled).&quot;
+}</pre></div></div></article><article class="card ok" id="log_activity"><header><h2><code>log_activity</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;WhatId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;WhoId&quot;: &quot;003QH00000RYCbtYAH&quot;,
+  &quot;Subject&quot;: &quot;E2E seeded activity&quot;,
+  &quot;record_id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;activity_subject&quot;: &quot;E2E seeded activity&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00TQH00000FPLv32AH&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Activity Logged: E2E seeded activity Status: Completed Date: 2026-08-05 👉 View Task&quot;
+}</pre></div></div></article><article class="card ok" id="remove_campaign_member"><header><h2><code>remove_campaign_member</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00vQH00000IZ9NpYAL&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Campaign Member Removed Removed: Rose E2EContact&quot;
+}</pre></div></div></article><article class="card ok" id="run_internal_prompt"><header><h2><code>run_internal_prompt</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;record_id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;prompt_request_id&quot;: &quot;skip-if-invalid&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;recordId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;message&quot;: null
+}</pre></div></div></article><article class="card mute" id="schedule_service_appointment"><header><h2><code>schedule_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not schedule appointment ServiceAppointment is not available or creatable in this org.&quot;
+}</pre></div></div></article><article class="card mute" id="search_knowledge_articles"><header><h2><code>search_knowledge_articles</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;search_term&quot;: &quot;test&quot;,
+  &quot;searchTerm&quot;: &quot;test&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: true,
+  &quot;status&quot;: &quot;unavailable&quot;,
+  &quot;message&quot;: &quot;Knowledge is not enabled in this org.&quot;
+}</pre></div></div></article><article class="card bad" id="transfer_record_owner"><header><h2><code>transfer_record_owner</code></h2><span class="pill bad">fail_business</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;record_id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;new_owner_id&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;UserId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+  &quot;OwnerId&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not transfer owner Record is already owned by that user or queue.&quot;
+}</pre></div></div></article><article class="card ok" id="update_account_fields"><header><h2><code>update_account_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;account_id&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;Description&quot;: &quot;Updated by E2E 1785942039&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;001QH00002FpbIdYAJ&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Account Updated E2E Skill Test Account Description: (none) → Updated by E2E 1785942039 👉 View Account&quot;
+}</pre></div></div></article><article class="card ok" id="update_asset_fields"><header><h2><code>update_asset_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;02iQH000002k7RxYAI&quot;,
+  &quot;Description&quot;: &quot;E2E asset update&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;02iQH000002k7RxYAI&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Asset Updated E2E Skill Test Asset Description: E2E asset update → E2E asset update 👉 View Asset&quot;
+}</pre></div></div></article><article class="card ok" id="update_campaign_fields"><header><h2><code>update_campaign_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;701QH00002FpbTlYAJ&quot;,
+  &quot;Description&quot;: &quot;E2E campaign update&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;701QH00002FpbTlYAJ&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Campaign Updated E2E Skill Test Campaign Description: E2E campaign update → E2E campaign update 👉 View Campaign&quot;
+}</pre></div></div></article><article class="card ok" id="update_campaign_member_status"><header><h2><code>update_campaign_member_status</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00vQH00000IZ9NpYAL&quot;,
+  &quot;Status&quot;: &quot;Responded&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00vQH00000IZ9NpYAL&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Campaign Member Status Updated Rose E2EContact Status: Sent → Responded 👉 View Member&quot;
+}</pre></div></div></article><article class="card mute" id="update_care_plan_fields"><header><h2><code>update_care_plan_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update care plan Care Plan object is not available in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="update_case_fields"><header><h2><code>update_case_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;case_id&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;fields&quot;: {
+    &quot;Priority&quot;: &quot;Medium&quot;
+  },
+  &quot;Priority&quot;: &quot;Medium&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;500QH00000VaKWEYA3&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Case Updated 00001026 Priority: Medium → Medium 👉 View Case&quot;
+}</pre></div></div></article><article class="card ok" id="update_contact_fields"><header><h2><code>update_contact_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;003QH00000RYCbtYAH&quot;,
+  &quot;contact_id&quot;: &quot;003QH00000RYCbtYAH&quot;,
+  &quot;fields&quot;: {
+    &quot;Title&quot;: &quot;E2E Title&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;003QH00000RYCbtYAH&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Contact Updated Rose E2EContact Title: (none) → E2E Title 👉 View Contact&quot;
+}</pre></div></div></article><article class="card ok" id="update_contract_fields"><header><h2><code>update_contract_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;800QH00000VaOQ9YAN&quot;,
+  &quot;Description&quot;: &quot;E2E contract&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;800QH00000VaOQ9YAN&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Contract Updated 00000104 Description: (none) → E2E contract 👉 View Contract&quot;
+}</pre></div></div></article><article class="card mute" id="update_cpq_quote_fields"><header><h2><code>update_cpq_quote_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update CPQ quote Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
+}</pre></div></div></article><article class="card mute" id="update_cpq_quote_line"><header><h2><code>update_cpq_quote_line</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update CPQ quote line Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="update_event"><header><h2><code>update_event</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00UQH0000076NcD2AU&quot;,
+  &quot;Description&quot;: &quot;E2E event update&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00UQH0000076NcD2AU&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Event Updated E2E Skill Test Event Description: E2E event update → E2E event update 👉 View Event&quot;
+}</pre></div></div></article><article class="card mute" id="update_financial_account_fields"><header><h2><code>update_financial_account_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update financial account FinServ__FinancialAccount__c is not available in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="update_lead_fields"><header><h2><code>update_lead_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00QQH00000M9ybZ2AR&quot;,
+  &quot;fields&quot;: {
+    &quot;Title&quot;: &quot;E2E Lead Title&quot;
+  },
+  &quot;Title&quot;: &quot;E2E Lead Title&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00QQH00000M9ybZ2AR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Lead Updated Open E2ELeadOpen Title: (none) → E2E Lead Title 👉 View Lead&quot;
+}</pre></div></div></article><article class="card ok" id="update_opportunity_contact_role"><header><h2><code>update_opportunity_contact_role</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00KQH00000HcypP2AR&quot;,
+  &quot;Role&quot;: &quot;Decision Maker&quot;,
+  &quot;fields&quot;: {
+    &quot;Role&quot;: &quot;Decision Maker&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00KQH00000HcypP2AR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Contact Role Updated Rose E2EContact (Decision Maker) Role: Decision Maker → Decision Maker 👉 View Contact Role&quot;
+}</pre></div></div></article><article class="card ok" id="update_opportunity_fields"><header><h2><code>update_opportunity_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E opp update&quot;
+  },
+  &quot;Description&quot;: &quot;E2E opp update&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;006QH00000Kz3yLYAR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Opportunity Updated E2E Skill Test Opp Description: E2E opp update → E2E opp update 👉 View Opportunity&quot;
+}</pre></div></div></article><article class="card ok" id="update_opportunity_line_item"><header><h2><code>update_opportunity_line_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00kQH00000BVpxZYAT&quot;,
+  &quot;Quantity&quot;: 2,
+  &quot;fields&quot;: {
+    &quot;Quantity&quot;: 2
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00kQH00000BVpxZYAT&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Line Item Updated Line item (2.00 @ 50.00) Quantity: 2.00 → 2.00 👉 View Line Item&quot;
+}</pre></div></div></article><article class="card ok" id="update_order_fields"><header><h2><code>update_order_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;801QH00002FpacWYAR&quot;,
+  &quot;Description&quot;: &quot;E2E order update&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;801QH00002FpacWYAR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Order Updated 00000103 Description: (none) → E2E order update 👉 View Order&quot;
+}</pre></div></div></article><article class="card ok" id="update_order_item"><header><h2><code>update_order_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;802QH00000Olf3VYAR&quot;,
+  &quot;Quantity&quot;: 2,
+  &quot;UnitPrice&quot;: 55
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;802QH00000Olf3VYAR&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Order Item Updated 0000000004 (1.00 @ 50.00) Quantity: 1.00 → 2.00 UnitPrice: 50.00 → 55.00 👉 View Order Item&quot;
+}</pre></div></div></article><article class="card warn" id="update_quote_fields"><header><h2><code>update_quote_fields</code></h2><span class="pill warn">fail_data</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Description&quot;: &quot;E2E&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update quote Missing parameter: quote_id&quot;
+}</pre></div></div></article><article class="card warn" id="update_quote_line_item"><header><h2><code>update_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Quantity&quot;: 2
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update quote line item Missing parameter: line_item_id&quot;
+}</pre></div></div></article><article class="card mute" id="update_service_appointment"><header><h2><code>update_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update appointment ServiceAppointment is not updateable in this org.&quot;
+}</pre></div></div></article><article class="card mute" id="update_subscription_fields"><header><h2><code>update_subscription_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;001QH00002FpbIdYAJ&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;success&quot;: false,
+  &quot;message&quot;: &quot;⚠️ Could not update subscription Subscription object is not available in this org.&quot;
+}</pre></div></div></article><article class="card ok" id="update_task"><header><h2><code>update_task</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;00TQH00000FPL732AH&quot;,
+  &quot;Description&quot;: &quot;E2E task update&quot;,
+  &quot;fields&quot;: {
+    &quot;Description&quot;: &quot;E2E task update&quot;
+  }
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;00TQH00000FPL732AH&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Task Updated E2E Skill Test Task Description: E2E task update → E2E task update 👉 View Task&quot;
+}</pre></div></div></article><article class="card ok" id="update_work_order_fields"><header><h2><code>update_work_order_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;0WOQH000006HZdp4AG&quot;,
+  &quot;work_order_id&quot;: &quot;0WOQH000006HZdp4AG&quot;,
+  &quot;Description&quot;: &quot;E2E WO update&quot;,
+  &quot;Subject&quot;: &quot;E2E Skill Test Work Order Updated&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;recordId&quot;: &quot;0WOQH000006HZdp4AG&quot;,
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;✅ Work Order Updated E2E Skill Test Work Order Description: (none) → E2E WO update Subject: E2E Skill Test Work Order → E2E Skill Test Work Order Updated 👉 View Work Order&quot;
+}</pre></div></div></article>
+<footer class="muted" style="margin-top:1.5rem;font-size:.84rem">
+  Each card shows the full invoke request and response. Public main link: MAIN_REPORT.html (always latest).
+</footer>
+</div></body></html>

@@ -1,0 +1,215 @@
+{
+  "title": "Handler regression — CaseAgenticSkillsHandler",
+  "target": "CaseAgenticSkillsHandler",
+  "targetLabel": "CaseAgenticSkillsHandler",
+  "handlers": [
+    "CaseAgenticSkillsHandler"
+  ],
+  "skillsPlanned": [
+    "add_case_comment",
+    "add_case_team_member",
+    "close_case",
+    "create_case",
+    "fetch_case_details",
+    "fetch_case_team",
+    "fuzzy_search_cases",
+    "link_knowledge_article_to_case",
+    "update_case_fields"
+  ],
+  "needForUpdate": "HTML reports must show full request and full response for every skill (not scoreboard numbers)",
+  "whatChanged": [
+    "regression_handler.py",
+    "handler-skill-regression-html.mdc"
+  ],
+  "org": "Master Dev",
+  "agent": "IT_Helpdesk_Assistant05/08/2026, 11:47",
+  "localTime": "2026-08-05 20:57:17 India Standard Time",
+  "utcTime": "2026-08-05 15:27:17 UTC",
+  "counts": {
+    "pass": 6,
+    "fail_business": 2,
+    "fail_missing_feature": 1
+  },
+  "results": [
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "add_case_comment",
+      "promptId": "a0KQH00000HcyW12AJ",
+      "request": {
+        "CaseNumber": "00001026",
+        "Subject": "E2E Skill Test Case",
+        "CommentBody": "E2E seeded case comment",
+        "IsPublished": true,
+        "ParentId": "500QH00000VaKWEYA3"
+      },
+      "category": "pass",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 0.6,
+      "errorSnippet": null,
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"recordId\": \"500QH00000VaKWEYA3\",\n    \"message\": \"✅ Case Comment Added Case #: 00001026 Comment: E2E seeded case comment 👉 View Case\",\n    \"success\": true,\n    \"messageHtml\": \"<div>✅ <b>Case Comment Added</b><ul><li><b>Case #:</b> 00001026</li><li><b>Comment:</b> E2E seeded case comment</li></ul><br/>👉 <a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\\\" target=\\\"_blank\\\"><b>View Case</b></a></div>\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"recordId\": \"500QH00000VaKWEYA3\",\n    \"message\": \"✅ Case Comment Added Case #: 00001026 Comment: E2E seeded case comment 👉 View Case\",\n    \"success\": true,\n    \"messageHtml\": \"<div>✅ <b>Case Comment Added</b><ul><li><b>Case #:</b> 00001026</li><li><b>Comment:</b> E2E seeded case comment</li></ul><br/>👉 <a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\\\" target=\\\"_blank\\\"><b>View Case</b></a></div>\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "add_case_team_member",
+      "promptId": "a0KQH00000Hcx5L2AR",
+      "request": {
+        "CaseNumber": "00001026",
+        "Subject": "E2E Skill Test Case",
+        "UserId": "005QH00000Ahc4IYAR",
+        "user_id": "005QH00000Ahc4IYAR",
+        "team_role_id": "0B7QH0000005bDR0AY",
+        "TeamRoleId": "0B7QH0000005bDR0AY",
+        "CaseId": "500QH00000VaKWEYA3"
+      },
+      "category": "fail_business",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 0.93,
+      "errorSnippet": "<div>⚠️ <b>Could not add case team member</b><br/>Insert failed. First exception on row 0; first error: DUPLICATE_VALUE, The member you have selected is already on the team. Please select another.: []</div>",
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"message\": \"⚠️ Could not add case team member Insert failed. First exception on row 0; first error: DUPLICATE_VALUE, The member you have selected is already on the team. Please select another.: []\",\n    \"success\": false,\n    \"messageHtml\": \"<div>⚠️ <b>Could not add case team member</b><br/>Insert failed. First exception on row 0; first error: DUPLICATE_VALUE, The member you have selected is already on the team. Please select another.: []</div>\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"message\": \"⚠️ Could not add case team member Insert failed. First exception on row 0; first error: DUPLICATE_VALUE, The member you have selected is already on the team. Please select another.: []\",\n    \"success\": false,\n    \"messageHtml\": \"<div>⚠️ <b>Could not add case team member</b><br/>Insert failed. First exception on row 0; first error: DUPLICATE_VALUE, The member you have selected is already on the team. Please select another.: []</div>\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "close_case",
+      "promptId": "a0KQH00000Hcyiv2AB",
+      "request": {
+        "CaseNumber": "00001026",
+        "Subject": "E2E Skill Test Case",
+        "Status": "Closed",
+        "Id": "001QH00002FpbIdYAJ"
+      },
+      "category": "fail_business",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 1.08,
+      "errorSnippet": "<div>⚠️ <b>Could not close case</b><br/>Case is already closed.</div>",
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"message\": \"⚠️ Could not close case Case is already closed.\",\n    \"success\": false,\n    \"messageHtml\": \"<div>⚠️ <b>Could not close case</b><br/>Case is already closed.</div>\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"message\": \"⚠️ Could not close case Case is already closed.\",\n    \"success\": false,\n    \"messageHtml\": \"<div>⚠️ <b>Could not close case</b><br/>Case is already closed.</div>\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "create_case",
+      "promptId": "a0KQH00000HcypN2AR",
+      "request": {
+        "Subject": "E2E Created Case",
+        "AccountName": "E2E Skill Test Account",
+        "ContactName": "Rose E2EContact",
+        "fields": {
+          "Subject": "E2E Created Case",
+          "Status": "New",
+          "Origin": "Web",
+          "AccountId": "E2E Skill Test Account"
+        }
+      },
+      "category": "pass",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 1.14,
+      "errorSnippet": null,
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"recordId\": \"500QH00000VaQ33YAF\",\n    \"message\": \"✅ Case Created Case #: 00001032 Subject: E2E Created Case 👉 View Case\",\n    \"success\": true,\n    \"messageHtml\": \"<div>✅ <b>Case Created</b><ul><li><b>Case #:</b> 00001032</li><li><b>Subject:</b> E2E Created Case</li></ul><br/>👉 <a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\\\" target=\\\"_blank\\\"><b>View Case</b></a></div>\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"recordId\": \"500QH00000VaQ33YAF\",\n    \"message\": \"✅ Case Created Case #: 00001032 Subject: E2E Created Case 👉 View Case\",\n    \"success\": true,\n    \"messageHtml\": \"<div>✅ <b>Case Created</b><ul><li><b>Case #:</b> 00001032</li><li><b>Subject:</b> E2E Created Case</li></ul><br/>👉 <a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\\\" target=\\\"_blank\\\"><b>View Case</b></a></div>\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "fetch_case_details",
+      "promptId": "a0KQH00000HczDZ2AZ",
+      "request": {
+        "CaseNumber": "00001026",
+        "Subject": "E2E Skill Test Case",
+        "Id": "001QH00002FpbIdYAJ"
+      },
+      "category": "pass",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 0.64,
+      "errorSnippet": null,
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"success\": true,\n    \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\",\n    \"IsClosed\": true,\n    \"Contact\": \"Rose E2EContact\",\n    \"Account\": \"E2E Skill Test Account\",\n    \"Reason\": null,\n    \"Origin\": \"Web\",\n    \"Type\": null,\n    \"Priority\": \"Medium\",\n    \"Status\": \"Closed\",\n    \"Description\": \"E2E_SKILL_TEST\",\n    \"Subject\": \"E2E Skill Test Case\",\n    \"CaseNumber\": \"00001026\",\n    \"Id\": \"500QH00000VaKWEYA3\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"success\": true,\n    \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\",\n    \"IsClosed\": true,\n    \"Contact\": \"Rose E2EContact\",\n    \"Account\": \"E2E Skill Test Account\",\n    \"Reason\": null,\n    \"Origin\": \"Web\",\n    \"Type\": null,\n    \"Priority\": \"Medium\",\n    \"Status\": \"Closed\",\n    \"Description\": \"E2E_SKILL_TEST\",\n    \"Subject\": \"E2E Skill Test Case\",\n    \"CaseNumber\": \"00001026\",\n    \"Id\": \"500QH00000VaKWEYA3\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "fetch_case_team",
+      "promptId": "a0KQH00000HczGn2AJ",
+      "request": {
+        "CaseNumber": "00001026",
+        "Subject": "E2E Skill Test Case",
+        "CaseId": "500QH00000VaKWEYA3",
+        "Id": "500QH00000VaKWEYA3"
+      },
+      "category": "pass",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 0.67,
+      "errorSnippet": null,
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"success\": true,\n    \"teamMembers\": [\n      {\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/CaseTeamMember/0B6QH000000150r0AA/view\",\n        \"TeamRole\": \"E2E Role\",\n        \"MemberName\": \"Kalanithi Balasubramanian\",\n        \"MemberId\": \"005QH00000Ahc4IYAR\",\n        \"Id\": \"0B6QH000000150r0AA\"\n      }\n    ],\n    \"count\": 1,\n    \"caseId\": \"500QH00000VaKWEYA3\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"success\": true,\n    \"teamMembers\": [\n      {\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/CaseTeamMember/0B6QH000000150r0AA/view\",\n        \"TeamRole\": \"E2E Role\",\n        \"MemberName\": \"Kalanithi Balasubramanian\",\n        \"MemberId\": \"005QH00000Ahc4IYAR\",\n        \"Id\": \"0B6QH000000150r0AA\"\n      }\n    ],\n    \"count\": 1,\n    \"caseId\": \"500QH00000VaKWEYA3\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "fuzzy_search_cases",
+      "promptId": "a0KQH00000Hczof2AB",
+      "request": {
+        "searchTerm": "E2E Skill",
+        "search_term": "E2E Skill",
+        "Id": "500QH00000VaKWEYA3"
+      },
+      "category": "pass",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 0.54,
+      "errorSnippet": null,
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"success\": true,\n    \"records\": [\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Created Case\",\n        \"CaseNumber\": \"00001032\",\n        \"Id\": \"500QH00000VaQ33YAF\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"Closed\",\n        \"Subject\": \"E2E Skill Test Case\",\n        \"CaseNumber\": \"00001026\",\n        \"Id\": \"500QH00000VaKWEYA3\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaLIjYAN/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaLIjYAN/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Created Case\",\n        \"CaseNumber\": \"00001031\",\n        \"Id\": \"500QH00000VaLIjYAN\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNPHYA3/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNPHYA3/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Natural Key Case Smoke\",\n        \"CaseNumber\": \"00001030\",\n        \"Id\": \"500QH00000VaNPHYA3\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaImGYAV/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaImGYAV/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Created Case\",\n        \"CaseNumber\": \"00001029\",\n        \"Id\": \"500QH00000VaImGYAV\"\n      }\n    ],\n    \"remaining\": 2,\n    \"displayed\": 5,\n    \"totalFound\": 7,\n    \"status\": \"found\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"success\": true,\n    \"records\": [\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaQ33YAF/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Created Case\",\n        \"CaseNumber\": \"00001032\",\n        \"Id\": \"500QH00000VaQ33YAF\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"Closed\",\n        \"Subject\": \"E2E Skill Test Case\",\n        \"CaseNumber\": \"00001026\",\n        \"Id\": \"500QH00000VaKWEYA3\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaLIjYAN/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaLIjYAN/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Created Case\",\n        \"CaseNumber\": \"00001031\",\n        \"Id\": \"500QH00000VaLIjYAN\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNPHYA3/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaNPHYA3/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Natural Key Case Smoke\",\n        \"CaseNumber\": \"00001030\",\n        \"Id\": \"500QH00000VaNPHYA3\"\n      },\n      {\n        \"viewRecord\": \"<a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaImGYAV/view\\\" target=\\\"_blank\\\">View Record</a>\",\n        \"recordUrl\": \"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaImGYAV/view\",\n        \"Priority\": \"Medium\",\n        \"Status\": \"New\",\n        \"Subject\": \"E2E Created Case\",\n        \"CaseNumber\": \"00001029\",\n        \"Id\": \"500QH00000VaImGYAV\"\n      }\n    ],\n    \"remaining\": 2,\n    \"displayed\": 5,\n    \"totalFound\": 7,\n    \"status\": \"found\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "link_knowledge_article_to_case",
+      "promptId": "a0KQH00000Hczwk2AB",
+      "request": {
+        "case_id": "500QH00000VaKWEYA3",
+        "CaseId": "500QH00000VaKWEYA3",
+        "KnowledgeArticleId": "500QH00000VaKWEYA3",
+        "Id": "500QH00000VaKWEYA3"
+      },
+      "category": "fail_missing_feature",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 0.54,
+      "errorSnippet": "<div>⚠️ <b>Could not link article</b><br/>CaseArticle is not available in this org (Knowledge may not be enabled).</div>",
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"message\": \"⚠️ Could not link article CaseArticle is not available in this org (Knowledge may not be enabled).\",\n    \"success\": false,\n    \"messageHtml\": \"<div>⚠️ <b>Could not link article</b><br/>CaseArticle is not available in this org (Knowledge may not be enabled).</div>\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"message\": \"⚠️ Could not link article CaseArticle is not available in this org (Knowledge may not be enabled).\",\n    \"success\": false,\n    \"messageHtml\": \"<div>⚠️ <b>Could not link article</b><br/>CaseArticle is not available in this org (Knowledge may not be enabled).</div>\"\n  }\n}"
+    },
+    {
+      "handler": "CaseAgenticSkillsHandler",
+      "skill": "update_case_fields",
+      "promptId": "a0KQH00000Hd0Hh2AJ",
+      "request": {
+        "CaseNumber": "00001026",
+        "Subject": "E2E Skill Test Case",
+        "fields": {
+          "Priority": "Medium"
+        },
+        "Priority": "Medium",
+        "Id": "001QH00002FpbIdYAJ"
+      },
+      "category": "pass",
+      "http": 200,
+      "apiStatus": "Success",
+      "elapsedSec": 1.02,
+      "errorSnippet": null,
+      "responseFull": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"recordId\": \"500QH00000VaKWEYA3\",\n    \"message\": \"✅ Case Updated 00001026 Priority: Medium → Medium Subject: E2E Skill Test Case → E2E Skill Test Case 👉 View Case\",\n    \"success\": true,\n    \"messageHtml\": \"<div>✅ <b>Case Updated</b><br/><b>00001026</b><ul><li><b>Priority:</b> Medium → <b>Medium</b></li><li><b>Subject:</b> E2E Skill Test Case → <b>E2E Skill Test Case</b></li></ul><br/>👉 <a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\\\" target=\\\"_blank\\\"><b>View Case</b></a></div>\"\n  }\n}",
+      "responseText": "{\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"data\": {\n    \"recordId\": \"500QH00000VaKWEYA3\",\n    \"message\": \"✅ Case Updated 00001026 Priority: Medium → Medium Subject: E2E Skill Test Case → E2E Skill Test Case 👉 View Case\",\n    \"success\": true,\n    \"messageHtml\": \"<div>✅ <b>Case Updated</b><br/><b>00001026</b><ul><li><b>Priority:</b> Medium → <b>Medium</b></li><li><b>Subject:</b> E2E Skill Test Case → <b>E2E Skill Test Case</b></li></ul><br/>👉 <a href=\\\"https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Case/500QH00000VaKWEYA3/view\\\" target=\\\"_blank\\\"><b>View Case</b></a></div>\"\n  }\n}"
+    }
+  ],
+  "seed": {
+    "AccountId": "001QH00002FpbIdYAJ",
+    "CaseId": "500QH00000VaKWEYA3",
+    "CaseNumber": "00001026",
+    "ContactId": "003QH00000RYCbtYAH"
+  },
+  "jsonName": "2026-08-05_205717_caseagenticskillshandler_html-reports-must-show-full-request-and.json",
+  "htmlName": "2026-08-05_205717_caseagenticskillshandler_html-reports-must-show-full-request-and.html"
+}

@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-update_cpq_quote_line",
+  "sourceApiVersion": "66.0"
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C — Command search</title>
+  <style>
+    :root {
+      --bg: #0b1020; --panel: #141a2e; --ink: #e8ecf8; --muted: #8b93ad;
+      --line: #2a3352; --accent: #a78bfa; --soft: #2a2150;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; font-family: var(--font); background: radial-gradient(1200px 600px at 50% -10%, #1e1b4b, var(--bg)); color: var(--ink); }
+    .banner { background: #312e81; color: #c4b5fd; text-align: center; padding: 0.45rem; font-size: 0.8rem; font-weight: 600; }
+    .center { max-width: 720px; margin: 3rem auto 1rem; padding: 0 1rem; text-align: center; }
+    .center h1 { margin: 0 0 0.4rem; font-size: 1.5rem; font-weight: 650; }
+    .center p { margin: 0 0 1.5rem; color: var(--muted); font-size: 0.95rem; }
+    .searchbox {
+      display: flex; align-items: center; gap: 0.65rem;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+      padding: 0.85rem 1rem; box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+    .searchbox span { color: var(--accent); font-size: 1.1rem; }
+    .searchbox input {
+      flex: 1; border: 0; background: transparent; color: var(--ink);
+      font: inherit; font-size: 1.05rem; outline: none;
+    }
+    .searchbox kbd {
+      font-size: 0.7rem; color: var(--muted); border: 1px solid var(--line);
+      border-radius: 6px; padding: 0.2rem 0.4rem;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin: 1rem 0 0.5rem; }
+    .chip {
+      border: 1px solid var(--line); background: transparent; color: var(--muted);
+      border-radius: 999px; padding: 0.3rem 0.7rem; font-size: 0.75rem; font-weight: 650; cursor: pointer;
+    }
+    .chip.on { background: var(--soft); border-color: var(--accent); color: var(--accent); }
+    .results {
+      max-width: 720px; margin: 0.75rem auto; padding: 0 1rem 5rem;
+    }
+    .hint { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+    .hit {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 0.85rem 1rem; margin-bottom: 0.5rem; cursor: pointer; text-align: left;
+    }
+    .hit:hover { border-color: var(--accent); }
+    .hit.on { background: var(--soft); border-color: var(--accent); }
+    .hit .mark {
+      width: 1.25rem; height: 1.25rem; border-radius: 6px; border: 1.5px solid var(--line);
+      margin-top: 0.1rem; flex-shrink: 0; display: grid; place-items: center; font-size: 0.75rem;
+    }
+    .hit.on .mark { background: var(--accent); border-color: var(--accent); color: #1e1b4b; font-weight: 800; }
+    .hit strong { display: block; font-size: 0.95rem; margin-bottom: 0.15rem; }
+    .hit em { font-style: normal; color: var(--muted); font-size: 0.82rem; display: block; }
+    .hit code { font-size: 0.7rem; color: #64748b; }
+    .hit .sec { float: right; font-size: 0.68rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .dock {
+      position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%);
+      width: min(720px, calc(100% - 2rem));
+      background: #1e293b; border: 1px solid var(--line); border-radius: 14px;
+      padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,.45);
+    }
+    .dock span { font-size: 0.85rem; color: var(--muted); }
+    .dock button {
+      border: 0; background: var(--accent); color: #1e1b4b; border-radius: 8px;
+      padding: 0.55rem 1rem; font: inherit; font-weight: 750; cursor: pointer;
+    }
+    .dock button:disabled { opacity: 0.35; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div class="banner">CONCEPT C — Command search: no section lists · type to find · click to select · sticky selection dock</div>
+  <div class="center">
+    <h1>Find skills</h1>
+    <p>No scrolling through 18 sections. Search, then pick.</p>
+    <div class="searchbox">
+      <span>⌘</span>
+      <input id="q" type="search" placeholder="Try: renewal, case, account plan, gptfy…" autofocus />
+      <kbd>/</kbd>
+    </div>
+    <div class="chips">
+      <button type="button" class="chip on" data-f="">All</button>
+      <button type="button" class="chip" data-f="Accounts">Accounts</button>
+      <button type="button" class="chip" data-f="Cases">Cases</button>
+      <button type="button" class="chip" data-f="Platform">Platform</button>
+      <button type="button" class="chip" data-f="Renewals">Renewals</button>
+    </div>
+  </div>
+  <div class="results" id="results">
+    <div class="hint">Start typing — results appear here. Click a row to select / deselect.</div>
+  </div>
+  <div class="dock">
+    <span><strong id="count">0</strong> selected</span>
+    <button type="button" id="dl" disabled>Download selected</button>
+  </div>
+  <script>
+    const ALL = [
+      { id: 'run_internal_prompt', title: 'Run a GPTfy prompt', desc: 'Run a GPTfy prompt on record data.', sec: 'Platform' },
+      { id: 'fuzzy_search_accounts', title: 'Search Accounts', desc: 'Find accounts by partial name.', sec: 'Accounts' },
+      { id: 'fetch_account_plan', title: 'Get Account Plan', desc: 'Get plan and objectives for one account.', sec: 'Accounts' },
+      { id: 'create_case', title: 'Create Case', desc: 'Create a new support case.', sec: 'Cases' },
+      { id: 'close_case', title: 'Close Case', desc: 'Close a case.', sec: 'Cases' },
+      { id: 'add_case_comment', title: 'Add Case Comment', desc: 'Add a comment to a case.', sec: 'Cases' },
+      { id: 'fetch_upcoming_renewals', title: 'Get Upcoming Renewals', desc: 'List renewals due in the next N days.', sec: 'Renewals' },
+      { id: 'fetch_renewal_opportunities', title: 'Get Renewal Opportunities', desc: 'List renewal opportunities.', sec: 'Renewals' },
+      { id: 'fetch_session_context', title: 'Get Session Context', desc: 'Get the current page record for this chat.', sec: 'Platform' },
+      { id: 'transfer_record_owner', title: 'Transfer Record Owner', desc: 'Change the owner of a record.', sec: 'Platform' },
+    ];
+    const selected = new Set();
+    let filter = '';
+    const q = document.getElementById('q');
+    const results = document.getElementById('results');
+
+    function render() {
+      const term = q.value.trim().toLowerCase();
+      let items = ALL.filter(s => {
+        if (filter && s.sec !== filter) return false;
+        if (!term) return filter !== ''; // empty search + All = show hint
+        const blob = (s.title + ' ' + s.desc + ' ' + s.id + ' ' + s.sec).toLowerCase();
+        return blob.includes(term);
+      });
+      if (!term && !filter) {
+        results.innerHTML = '<div class="hint">Start typing — results appear here. Click a row to select / deselect.</div>';
+      } else if (!items.length) {
+        results.innerHTML = '<div class="hint">No matches. Try “renewal”, “case”, or “gptfy”.</div>';
+      } else {
+        if (!term && filter) items = ALL.filter(s => s.sec === filter);
+        results.innerHTML = items.map(s => {
+          const on = selected.has(s.id);
+          return `<div class="hit ${on ? 'on' : ''}" data-id="${s.id}">
+            <div class="mark">${on ? '✓' : ''}</div>
+            <div style="flex:1;min-width:0">
+              <span class="sec">${s.sec}</span>
+              <strong>${s.title}</strong>
+              <em>${s.desc}</em>
+              <code>${s.id}</code>
+            </div>
+          </div>`;
+        }).join('');
+        results.querySelectorAll('.hit').forEach(h => {
+          h.onclick = () => {
+            const id = h.dataset.id;
+            if (selected.has(id)) selected.delete(id); else selected.add(id);
+            render(); syncDock();
+          };
+        });
+      }
+      syncDock();
+    }
+    function syncDock() {
+      document.getElementById('count').textContent = selected.size;
+      document.getElementById('dl').disabled = selected.size === 0;
+    }
+    q.addEventListener('input', render);
+    document.querySelectorAll('.chip').forEach(c => {
+      c.onclick = () => {
+        document.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+        c.classList.add('on');
+        filter = c.dataset.f;
+        render();
+      };
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+    });
+  </script>
+</body>
+</html>

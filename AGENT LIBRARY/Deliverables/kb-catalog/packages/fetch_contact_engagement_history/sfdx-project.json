@@ -1,0 +1,5 @@
+{
+  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "name": "gptfy-skill-fetch_contact_engagement_history",
+  "sourceApiVersion": "66.0"
+}

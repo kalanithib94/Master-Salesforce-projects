@@ -1,0 +1,17 @@
+{
+  "packageVersion": "1.1.0",
+  "sourceApiVersion": "66.0",
+  "skill": "add_opportunity_contact_role",
+  "handler": "OpportunityAgenticSkillsHandler",
+  "classes": [
+    "AgenticSkillsBase",
+    "OpportunityAgenticSkillsHandler"
+  ],
+  "tests": [
+    "AgenticSkillsBaseTest",
+    "OpportunityAgenticSkillsHandlerTest"
+  ],
+  "requires": [
+    "GPTfy (ccai) managed package"
+  ]
+}
