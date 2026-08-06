@@ -38,19 +38,19 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
 </style></head><body><div class="wrap">
 <header class="hero">
   <h1>GPTfy Agent Skills — E2E request / response report</h1>
-  <p class="muted">2026-08-05 21:46:23 India Standard Time · 2026-08-05 16:16:23 UTC</p>
+  <p class="muted">2026-08-06 13:01:40 India Standard Time · 2026-08-06 07:31:40 UTC</p>
   <p class="muted">Org <b>Master Dev</b> · Agent <code>IT_Helpdesk_Assistant05/08/2026, 11:47</code></p>
   <div class="banner">MAIN report — always overwritten with the latest full run. Dated snapshots live under AGENT LIBRARY/Reports/archive/.</div>
-  <p class="muted" style="margin-top:.65rem">This MAIN file is overwritten on every run. Snapshot: 2026-08-05_214623_retry-fixable-failures.html</p>
+  <p class="muted" style="margin-top:.65rem">This MAIN file is overwritten on every run. Snapshot: 2026-08-06_130140_retry-fixable-failures.html</p>
 </header>
 <section class="intro">
   <h2 style="margin:0 0 .5rem;font-size:1rem">Why this update</h2>
-  <ul><li>Apex handlers deployed from Deliverables</li><li>Org seed / data remediation</li><li>One retry: natural keys for log_activity/assign_to_queue/lead/opp; self case-team; contract AccountId</li><li>Retried skills: add_case_team_member, assign_to_queue, create_contract, fetch_lead_details, log_activity, transfer_record_owner, update_opportunity_fields</li><li>Fix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy</li></ul>
+  <ul><li>SOSL Knowledge Language en_US</li><li>Retried skills: search_knowledge_articles</li><li>Fix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy</li></ul>
   <h2 style="margin:1rem 0 .4rem;font-size:1rem">Consolidated results</h2>
-  <div class="consolidated"><span class="cnt total"><b>110</b> skills</span><span class="cnt ok"><b>81</b> pass</span><span class="cnt warn"><b>3</b> fail_data</span><span class="cnt mute"><b>26</b> fail_missing_feature</span></div>
+  <div class="consolidated"><span class="cnt total"><b>110</b> skills</span><span class="cnt ok"><b>92</b> pass</span><span class="cnt mute"><b>18</b> fail_missing_feature</span></div>
   <p class="muted" style="margin:.35rem 0 0">Failed skills include a <b>Next step</b> (enable feature / seed data / fix prompt or Apex).</p>
   <h2 style="margin:1rem 0 .5rem;font-size:1rem">Skills in this report</h2>
-  <ul class="toc"><li><a href="#add_campaign_member">add_campaign_member</a> <span class="pill ok">pass</span></li><li><a href="#add_case_comment">add_case_comment</a> <span class="pill ok">pass</span></li><li><a href="#add_case_team_member">add_case_team_member</a> <span class="pill ok">pass</span></li><li><a href="#add_cpq_quote_line">add_cpq_quote_line</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#add_opportunity_contact_role">add_opportunity_contact_role</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_line_item">add_opportunity_line_item</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_partner">add_opportunity_partner</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_team_member">add_opportunity_team_member</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#add_order_item">add_order_item</a> <span class="pill ok">pass</span></li><li><a href="#add_quote_line_item">add_quote_line_item</a> <span class="pill warn">fail_data</span></li><li><a href="#assign_to_queue">assign_to_queue</a> <span class="pill ok">pass</span></li><li><a href="#calculate_cpq_quote">calculate_cpq_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#clone_opportunity">clone_opportunity</a> <span class="pill ok">pass</span></li><li><a href="#close_case">close_case</a> <span class="pill ok">pass</span></li><li><a href="#complete_task">complete_task</a> <span class="pill ok">pass</span></li><li><a href="#convert_lead">convert_lead</a> <span class="pill ok">pass</span></li><li><a href="#create_account">create_account</a> <span class="pill ok">pass</span></li><li><a href="#create_campaign">create_campaign</a> <span class="pill ok">pass</span></li><li><a href="#create_care_task">create_care_task</a> <span class="pill ok">pass</span></li><li><a href="#create_case">create_case</a> <span class="pill ok">pass</span></li><li><a href="#create_contact">create_contact</a> <span class="pill ok">pass</span></li><li><a href="#create_contract">create_contract</a> <span class="pill ok">pass</span></li><li><a href="#create_cpq_quote">create_cpq_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#create_event">create_event</a> <span class="pill ok">pass</span></li><li><a href="#create_lead">create_lead</a> <span class="pill ok">pass</span></li><li><a href="#create_opportunity">create_opportunity</a> <span class="pill ok">pass</span></li><li><a href="#create_order">create_order</a> <span class="pill ok">pass</span></li><li><a href="#create_quote">create_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#create_task">create_task</a> <span class="pill ok">pass</span></li><li><a href="#create_work_order">create_work_order</a> <span class="pill ok">pass</span></li><li><a href="#fetch_account_plan">fetch_account_plan</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_account_related_lists">fetch_account_related_lists</a> <span class="pill ok">pass</span></li><li><a href="#fetch_asset_details">fetch_asset_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_campaign_details">fetch_campaign_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_campaign_members">fetch_campaign_members</a> <span class="pill ok">pass</span></li><li><a href="#fetch_care_plan">fetch_care_plan</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_case_details">fetch_case_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_entitlements">fetch_case_entitlements</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_milestones">fetch_case_milestones</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_team">fetch_case_team</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contact_details">fetch_contact_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contact_engagement_history">fetch_contact_engagement_history</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contract_details">fetch_contract_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_cpq_quote_details">fetch_cpq_quote_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_financial_account">fetch_financial_account</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_knowledge_article">fetch_knowledge_article</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_lead_details">fetch_lead_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_my_open_opportunities">fetch_my_open_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_my_open_tasks">fetch_my_open_tasks</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_contact_roles">fetch_opportunity_contact_roles</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_details">fetch_opportunity_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_partners">fetch_opportunity_partners</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_team">fetch_opportunity_team</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_order_details">fetch_order_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_partner_account">fetch_partner_account</a> <span class="pill ok">pass</span></li><li><a href="#fetch_picklist_values">fetch_picklist_values</a> <span class="pill ok">pass</span></li><li><a href="#fetch_pricebook_entries">fetch_pricebook_entries</a> <span class="pill ok">pass</span></li><li><a href="#fetch_product_details">fetch_product_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_queue_cases">fetch_queue_cases</a> <span class="pill ok">pass</span></li><li><a href="#fetch_quote_details">fetch_quote_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_record_approvals">fetch_record_approvals</a> <span class="pill ok">pass</span></li><li><a href="#fetch_renewal_opportunities">fetch_renewal_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_service_appointment">fetch_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_service_resource_availability">fetch_service_resource_availability</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_session_context">fetch_session_context</a> <span class="pill ok">pass</span></li><li><a href="#fetch_stale_opportunities">fetch_stale_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_subscription_details">fetch_subscription_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_upcoming_renewals">fetch_upcoming_renewals</a> <span class="pill ok">pass</span></li><li><a href="#fetch_work_order_details">fetch_work_order_details</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_accounts">fuzzy_search_accounts</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_assets">fuzzy_search_assets</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_campaigns">fuzzy_search_campaigns</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_cases">fuzzy_search_cases</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_contacts">fuzzy_search_contacts</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_leads">fuzzy_search_leads</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_opportunities">fuzzy_search_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_partners">fuzzy_search_partners</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_products">fuzzy_search_products</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_quotes">fuzzy_search_quotes</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#link_knowledge_article_to_case">link_knowledge_article_to_case</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#log_activity">log_activity</a> <span class="pill ok">pass</span></li><li><a href="#remove_campaign_member">remove_campaign_member</a> <span class="pill ok">pass</span></li><li><a href="#run_internal_prompt">run_internal_prompt</a> <span class="pill ok">pass</span></li><li><a href="#schedule_service_appointment">schedule_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#search_knowledge_articles">search_knowledge_articles</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#transfer_record_owner">transfer_record_owner</a> <span class="pill ok">pass</span></li><li><a href="#update_account_fields">update_account_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_asset_fields">update_asset_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_campaign_fields">update_campaign_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_campaign_member_status">update_campaign_member_status</a> <span class="pill ok">pass</span></li><li><a href="#update_care_plan_fields">update_care_plan_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_case_fields">update_case_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_contact_fields">update_contact_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_contract_fields">update_contract_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_cpq_quote_fields">update_cpq_quote_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_cpq_quote_line">update_cpq_quote_line</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_event">update_event</a> <span class="pill ok">pass</span></li><li><a href="#update_financial_account_fields">update_financial_account_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_lead_fields">update_lead_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_opportunity_contact_role">update_opportunity_contact_role</a> <span class="pill ok">pass</span></li><li><a href="#update_opportunity_fields">update_opportunity_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_opportunity_line_item">update_opportunity_line_item</a> <span class="pill ok">pass</span></li><li><a href="#update_order_fields">update_order_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_order_item">update_order_item</a> <span class="pill ok">pass</span></li><li><a href="#update_quote_fields">update_quote_fields</a> <span class="pill warn">fail_data</span></li><li><a href="#update_quote_line_item">update_quote_line_item</a> <span class="pill warn">fail_data</span></li><li><a href="#update_service_appointment">update_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_subscription_fields">update_subscription_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_task">update_task</a> <span class="pill ok">pass</span></li><li><a href="#update_work_order_fields">update_work_order_fields</a> <span class="pill ok">pass</span></li></ul>
+  <ul class="toc"><li><a href="#add_campaign_member">add_campaign_member</a> <span class="pill ok">pass</span></li><li><a href="#add_case_comment">add_case_comment</a> <span class="pill ok">pass</span></li><li><a href="#add_case_team_member">add_case_team_member</a> <span class="pill ok">pass</span></li><li><a href="#add_cpq_quote_line">add_cpq_quote_line</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#add_opportunity_contact_role">add_opportunity_contact_role</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_line_item">add_opportunity_line_item</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_partner">add_opportunity_partner</a> <span class="pill ok">pass</span></li><li><a href="#add_opportunity_team_member">add_opportunity_team_member</a> <span class="pill ok">pass</span></li><li><a href="#add_order_item">add_order_item</a> <span class="pill ok">pass</span></li><li><a href="#add_quote_line_item">add_quote_line_item</a> <span class="pill ok">pass</span></li><li><a href="#assign_to_queue">assign_to_queue</a> <span class="pill ok">pass</span></li><li><a href="#calculate_cpq_quote">calculate_cpq_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#clone_opportunity">clone_opportunity</a> <span class="pill ok">pass</span></li><li><a href="#close_case">close_case</a> <span class="pill ok">pass</span></li><li><a href="#complete_task">complete_task</a> <span class="pill ok">pass</span></li><li><a href="#convert_lead">convert_lead</a> <span class="pill ok">pass</span></li><li><a href="#create_account">create_account</a> <span class="pill ok">pass</span></li><li><a href="#create_campaign">create_campaign</a> <span class="pill ok">pass</span></li><li><a href="#create_care_task">create_care_task</a> <span class="pill ok">pass</span></li><li><a href="#create_case">create_case</a> <span class="pill ok">pass</span></li><li><a href="#create_contact">create_contact</a> <span class="pill ok">pass</span></li><li><a href="#create_contract">create_contract</a> <span class="pill ok">pass</span></li><li><a href="#create_cpq_quote">create_cpq_quote</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#create_event">create_event</a> <span class="pill ok">pass</span></li><li><a href="#create_lead">create_lead</a> <span class="pill ok">pass</span></li><li><a href="#create_opportunity">create_opportunity</a> <span class="pill ok">pass</span></li><li><a href="#create_order">create_order</a> <span class="pill ok">pass</span></li><li><a href="#create_quote">create_quote</a> <span class="pill ok">pass</span></li><li><a href="#create_task">create_task</a> <span class="pill ok">pass</span></li><li><a href="#create_work_order">create_work_order</a> <span class="pill ok">pass</span></li><li><a href="#fetch_account_plan">fetch_account_plan</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_account_related_lists">fetch_account_related_lists</a> <span class="pill ok">pass</span></li><li><a href="#fetch_asset_details">fetch_asset_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_campaign_details">fetch_campaign_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_campaign_members">fetch_campaign_members</a> <span class="pill ok">pass</span></li><li><a href="#fetch_care_plan">fetch_care_plan</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_case_details">fetch_case_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_entitlements">fetch_case_entitlements</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_milestones">fetch_case_milestones</a> <span class="pill ok">pass</span></li><li><a href="#fetch_case_team">fetch_case_team</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contact_details">fetch_contact_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contact_engagement_history">fetch_contact_engagement_history</a> <span class="pill ok">pass</span></li><li><a href="#fetch_contract_details">fetch_contract_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_cpq_quote_details">fetch_cpq_quote_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_financial_account">fetch_financial_account</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_knowledge_article">fetch_knowledge_article</a> <span class="pill ok">pass</span></li><li><a href="#fetch_lead_details">fetch_lead_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_my_open_opportunities">fetch_my_open_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_my_open_tasks">fetch_my_open_tasks</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_contact_roles">fetch_opportunity_contact_roles</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_details">fetch_opportunity_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_partners">fetch_opportunity_partners</a> <span class="pill ok">pass</span></li><li><a href="#fetch_opportunity_team">fetch_opportunity_team</a> <span class="pill ok">pass</span></li><li><a href="#fetch_order_details">fetch_order_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_partner_account">fetch_partner_account</a> <span class="pill ok">pass</span></li><li><a href="#fetch_picklist_values">fetch_picklist_values</a> <span class="pill ok">pass</span></li><li><a href="#fetch_pricebook_entries">fetch_pricebook_entries</a> <span class="pill ok">pass</span></li><li><a href="#fetch_product_details">fetch_product_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_queue_cases">fetch_queue_cases</a> <span class="pill ok">pass</span></li><li><a href="#fetch_quote_details">fetch_quote_details</a> <span class="pill ok">pass</span></li><li><a href="#fetch_record_approvals">fetch_record_approvals</a> <span class="pill ok">pass</span></li><li><a href="#fetch_renewal_opportunities">fetch_renewal_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_service_appointment">fetch_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_service_resource_availability">fetch_service_resource_availability</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_session_context">fetch_session_context</a> <span class="pill ok">pass</span></li><li><a href="#fetch_stale_opportunities">fetch_stale_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fetch_subscription_details">fetch_subscription_details</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#fetch_upcoming_renewals">fetch_upcoming_renewals</a> <span class="pill ok">pass</span></li><li><a href="#fetch_work_order_details">fetch_work_order_details</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_accounts">fuzzy_search_accounts</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_assets">fuzzy_search_assets</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_campaigns">fuzzy_search_campaigns</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_cases">fuzzy_search_cases</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_contacts">fuzzy_search_contacts</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_leads">fuzzy_search_leads</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_opportunities">fuzzy_search_opportunities</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_partners">fuzzy_search_partners</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_products">fuzzy_search_products</a> <span class="pill ok">pass</span></li><li><a href="#fuzzy_search_quotes">fuzzy_search_quotes</a> <span class="pill ok">pass</span></li><li><a href="#link_knowledge_article_to_case">link_knowledge_article_to_case</a> <span class="pill ok">pass</span></li><li><a href="#log_activity">log_activity</a> <span class="pill ok">pass</span></li><li><a href="#remove_campaign_member">remove_campaign_member</a> <span class="pill ok">pass</span></li><li><a href="#run_internal_prompt">run_internal_prompt</a> <span class="pill ok">pass</span></li><li><a href="#schedule_service_appointment">schedule_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#search_knowledge_articles">search_knowledge_articles</a> <span class="pill ok">pass</span></li><li><a href="#transfer_record_owner">transfer_record_owner</a> <span class="pill ok">pass</span></li><li><a href="#update_account_fields">update_account_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_asset_fields">update_asset_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_campaign_fields">update_campaign_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_campaign_member_status">update_campaign_member_status</a> <span class="pill ok">pass</span></li><li><a href="#update_care_plan_fields">update_care_plan_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_case_fields">update_case_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_contact_fields">update_contact_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_contract_fields">update_contract_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_cpq_quote_fields">update_cpq_quote_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_cpq_quote_line">update_cpq_quote_line</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_event">update_event</a> <span class="pill ok">pass</span></li><li><a href="#update_financial_account_fields">update_financial_account_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_lead_fields">update_lead_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_opportunity_contact_role">update_opportunity_contact_role</a> <span class="pill ok">pass</span></li><li><a href="#update_opportunity_fields">update_opportunity_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_opportunity_line_item">update_opportunity_line_item</a> <span class="pill ok">pass</span></li><li><a href="#update_order_fields">update_order_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_order_item">update_order_item</a> <span class="pill ok">pass</span></li><li><a href="#update_quote_fields">update_quote_fields</a> <span class="pill ok">pass</span></li><li><a href="#update_quote_line_item">update_quote_line_item</a> <span class="pill ok">pass</span></li><li><a href="#update_service_appointment">update_service_appointment</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_subscription_fields">update_subscription_fields</a> <span class="pill mute">fail_missing_feature</span></li><li><a href="#update_task">update_task</a> <span class="pill ok">pass</span></li><li><a href="#update_work_order_fields">update_work_order_fields</a> <span class="pill ok">pass</span></li></ul>
 </section>
 <article class="card ok" id="add_campaign_member"><header><h2><code>add_campaign_member</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;CampaignId&quot;: &quot;E2E Skill Test Campaign&quot;,
@@ -94,7 +94,7 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;AccountId&quot;: &quot;001QH00002FpdMKYAZ&quot;,
   &quot;AccountToId&quot;: &quot;001QH00002FpdMKYAZ&quot;,
   &quot;Role&quot;: &quot;Agency&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Opportunity Partner Added&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Opportunity:&lt;/b&gt; 006QH00000Kz5M9YAJ&lt;/li&gt;&lt;li&gt;&lt;b&gt;Partner Account:&lt;/b&gt; 001QH00002FpdMKYAZ&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Partner/00IQH000002HyGL2A0/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Partner Role&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card mute" id="add_opportunity_team_member"><header><h2><code>add_opportunity_team_member</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Team Selling (Setup → Opportunity Team Settings / Team Selling), ensure OpportunityTeamMember is creatable, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Opportunity Partner Added&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Opportunity:&lt;/b&gt; 006QH00000Kz5M9YAJ&lt;/li&gt;&lt;li&gt;&lt;b&gt;Partner Account:&lt;/b&gt; 001QH00002FpdMKYAZ&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Partner/00IQH000002HyGL2A0/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Partner Role&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card ok" id="add_opportunity_team_member"><header><h2><code>add_opportunity_team_member</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;OpportunityId&quot;: &quot;006QH00000Kz5M9YAJ&quot;,
   &quot;opportunity_id&quot;: &quot;006QH00000Kz5M9YAJ&quot;,
   &quot;UserId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
@@ -102,16 +102,33 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;TeamMemberRole&quot;: &quot;Account Manager&quot;,
   &quot;team_member_role&quot;: &quot;Account Manager&quot;,
   &quot;Role&quot;: &quot;Account Manager&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not add team member&lt;/b&gt;&lt;br/&gt;OpportunityTeamMember is not creatable (Team Selling may be disabled).&lt;/div&gt;</pre></div></div></article><article class="card ok" id="add_order_item"><header><h2><code>add_order_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;00qQH000006mt0MYAQ&quot;,
+    &quot;message&quot;: &quot;✅ Team Member Added Team role: Account Manager 👉 View Team Member&quot;,
+    &quot;success&quot;: true
+  }
+}</pre></div></div></article><article class="card ok" id="add_order_item"><header><h2><code>add_order_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;OrderId&quot;: &quot;801QH00002FpyoTYAR&quot;,
   &quot;PricebookEntryId&quot;: &quot;01uQH000003sGBCYA2&quot;,
   &quot;Quantity&quot;: 1,
   &quot;UnitPrice&quot;: 25
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Order Item Added&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Quantity:&lt;/b&gt; 1&lt;/li&gt;&lt;li&gt;&lt;b&gt;Unit Price:&lt;/b&gt; 25&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OrderItem/802QH00000Olh5JYAR/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Order Item&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card warn" id="add_quote_line_item"><header><h2><code>add_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes (Setup → Feature Settings → Sales → Quotes → Enable Quotes), create a seed Quote (with Pricebook and optional line items), then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Order Item Added&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Quantity:&lt;/b&gt; 1&lt;/li&gt;&lt;li&gt;&lt;b&gt;Unit Price:&lt;/b&gt; 25&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OrderItem/802QH00000Olh5JYAR/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Order Item&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card ok" id="add_quote_line_item"><header><h2><code>add_quote_line_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;QuoteId&quot;: &quot;0Q0QH000002Bn7V0AS&quot;,
   &quot;Quantity&quot;: 1,
   &quot;UnitPrice&quot;: 10,
   &quot;PricebookEntryId&quot;: &quot;01uQH000003sGBCYA2&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not add quote line item&lt;/b&gt;&lt;br/&gt;Missing parameter: QuoteId&lt;/div&gt;</pre></div></div></article><article class="card ok" id="assign_to_queue"><header><h2><code>assign_to_queue</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;0QLQH000003nayH4AQ&quot;,
+    &quot;message&quot;: &quot;✅ Quote Line Item Added Quantity: 1 Unit Price: 10 👉 View Line Item&quot;,
+    &quot;success&quot;: true
+  }
+}</pre></div></div></article><article class="card ok" id="assign_to_queue"><header><h2><code>assign_to_queue</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;CaseNumber&quot;: &quot;00001037&quot;,
   &quot;record_id&quot;: &quot;500QH00000VaKnyYAF&quot;,
   &quot;Id&quot;: &quot;500QH00000VaKnyYAF&quot;,
@@ -212,10 +229,18 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;AccountId&quot;: &quot;001QH00002FpgehYAB&quot;,
   &quot;EffectiveDate&quot;: &quot;2026-08-05&quot;,
   &quot;Status&quot;: &quot;Draft&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Order Created&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Status:&lt;/b&gt; Draft&lt;/li&gt;&lt;li&gt;&lt;b&gt;Effective Date:&lt;/b&gt; 2026-08-05&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Order/801QH00002FpvKgYAJ/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Order&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card mute" id="create_quote"><header><h2><code>create_quote</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
-  &quot;Name&quot;: &quot;E2E Quote&quot;,
+}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Order Created&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Status:&lt;/b&gt; Draft&lt;/li&gt;&lt;li&gt;&lt;b&gt;Effective Date:&lt;/b&gt; 2026-08-05&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Order/801QH00002FpvKgYAJ/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Order&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card ok" id="create_quote"><header><h2><code>create_quote</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Name&quot;: &quot;E2E Quote 1137&quot;,
   &quot;OpportunityId&quot;: &quot;006QH00000Kz5M9YAJ&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not create quote&lt;/b&gt;&lt;br/&gt;Quote is not creatable (enable Quotes).&lt;/div&gt;</pre></div></div></article><article class="card ok" id="create_task"><header><h2><code>create_task</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;0Q0QH000002BnIn0AK&quot;,
+    &quot;message&quot;: &quot;✅ Quote Created Name: E2E Quote 1137 👉 View Quote&quot;,
+    &quot;success&quot;: true
+  }
+}</pre></div></div></article><article class="card ok" id="create_task"><header><h2><code>create_task</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Subject&quot;: &quot;E2E Created Task&quot;,
   &quot;WhatId&quot;: &quot;E2E Skill Test Account&quot;,
   &quot;WhoId&quot;: &quot;Rose E2EContact&quot;,
@@ -467,9 +492,25 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>Salesforce CPQ is not installed or SBQQ__Quote__c / SBQQ__QuoteLine__c are not accessible in this org.</pre></div></div></article><article class="card mute" id="fetch_financial_account"><header><h2><code>fetch_financial_account</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install Financial Services Cloud (or enable FinServ pack) so FinServ__FinancialAccount__c exists; assign FSC permissions and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>Financial Account object (FinServ__FinancialAccount__c) is not available in this org.</pre></div></div></article><article class="card mute" id="fetch_knowledge_article"><header><h2><code>fetch_knowledge_article</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
-  &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>Knowledge is not enabled in this org.</pre></div></div></article><article class="card ok" id="fetch_lead_details"><header><h2><code>fetch_lead_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>Financial Account object (FinServ__FinancialAccount__c) is not available in this org.</pre></div></div></article><article class="card ok" id="fetch_knowledge_article"><header><h2><code>fetch_knowledge_article</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;ka0QH000000EUpRYAW&quot;,
+  &quot;Title&quot;: &quot;Test 1&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Knowledge__kav/ka0QH000000EUpRYAW/view&quot;,
+    &quot;PublishStatus&quot;: &quot;Online&quot;,
+    &quot;VersionNumber&quot;: 1,
+    &quot;UrlName&quot;: &quot;Test-1&quot;,
+    &quot;ArticleNumber&quot;: &quot;000001000&quot;,
+    &quot;Summary&quot;: null,
+    &quot;Title&quot;: &quot;Test 1&quot;,
+    &quot;KnowledgeArticleId&quot;: &quot;kA0QH000000BR9l0AG&quot;,
+    &quot;Id&quot;: &quot;ka0QH000000EUpRYAW&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="fetch_lead_details"><header><h2><code>fetch_lead_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Name&quot;: &quot;E2E E2ELead&quot;,
   &quot;LeadName&quot;: &quot;E2E E2ELead&quot;,
   &quot;Id&quot;: &quot;00QQH00000MA2rt2AD&quot;
@@ -727,11 +768,28 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;partners&quot;: [],
   &quot;count&quot;: 0,
   &quot;opportunityId&quot;: &quot;006QH00000Kz5M9YAJ&quot;
-}</pre></div></div></article><article class="card mute" id="fetch_opportunity_team"><header><h2><code>fetch_opportunity_team</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Team Selling (Setup → Opportunity Team Settings / Team Selling), ensure OpportunityTeamMember is creatable, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
-  &quot;OpportunityId&quot;: &quot;E2E Skill Test Opp&quot;,
+}</pre></div></div></article><article class="card ok" id="fetch_opportunity_team"><header><h2><code>fetch_opportunity_team</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;OpportunityId&quot;: &quot;006QH00000Kz5M9YAJ&quot;,
   &quot;OpportunityName&quot;: &quot;E2E Skill Test Opp&quot;,
   &quot;Id&quot;: &quot;006QH00000Kz5M9YAJ&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>OpportunityTeamMember is not accessible (Team Selling may be disabled).</pre></div></div></article><article class="card ok" id="fetch_order_details"><header><h2><code>fetch_order_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;teamMembers&quot;: [
+      {
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OpportunityTeamMember/00qQH000006mt0MYAQ/view&quot;,
+        &quot;TeamMemberRole&quot;: &quot;Channel Manager&quot;,
+        &quot;UserName&quot;: &quot;Kalanithi Balasubramanian&quot;,
+        &quot;UserId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
+        &quot;Id&quot;: &quot;00qQH000006mt0MYAQ&quot;
+      }
+    ],
+    &quot;count&quot;: 1,
+    &quot;OpportunityId&quot;: &quot;006QH00000Kz5M9YAJ&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="fetch_order_details"><header><h2><code>fetch_order_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;801QH00002FpyoTYAR&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: true,
@@ -1135,9 +1193,31 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;cases&quot;: [],
   &quot;count&quot;: 0,
   &quot;queueId&quot;: &quot;00GQH000006KGhu2AG&quot;
-}</pre></div></div></article><article class="card mute" id="fetch_quote_details"><header><h2><code>fetch_quote_details</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
-  &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>Quote is not available or accessible in this org (enable Quotes).</pre></div></div></article><article class="card ok" id="fetch_record_approvals"><header><h2><code>fetch_record_approvals</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card ok" id="fetch_quote_details"><header><h2><code>fetch_quote_details</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;0Q0QH000002Bn7V0AS&quot;,
+  &quot;Name&quot;: &quot;Quote 1&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Quote/0Q0QH000002Bn7V0AS/view&quot;,
+    &quot;Pricebook2Id&quot;: &quot;01sQH000004ETvuYAG&quot;,
+    &quot;Owner&quot;: &quot;Kalanithi Balasubramanian&quot;,
+    &quot;Account&quot;: &quot;E2E Skill Test Account&quot;,
+    &quot;Opportunity&quot;: &quot;E2E Skill Test Opp&quot;,
+    &quot;Description&quot;: null,
+    &quot;ExpirationDate&quot;: &quot;2026-08-17 00:00:00&quot;,
+    &quot;Discount&quot;: 0.0,
+    &quot;TotalPrice&quot;: 210.0,
+    &quot;Subtotal&quot;: 210.0,
+    &quot;GrandTotal&quot;: 210.0,
+    &quot;Status&quot;: &quot;Draft&quot;,
+    &quot;QuoteNumber&quot;: &quot;00000001&quot;,
+    &quot;Name&quot;: &quot;Quote 1&quot;,
+    &quot;Id&quot;: &quot;0Q0QH000002Bn7V0AS&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="fetch_record_approvals"><header><h2><code>fetch_record_approvals</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;success&quot;: true,
@@ -1672,15 +1752,56 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;displayed&quot;: 5,
   &quot;totalFound&quot;: 9,
   &quot;status&quot;: &quot;found&quot;
-}</pre></div></div></article><article class="card mute" id="fuzzy_search_quotes"><header><h2><code>fuzzy_search_quotes</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
-  &quot;searchTerm&quot;: &quot;Quote&quot;,
-  &quot;search_term&quot;: &quot;Quote&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>Quote is not available or accessible in this org (enable Quotes).</pre></div></div></article><article class="card mute" id="link_knowledge_article_to_case"><header><h2><code>link_knowledge_article_to_case</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div></div></article><article class="card ok" id="fuzzy_search_quotes"><header><h2><code>fuzzy_search_quotes</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;searchTerm&quot;: &quot;Quote 1&quot;,
+  &quot;search_term&quot;: &quot;Quote 1&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;records&quot;: [
+      {
+        &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Quote/0Q0QH000002BnIn0AK/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Quote/0Q0QH000002BnIn0AK/view&quot;,
+        &quot;OpportunityId&quot;: &quot;006QH00000Kz5M9YAJ&quot;,
+        &quot;GrandTotal&quot;: 0.0,
+        &quot;Status&quot;: &quot;Draft&quot;,
+        &quot;QuoteNumber&quot;: &quot;00000002&quot;,
+        &quot;Name&quot;: &quot;E2E Quote 1137&quot;,
+        &quot;Id&quot;: &quot;0Q0QH000002BnIn0AK&quot;
+      },
+      {
+        &quot;viewRecord&quot;: &quot;&lt;a href=\&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Quote/0Q0QH000002Bn7V0AS/view\&quot; target=\&quot;_blank\&quot;&gt;View Record&lt;/a&gt;&quot;,
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Quote/0Q0QH000002Bn7V0AS/view&quot;,
+        &quot;OpportunityId&quot;: &quot;006QH00000Kz5M9YAJ&quot;,
+        &quot;GrandTotal&quot;: 210.0,
+        &quot;Status&quot;: &quot;Draft&quot;,
+        &quot;QuoteNumber&quot;: &quot;00000001&quot;,
+        &quot;Name&quot;: &quot;Quote 1&quot;,
+        &quot;Id&quot;: &quot;0Q0QH000002Bn7V0AS&quot;
+      }
+    ],
+    &quot;remaining&quot;: 0,
+    &quot;displayed&quot;: 2,
+    &quot;totalFound&quot;: 2,
+    &quot;status&quot;: &quot;found&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="link_knowledge_article_to_case"><header><h2><code>link_knowledge_article_to_case</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;case_id&quot;: &quot;500QH00000VaKnyYAF&quot;,
   &quot;CaseId&quot;: &quot;500QH00000VaKnyYAF&quot;,
-  &quot;KnowledgeArticleId&quot;: &quot;500QH00000VaKnyYAF&quot;,
-  &quot;Id&quot;: &quot;500QH00000VaKnyYAF&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not link article&lt;/b&gt;&lt;br/&gt;CaseArticle is not available in this org (Knowledge may not be enabled).&lt;/div&gt;</pre></div></div></article><article class="card ok" id="log_activity"><header><h2><code>log_activity</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;article_id&quot;: &quot;ka0QH000000EUpRYAW&quot;,
+  &quot;KnowledgeArticleId&quot;: &quot;kA0QH000000BR9l0AG&quot;,
+  &quot;Id&quot;: &quot;ka0QH000000EUpRYAW&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;0gvQH0000001kjxYAA&quot;,
+    &quot;message&quot;: &quot;✅ Knowledge Article Linked Case #: 00001037 Article linked 👉 View Link&quot;,
+    &quot;success&quot;: true
+  }
+}</pre></div></div></article><article class="card ok" id="log_activity"><header><h2><code>log_activity</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;WhatId&quot;: &quot;E2E Skill Test Account&quot;,
   &quot;AccountName&quot;: &quot;E2E Skill Test Account&quot;,
   &quot;WhoId&quot;: &quot;Rose E2EContact&quot;,
@@ -1707,10 +1828,29 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;status&quot;: &quot;success&quot;
 }</pre></div></div></article><article class="card mute" id="schedule_service_appointment"><header><h2><code>schedule_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not schedule appointment&lt;/b&gt;&lt;br/&gt;ServiceAppointment is not available or creatable in this org.&lt;/div&gt;</pre></div></div></article><article class="card mute" id="search_knowledge_articles"><header><h2><code>search_knowledge_articles</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Enable Lightning Knowledge (Setup → Knowledge Settings), create a published article, assign Knowledge user permissions, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
-  &quot;search_term&quot;: &quot;test&quot;,
-  &quot;searchTerm&quot;: &quot;test&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>Knowledge is not enabled in this org.</pre></div></div></article><article class="card ok" id="transfer_record_owner"><header><h2><code>transfer_record_owner</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not schedule appointment&lt;/b&gt;&lt;br/&gt;ServiceAppointment is not available or creatable in this org.&lt;/div&gt;</pre></div></div></article><article class="card ok" id="search_knowledge_articles"><header><h2><code>search_knowledge_articles</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;search_term&quot;: &quot;Test 1&quot;,
+  &quot;searchTerm&quot;: &quot;Test 1&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;success&quot;: true,
+    &quot;articles&quot;: [
+      {
+        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/Knowledge__kav/ka0QH000000EUpRYAW/view&quot;,
+        &quot;UrlName&quot;: &quot;Test-1&quot;,
+        &quot;ArticleNumber&quot;: &quot;000001000&quot;,
+        &quot;Summary&quot;: null,
+        &quot;Title&quot;: &quot;Test 1&quot;,
+        &quot;KnowledgeArticleId&quot;: &quot;kA0QH000000BR9l0AG&quot;,
+        &quot;Id&quot;: &quot;ka0QH000000EUpRYAW&quot;
+      }
+    ],
+    &quot;count&quot;: 1,
+    &quot;searchTerm&quot;: &quot;Test 1&quot;
+  }
+}</pre></div></div></article><article class="card ok" id="transfer_record_owner"><header><h2><code>transfer_record_owner</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;record_id&quot;: &quot;001QH00002FpgehYAB&quot;,
   &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;,
   &quot;new_owner_id&quot;: &quot;005QH00000AhYIQYA3&quot;,
@@ -1813,11 +1953,29 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
   &quot;Id&quot;: &quot;802QH00000Olh3hYAB&quot;,
   &quot;Quantity&quot;: 2,
   &quot;UnitPrice&quot;: 55
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Order Item Updated&lt;/b&gt;&lt;br/&gt;&lt;b&gt;0000000008 (1.00 @ 50.00)&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Quantity:&lt;/b&gt; 1.00 → &lt;b&gt;2.00&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;UnitPrice:&lt;/b&gt; 50.00 → &lt;b&gt;55.00&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OrderItem/802QH00000Olh3hYAB/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Order Item&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card warn" id="update_quote_fields"><header><h2><code>update_quote_fields</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes (Setup → Feature Settings → Sales → Quotes → Enable Quotes), create a seed Quote (with Pricebook and optional line items), then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
-  &quot;Description&quot;: &quot;E2E&quot;
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not update quote&lt;/b&gt;&lt;br/&gt;Missing parameter: quote_id&lt;/div&gt;</pre></div></div></article><article class="card warn" id="update_quote_line_item"><header><h2><code>update_quote_line_item</code></h2><span class="pill warn">fail_data</span></header><div class="next-step"><strong>Next step</strong> — Enable Salesforce Quotes in Setup, then create at least one Quote (and Quote Line if testing line skills) on the E2E Opportunity/Account and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;✅ &lt;b&gt;Order Item Updated&lt;/b&gt;&lt;br/&gt;&lt;b&gt;0000000008 (1.00 @ 50.00)&lt;/b&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Quantity:&lt;/b&gt; 1.00 → &lt;b&gt;2.00&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;b&gt;UnitPrice:&lt;/b&gt; 50.00 → &lt;b&gt;55.00&lt;/b&gt;&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;👉 &lt;a href=&quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/OrderItem/802QH00000Olh3hYAB/view&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;View Order Item&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;</pre></div></div></article><article class="card ok" id="update_quote_fields"><header><h2><code>update_quote_fields</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;0Q0QH000002Bn7V0AS&quot;,
+  &quot;Description&quot;: &quot;E2E quote update&quot;
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;0Q0QH000002Bn7V0AS&quot;,
+    &quot;message&quot;: &quot;✅ Quote Updated Quote 1 Description: (none) → E2E quote update 👉 View Quote&quot;,
+    &quot;success&quot;: true
+  }
+}</pre></div></div></article><article class="card ok" id="update_quote_line_item"><header><h2><code>update_quote_line_item</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
+  &quot;Id&quot;: &quot;0QLQH000003nalN4AQ&quot;,
   &quot;Quantity&quot;: 2
-}</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not update quote line item&lt;/b&gt;&lt;br/&gt;Missing parameter: line_item_id&lt;/div&gt;</pre></div></div></article><article class="card mute" id="update_service_appointment"><header><h2><code>update_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
+}</pre></div><div class="col"><h3>Response</h3><pre>{
+  &quot;status&quot;: &quot;Success&quot;,
+  &quot;message&quot;: &quot;&quot;,
+  &quot;data&quot;: {
+    &quot;recordId&quot;: &quot;0QLQH000003nalN4AQ&quot;,
+    &quot;message&quot;: &quot;✅ Quote Line Item Updated Line item (2.00 @ 50.00) Quantity: 2.00 → 2.00 👉 View Line Item&quot;,
+    &quot;success&quot;: true
+  }
+}</pre></div></div></article><article class="card mute" id="update_service_appointment"><header><h2><code>update_service_appointment</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable Field Service (FSL) and make ServiceAppointment / ServiceResource available with licenses; create at least one resource, then re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;
 }</pre></div><div class="col"><h3>Response</h3><pre>&lt;div&gt;⚠️ &lt;b&gt;Could not update appointment&lt;/b&gt;&lt;br/&gt;ServiceAppointment is not updateable in this org.&lt;/div&gt;</pre></div></div></article><article class="card mute" id="update_subscription_fields"><header><h2><code>update_subscription_fields</code></h2><span class="pill mute">fail_missing_feature</span></header><div class="next-step"><strong>Next step</strong> — Install/enable the Subscription product model used by this skill (standard or CPQ/industry object); create a seed Subscription and re-run.</div><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;Id&quot;: &quot;001QH00002FpgehYAB&quot;

@@ -30,9 +30,9 @@ PROMPT_JSON = LIBRARY / "Deliverables" / "docs" / "PROMPT_COMMANDS_BY_SKILL.md"
 PROMPT_JSON_ALT = LIBRARY / "Deliverables" / "docs" / "PROMPT_COMMANDS_BY_SKILL.json"
 SEEDED = Path(__file__).resolve().parent / "results" / "matrix_report_seeded.json"
 
-# Bookmark / index sheet (Summary + links). Full values live in FULL_SHEET after xlsx upload.
-SHEET_ID = "1LHw46KlgmFam2cX5sMBPSIxEYNrEUqx7E22ihp-9K5E"
-FULL_SHEET_ID = "1LsHePYKTJ5rn3OYQpyud3lX02MJ2SijRH3cZcCpo9vI"
+# Sheet ids — also documented in Reports/exports/README_SHEET.md
+SHEET_ID = "1LHw46KlgmFam2cX5sMBPSIxEYNrEUqx7E22ihp-9K5E"  # index
+FULL_SHEET_ID = "1LsHePYKTJ5rn3OYQpyud3lX02MJ2SijRH3cZcCpo9vI"  # full values
 
 # Infer primary Salesforce object from skill name (help for users)
 OBJECT_HINT = {
@@ -347,11 +347,9 @@ def main() -> int:
     tables = build_tables()
     write_csv(tables)
     write_xlsx(tables)
-    print("INDEX_SHEET", SHEET_ID)
-    print("URL https://docs.google.com/spreadsheets/d/{}/edit".format(SHEET_ID))
-    print("FULL_SHEET", FULL_SHEET_ID)
-    print("URL https://docs.google.com/spreadsheets/d/{}/edit".format(FULL_SHEET_ID))
-    print("Re-upload GPTfy_Skill_Library_E2E.xlsx (convert to Google Sheet) to refresh FULL_SHEET.")
+    print("Sheets: see Reports/exports/README_SHEET.md")
+    print("FULL", "https://docs.google.com/spreadsheets/d/{}/edit".format(FULL_SHEET_ID))
+    print("INDEX", "https://docs.google.com/spreadsheets/d/{}/edit".format(SHEET_ID))
     return 0
 
 

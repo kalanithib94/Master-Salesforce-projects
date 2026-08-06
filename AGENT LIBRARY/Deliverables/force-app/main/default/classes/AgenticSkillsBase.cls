@@ -1375,11 +1375,19 @@ public static String buildAddress(String s, String c, String st, String z, Strin
         });
     }
 
+    /** Lightning Knowledge often exposes Knowledge__kav while KnowledgeArticleVersion is missing from getGlobalDescribe(). */
+    public static Boolean isKnowledgeEnabled() {
+        Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+        Schema.SObjectType kav = gd.get('KnowledgeArticleVersion');
+        if (kav != null && kav.getDescribe().isAccessible()) return true;
+        Schema.SObjectType kavCustom = gd.get('Knowledge__kav');
+        return kavCustom != null && kavCustom.getDescribe().isAccessible();
+    }
+
     public static String skillSearchKnowledgeArticles(Map<String, Object> p) {
         String term = toText(firstNonNull(p, new List<String>{ 'search_term', 'query', 'keyword' }));
         if (String.isBlank(term)) return errorJson('Missing required parameter: search_term');
-        Schema.SObjectType kavType = Schema.getGlobalDescribe().get('KnowledgeArticleVersion');
-        if (kavType == null || !kavType.getDescribe().isAccessible()) {
+        if (!isKnowledgeEnabled()) {
             return successJson(new Map<String, Object>{
                 'status' => 'unavailable', 'message' => 'Knowledge is not enabled in this org.'
             });
@@ -1394,7 +1402,7 @@ public static String buildAddress(String s, String c, String st, String z, Strin
             String escaped = String.escapeSingleQuotes(term);
             String sosl = 'FIND {' + escaped + '} IN ALL FIELDS RETURNING KnowledgeArticleVersion'
                 + '(Id, Title, Summary, ArticleNumber, UrlName, KnowledgeArticleId'
-                + ' WHERE PublishStatus = \'Online\') LIMIT ' + lim;
+                + ' WHERE PublishStatus = \'Online\' AND Language = \'en_US\') LIMIT ' + lim;
             List<List<SObject>> searchResults = Search.query(sosl);
             List<SObject> articles = searchResults.isEmpty() ? new List<SObject>() : searchResults[0];
             List<Map<String, Object>> rows = new List<Map<String, Object>>();
@@ -1419,8 +1427,7 @@ public static String buildAddress(String s, String c, String st, String z, Strin
     }
 
     public static String skillFetchKnowledgeArticle(Map<String, Object> p) {
-        Schema.SObjectType kavType = Schema.getGlobalDescribe().get('KnowledgeArticleVersion');
-        if (kavType == null || !kavType.getDescribe().isAccessible()) {
+        if (!isKnowledgeEnabled()) {
             return successJson(new Map<String, Object>{
                 'status' => 'unavailable', 'message' => 'Knowledge is not enabled in this org.'
             });

@@ -119,12 +119,68 @@ def improved_payload(skill: str, seed: dict, remedy: dict, prior_req: dict | Non
             "UserId": other,
             "OwnerId": other,
         },
-        "add_quote_line_item": prior_req or {},
-        "update_quote_fields": prior_req or {},
-        "update_quote_line_item": prior_req or {},
+        "add_quote_line_item": {
+            "QuoteId": S.get("QuoteId"),
+            "Quantity": 1,
+            "UnitPrice": 10,
+            "PricebookEntryId": S.get("PricebookEntryId"),
+        },
+        "update_quote_fields": {
+            "Id": S.get("QuoteId"),
+            "Description": "E2E quote update",
+        },
+        "update_quote_line_item": {
+            "Id": S.get("QuoteLineItemId"),
+            "Quantity": 2,
+        },
+        "fetch_quote_details": {
+            "Id": S.get("QuoteId"),
+            "Name": S.get("QuoteName") or "Quote 1",
+        },
+        "fuzzy_search_quotes": {
+            "searchTerm": S.get("QuoteName") or "Quote",
+            "search_term": S.get("QuoteName") or "Quote",
+        },
+        "create_quote": {
+            "Name": "E2E Quote " + str(int(time.time()))[-4:],
+            "OpportunityId": S.get("OpportunityId"),
+        },
+        "add_opportunity_team_member": {
+            "OpportunityId": S.get("OpportunityId"),
+            "opportunity_id": S.get("OpportunityId"),
+            # Prefer standard internal User — Partner/community OtherUserId can throw OP_WITH_INVALID_USER_TYPE
+            "UserId": me,
+            "user_id": me,
+            "TeamMemberRole": "Account Manager",
+            "team_member_role": "Account Manager",
+            "Role": "Account Manager",
+        },
+        "fetch_opportunity_team": {
+            "OpportunityId": S.get("OpportunityId") or "E2E Skill Test Opp",
+            "OpportunityName": "E2E Skill Test Opp",
+            "Id": S.get("OpportunityId"),
+        },
+        "fetch_knowledge_article": {
+            "Id": S.get("KnowledgeArticleVersionId") or S.get("KnowledgeArticleId"),
+            "Title": S.get("KnowledgeTitle") or "Test 1",
+        },
+        "search_knowledge_articles": {
+            "search_term": S.get("KnowledgeTitle") or "Test",
+            "searchTerm": S.get("KnowledgeTitle") or "Test",
+        },
+        "link_knowledge_article_to_case": {
+            "case_id": S.get("CaseId") or S.get("OpenCaseId"),
+            "CaseId": S.get("CaseId") or S.get("OpenCaseId"),
+            "article_id": S.get("KnowledgeArticleVersionId") or S.get("KnowledgeArticleId"),
+            "KnowledgeArticleId": S.get("KnowledgeArticleId"),
+            "Id": S.get("KnowledgeArticleVersionId"),
+        },
     }
     if skill in hand and hand[skill]:
-        return hand[skill]
+        # Drop empty values so skills don't send null Id
+        cleaned = {k: v for k, v in hand[skill].items() if v not in (None, "", "SKIP")}
+        if cleaned:
+            return cleaned
     # fallback to build_payload defaults if seed available
     try:
         return build_payload(skill, None, S)
@@ -141,9 +197,11 @@ def stage_and_deploy_handlers(org: str) -> None:
             dest = stage / p.name
             dest.write_bytes(p.read_bytes())
         print(f"Staged handlers from {SRC_CLASSES} → {stage}")
+    pkg_root = ROOT / "package"
     print("=== Deploy handlers ===")
+    # sf requires cwd = project that owns sfdx-project.json
     rc, out = run_shell(
-        f'sf project deploy start --source-dir "{STAGE_FORCE}" --target-org "{org}" --wait 20'
+        f'cd /d "{pkg_root}" && sf project deploy start --source-dir "force-app" --target-org "{org}" --wait 25'
     )
     print(out[-2000:])
     if rc != 0 and "Succeeded" not in out:
