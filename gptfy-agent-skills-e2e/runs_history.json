@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-08-06T08:12:32.605105+00:00",
-  "runCount": 22,
+  "updatedAt": "2026-08-06T08:24:00.431936+00:00",
+  "runCount": 23,
   "runs": [
     {
       "id": "2026-08-05T20:54:50_caseagenticskillshandler_establish-proce",
@@ -388,6 +388,24 @@
       "agent": "IT_Helpdesk_Assistant05/08/2026, 11:47",
       "archive": "2026-08-06_134232_retry-fixable-failures.html",
       "note": "Org seed: activate ServiceResource Summary then re-fetch availability\nRetried skills: fetch_service_resource_availability\nFix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy",
+      "total": 110,
+      "pass": 98,
+      "fail_data": 0,
+      "fail_business": 0,
+      "fail_api": 0,
+      "fail_missing_feature": 12,
+      "fail_missing_class": 0,
+      "other": 0,
+      "passRate": 89.1
+    },
+    {
+      "id": "2026-08-06T13:54:00+05:30_retry-fixable-failures",
+      "when": "2026-08-06T13:54:00+05:30",
+      "label": "retry fixable failures",
+      "org": "Master Dev",
+      "agent": "IT_Helpdesk_Assistant05/08/2026, 11:47",
+      "archive": "2026-08-06_135359_retry-fixable-failures.html",
+      "note": "Apex handlers deployed from Deliverables\nName/ProductCode only — no Salesforce Ids in request\nRetried skills: fetch_pricebook_entries, fetch_product_details\nFix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy",
       "total": 110,
       "pass": 98,
       "fail_data": 0,
