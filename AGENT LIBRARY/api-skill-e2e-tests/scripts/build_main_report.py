@@ -454,11 +454,26 @@ def publish_main_and_archive(
         hist = PUBLIC_DOCS / "archive"
         hist.mkdir(exist_ok=True)
         shutil.copy2(arch, hist / arch.name)
+        try:
+            from build_public_dashboard import record_and_build  # local sibling
+
+            dash = record_and_build(
+                rows,
+                org=org,
+                agent=agent,
+                slug=slug,
+                archive_name=arch.name,
+                need=need,
+            )
+            print("DASHBOARD:", dash)
+        except Exception as de:
+            print("WARN: dashboard history:", de)
         (PUBLIC_DOCS / "README.md").write_text(
             "# GPTfy Agent Skills E2E\n\n"
-            "Public always-latest report for verification.\n\n"
-            "- **Main (this page):** full request + response per skill\n"
-            "- **Archive:** `archive/` dated snapshots\n",
+            "Share these public links (no git access needed):\n\n"
+            "- **Dashboard (all runs):** [dashboard.html](./dashboard.html)\n"
+            "- **Latest skill detail:** [index.html](./index.html)\n"
+            "- **Archives:** `archive/` dated snapshots\n",
             encoding="utf-8",
         )
     except Exception as e:
