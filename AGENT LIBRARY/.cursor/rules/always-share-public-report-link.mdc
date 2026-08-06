@@ -1,0 +1,16 @@
+---
+description: Always share the public GitHub Pages E2E report URL after any report/test work
+alwaysApply: true
+---
+
+# Always share the public final report link
+
+After any E2E run, retry, MAIN update, handler regression, or report publish, **always** include this URL in the reply (near the end, easy to copy):
+
+**Public report:** https://kalanithib94.github.io/Master-Salesforce-projects/gptfy-agent-skills-e2e/
+
+Also include when useful:
+- Local MAIN: `AGENT LIBRARY/Reports/MAIN_REPORT.html`
+- Latest archive path under `AGENT LIBRARY/Reports/archive/`
+
+If Pages copy under `docs/gptfy-agent-skills-e2e/` was updated but not pushed, say that the link may still show the previous publish until push. Do **not** push unless the user asks.

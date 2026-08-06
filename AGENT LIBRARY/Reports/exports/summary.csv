@@ -1,0 +1,16 @@
+﻿GPTfy Agent Skills — E2E + Field Guide,
+Updated,2026-08-06 05:43 UTC
+Source,MAIN_REPORT.html + PROMPT_COMMANDS_BY_SKILL.json
+Org / Note,Master Dev multi-skill matrix (strict Apex business success)
+Total skills,110
+pass,81
+fail_data,3
+fail_business,0
+fail_missing_feature,26
+fail_api,0
+fail_missing_class,0
+,
+How to read,
+E2E Results tab,"One row per skill: last request payload, response, result, next step"
+Skill Field Guide tab,"User-facing parameters, objects, and what to expect (help text)"
+HTML report,AGENT LIBRARY/Reports/MAIN_REPORT.html (full UI detail)

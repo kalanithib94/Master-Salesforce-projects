@@ -1,0 +1,36 @@
+---
+description: E2E skills — retry fixable fails once, stop, keep pass count ≥ last MAIN run
+alwaysApply: true
+---
+
+# E2E: retry once, then stop (no over-runs)
+
+## Hard limits
+
+1. After a full matrix / MAIN report, **retry fixable fails at most once** (`fail_data` / `fail_business` only).
+2. Do **not** re-run the full 110-skill matrix again in the same request unless the user explicitly asks for a full retest.
+3. Do **not** loop cleanup → bootstrap → matrix repeatedly. One clean run + one retry is the max default.
+4. `fail_missing_feature` is N/A — document Next step; do not burn retries on it.
+
+## Pass-count guardrail
+
+- Baseline = **pass** count on the current `Reports/MAIN_REPORT.html` (or last published archive).
+- After the single retry, **merged MAIN pass must be ≥ baseline**.
+- Prefer fixes that convert `fail_data` / `fail_business` → `pass`.
+- Never “fix” scores by skipping skills or relaxing the strict Apex success rule.
+
+## Required flow
+
+```
+1. Full run (or use existing MAIN) → note baseline pass
+2. Fix only actionable residuals (data / Prompt Command / Apex)
+3. Deploy handlers only if Apex changed
+4. python retry_failed_skills.py --from-main [--deploy-handlers] --reason "…"
+5. Publish MAIN + archive → report counts; stop
+```
+
+## What to tell the user
+
+- Baseline pass vs new pass
+- Which skills flipped on the one retry
+- Residuals left (feature / org limits) with Next step only — no further auto-runs

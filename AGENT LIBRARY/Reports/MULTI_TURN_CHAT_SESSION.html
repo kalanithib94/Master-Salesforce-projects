@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><title>Multi-turn agent chat</title>
+<style>
+body{font-family:Segoe UI,sans-serif;background:#0f1419;color:#e7eef8;padding:1.2rem}
+article{background:#1a2332;border:1px solid #2e3f56;border-radius:12px;padding:1rem;margin:.8rem 0;border-left:4px solid #6b7c93}
+article.ok{border-left-color:#3dd68c} article.bad{border-left-color:#f07178}
+pre{white-space:pre-wrap;background:#0d1218;padding:.7rem;border-radius:8px;font-size:.85rem}
+.u{color:#b8e0ff}.a{color:#d4f0d4}
+</style></head><body>
+<h1>Multi-turn chat session (same userContextId)</h1>
+<p>Org Master Dev · Agent IT_Helpdesk_Assistant05/08/2026, 11:47 · Context <code>A-00010</code></p>
+<p>Turns OK: <b>11/11</b> · Account: E2E Skill Test Account</p>
+<article class="ok"><h2>#1 T1_fetch_account</h2><p><b>userContextId sent:</b> (none) → <b>returned:</b> A-00010</p><pre class="u">USER
+Look up the account named "E2E Skill Test Account" and give me a concise summary (type, phone, website, owner if available).</pre><pre class="a">AGENT
+Found 6 matching Accounts — showing the latest 5: E2E Skill Test Account Type: Not specified Phone: Not specified Website: https://e2e.example.com Owner: Not specified View Record E2E Skill Test Account Type: Not specified Phone: Not specified Website: Not specified Owner: Not specified View Record E2E Created Account 946362 Type: Not specified Phone: Not specified Website: Not specified Owner: Not specified View Record E2E Partner Account Type: Partner Reseller Phone: Not specified Website: Not specified Owner: Not specified View Record master test 1 Type: Not specified Phone: Not specified Website: Not specified Owner: Not specified View Record 1 more not shown. Refine your search (e.g. add the city, region, or a longer name) to narrow it down.</pre></article><article class="ok"><h2>#2 T2_related</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Using that same account from this chat, list its related contacts, opportunities, and cases. Highlight any open opportunities or open cases.</pre><pre class="a">AGENT
+Related Contacts for E2E Skill Test Account: Sam E2EContactB Email: e2e.b@example.com View Record Rose E2EContact Title: E2E Title Email: e2e.contact@example.com Phone: 555-0101 View Record E2E CreatedContact6362 Email: e2e.created@example.com View Record Related Opportunities for E2E Skill Test Account: E2E Skill Test Opp Stage: Prospecting Amount: £200.00 Close Date: 15/09/2026 View Record E2E Skill Test Opp Stage: Prospecting Amount: £200.00 Close Date: 15/09/2026 View Record E2E Created Opp 6361 Stage: Prospecting Close Date: 01/09/2026 View Record Open opportunities are highlighted. Related Cases for E2E Skill Test Account: 00001039 - E2E Skill Test Case Open Status: New Priority: Medium View Record 00001038 - E2E Created Case Status: New Priority: Medium View Record 00001037 - E2E Skill Test Case Status: Closed Priority: Medium View Record Open cases are highlighted.</pre></article><article class="ok"><h2>#3 T3_create_opp_confirm</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+On the same account "E2E Skill Test Account", create a new opportunity named "E2E Chat Session Opp", Stage Prospecting, Close Date 2026-09-30, Amount 15000. Prepare the confirmation.</pre><pre class="a">AGENT
+E2E Skill Test Account Opportunity Name - E2E Chat Session Opp Stage - Prospecting Close Date - 30/09/2026 Amount - £15,000.00 Shall I create this opportunity? (yes / no)</pre></article><article class="ok"><h2>#4 T4_confirm_opp</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Yes, confirm and create that opportunity now.</pre><pre class="a">AGENT
+✅ Opportunity Created Name: E2E Chat Session Opp Stage: Prospecting Close Date: 2026-09-30 👉 View Opportunity</pre></article><article class="ok"><h2>#5 T5_create_case_confirm</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Also create a Case on the same account for contact "Rose E2EContact" with subject "E2E Chat Session Case", Status New, Origin Web, Priority Medium. Show confirmation before creating.</pre><pre class="a">AGENT
+Create new Case: Account: E2E Skill Test Account Contact: Rose E2EContact Subject: E2E Chat Session Case Status: New Origin: Web Priority: Medium Shall I create this record? (yes / no)</pre></article><article class="ok"><h2>#6 T6_confirm_case</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Yes, create the case.</pre><pre class="a">AGENT
+✅ Case Created Case #: 00001040 Subject: E2E Chat Session Case 👉 View Case</pre></article><article class="ok"><h2>#7 T7_fetch_case_or_context</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Fetch details for the case you just created in this chat (use CaseNumber if you have it). Summarize status and subject.</pre><pre class="a">AGENT
+Case Details Status: New Subject: E2E Chat Session Case View Record</pre></article><article class="ok"><h2>#8 T7b_existing_case</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Also fetch case number 00001037 details (subject, status).</pre><pre class="a">AGENT
+Case Details Subject: E2E Skill Test Case Status: Closed View Record</pre></article><article class="ok"><h2>#9 T8_log_activity_confirm</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Log a completed activity on account "E2E Skill Test Account" with subject "E2E chat session follow-up call". Confirm first if required.</pre><pre class="a">AGENT
+Log Activity for E2E Skill Test Account: Subject - E2E chat session follow-up call Shall I log this? (yes / no)</pre></article><article class="ok"><h2>#10 T9_confirm_activity</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Yes, log that activity.</pre><pre class="a">AGENT
+✅ Activity Logged: E2E chat session follow-up call Status: Completed Date: 2026-08-06 👉 View Task</pre></article><article class="ok"><h2>#11 T10_session_summary</h2><p><b>userContextId sent:</b> A-00010 → <b>returned:</b> A-00010</p><pre class="u">USER
+Summarize what we accomplished in this conversation: which account we used, what opportunity/case/activity were created or viewed, and any remaining open items. Do not invent records — only what skills confirmed.</pre><pre class="a">AGENT
+Conversation Summary Account Used: E2E Skill Test Account View Record: View Record Opportunities Created: E2E Chat Session Opp (Stage: Prospecting, Close Date: 30/09/2026, Amount: £15,000.00) View Record: View Record Cases Created: Case #00001040 - E2E Chat Session Case (Status: New) View Record: View Record Cases Viewed: Case #00001040 - E2E Chat Session Case (Status: New) View Record: View Record Case #00001037 - E2E Skill Test Case (Status: Closed) View Record: View Record Activities Logged: E2E chat session follow-up call (Completed) View Record: View Record Open Items Opportunity "E2E Chat Session Opp" remains open (Stage: Prospecting). Case #00001040 "E2E Chat Session Case" remains open (Status: New).</pre></article>
+</body></html>
