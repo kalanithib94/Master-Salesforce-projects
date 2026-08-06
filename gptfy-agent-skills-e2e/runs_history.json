@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-08-06T07:37:11.649508+00:00",
-  "runCount": 18,
+  "updatedAt": "2026-08-06T08:12:32.605105+00:00",
+  "runCount": 22,
   "runs": [
     {
       "id": "2026-08-05T20:54:50_caseagenticskillshandler_establish-proce",
@@ -325,6 +325,78 @@
       "fail_missing_class": 0,
       "other": 0,
       "passRate": 83.6
+    },
+    {
+      "id": "2026-08-06T13:34:35+05:30_retry-fixable-failures",
+      "when": "2026-08-06T13:34:35+05:30",
+      "label": "retry fixable failures",
+      "org": "Master Dev",
+      "agent": "IT_Helpdesk_Assistant05/08/2026, 11:47",
+      "archive": "2026-08-06_133434_retry-fixable-failures.html",
+      "note": "Retry fixable failures\nRetried skills: fetch_account_plan, fetch_service_appointment, fetch_service_resource_availability, schedule_service_appointment, update_service_appointment\nFix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy",
+      "total": 110,
+      "pass": 96,
+      "fail_data": 0,
+      "fail_business": 1,
+      "fail_api": 0,
+      "fail_missing_feature": 13,
+      "fail_missing_class": 0,
+      "other": 0,
+      "passRate": 87.3
+    },
+    {
+      "id": "2026-08-06T13:35:39+05:30_retry-fixable-failures",
+      "when": "2026-08-06T13:35:39+05:30",
+      "label": "retry fixable failures",
+      "org": "Master Dev",
+      "agent": "IT_Helpdesk_Assistant05/08/2026, 11:47",
+      "archive": "2026-08-06_133539_retry-fixable-failures.html",
+      "note": "Apex handlers deployed from Deliverables\nApex: AccountPlan Owner.Name SOQL fix\nRetried skills: fetch_account_plan\nFix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy",
+      "total": 110,
+      "pass": 97,
+      "fail_data": 0,
+      "fail_business": 0,
+      "fail_api": 0,
+      "fail_missing_feature": 13,
+      "fail_missing_class": 0,
+      "other": 0,
+      "passRate": 88.2
+    },
+    {
+      "id": "2026-08-06T13:40:05+05:30_retry-fixable-failures",
+      "when": "2026-08-06T13:40:05+05:30",
+      "label": "retry fixable failures",
+      "org": "Master Dev",
+      "agent": "IT_Helpdesk_Assistant05/08/2026, 11:47",
+      "archive": "2026-08-06_134005_retry-fixable-failures.html",
+      "note": "Apex handlers deployed from Deliverables\nHarness+Apex: stop patching Lead.Name; update Title/Company\nRetried skills: update_lead_fields\nFix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy",
+      "total": 110,
+      "pass": 98,
+      "fail_data": 0,
+      "fail_business": 0,
+      "fail_api": 0,
+      "fail_missing_feature": 12,
+      "fail_missing_class": 0,
+      "other": 0,
+      "passRate": 89.1
+    },
+    {
+      "id": "2026-08-06T13:42:32+05:30_retry-fixable-failures",
+      "when": "2026-08-06T13:42:32+05:30",
+      "label": "retry fixable failures",
+      "org": "Master Dev",
+      "agent": "IT_Helpdesk_Assistant05/08/2026, 11:47",
+      "archive": "2026-08-06_134232_retry-fixable-failures.html",
+      "note": "Org seed: activate ServiceResource Summary then re-fetch availability\nRetried skills: fetch_service_resource_availability\nFix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy",
+      "total": 110,
+      "pass": 98,
+      "fail_data": 0,
+      "fail_business": 0,
+      "fail_api": 0,
+      "fail_missing_feature": 12,
+      "fail_missing_class": 0,
+      "other": 0,
+      "passRate": 89.1
     }
   ]
 }

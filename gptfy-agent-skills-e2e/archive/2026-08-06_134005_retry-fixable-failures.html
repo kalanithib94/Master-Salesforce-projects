@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>GPTfy Agent Skills — E2E request / response report</title>
+<title>GPTfy Agent Skills — E2E request / response report (archive 2026-08-06_134005)</title>
 <style>
 body{font-family:Segoe UI,system-ui,sans-serif;background:#0f1419;color:#e7eef8;margin:0;padding:1.25rem 1.5rem 3rem;line-height:1.45}
 .wrap{max-width:1200px;margin:0 auto}
@@ -37,15 +37,15 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
 .next-step strong{color:#7ec8ff}
 </style></head><body><div class="wrap">
 <header class="hero">
-  <h1>GPTfy Agent Skills — E2E request / response report</h1>
-  <p class="muted">2026-08-06 13:42:32 India Standard Time · 2026-08-06 08:12:32 UTC</p>
+  <h1>GPTfy Agent Skills — E2E request / response report (archive 2026-08-06_134005)</h1>
+  <p class="muted">2026-08-06 13:40:05 India Standard Time · 2026-08-06 08:10:05 UTC</p>
   <p class="muted">Org <b>Master Dev</b> · Agent <code>IT_Helpdesk_Assistant05/08/2026, 11:47</code></p>
-  <div class="banner">MAIN report — always overwritten with the latest full run. Dated snapshots live under AGENT LIBRARY/Reports/archive/.</div>
-  <p class="muted" style="margin-top:.65rem">This MAIN file is overwritten on every run. Snapshot: 2026-08-06_134232_retry-fixable-failures.html</p>
+  <div class="banner">Archived dated run (immutable snapshot).</div>
+  <p class="muted" style="margin-top:.65rem">Immutable archive of the run at 2026-08-06 13:40:05 India Standard Time. MAIN_REPORT.html is the always-latest file.</p>
 </header>
 <section class="intro">
   <h2 style="margin:0 0 .5rem;font-size:1rem">Why this update</h2>
-  <ul><li>Org seed: activate ServiceResource Summary then re-fetch availability</li><li>Retried skills: fetch_service_resource_availability</li><li>Fix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy</li></ul>
+  <ul><li>Apex handlers deployed from Deliverables</li><li>Harness+Apex: stop patching Lead.Name; update Title/Company</li><li>Retried skills: update_lead_fields</li><li>Fix layers allowed: org data, Prompt Command reseed, and/or Apex handler deploy</li></ul>
   <h2 style="margin:1rem 0 .4rem;font-size:1rem">Consolidated results</h2>
   <div class="consolidated"><span class="cnt total"><b>110</b> skills</span><span class="cnt ok"><b>98</b> pass</span><span class="cnt mute"><b>12</b> fail_missing_feature</span></div>
   <p class="muted" style="margin:.35rem 0 0">Failed skills include a <b>Next step</b> (enable feature / seed data / fix prompt or Apex).</p>
@@ -1283,29 +1283,14 @@ header h2{font-size:1.1rem;margin:0} .toc a{color:#5eb1ff;text-decoration:none}
 }</pre></div></div></article><article class="card ok" id="fetch_service_resource_availability"><header><h2><code>fetch_service_resource_availability</code></h2><span class="pill ok">pass</span></header><div class="pair"><div class="col"><h3>Request</h3><pre>{
   &quot;StartDate&quot;: &quot;2026-08-10T00:00:00Z&quot;,
   &quot;EndDate&quot;: &quot;2026-08-17T00:00:00Z&quot;,
-  &quot;limit&quot;: 20,
-  &quot;ServiceResourceId&quot;: &quot;0HnQH0000006kL70AI&quot;,
-  &quot;Id&quot;: &quot;0HnQH0000006kL70AI&quot;,
-  &quot;Name&quot;: &quot;Summary&quot;
+  &quot;limit&quot;: 20
 }</pre></div><div class="col"><h3>Response</h3><pre>{
   &quot;status&quot;: &quot;Success&quot;,
   &quot;message&quot;: &quot;&quot;,
   &quot;data&quot;: {
     &quot;success&quot;: true,
-    &quot;resources&quot;: [
-      {
-        &quot;recordUrl&quot;: &quot;https://masterdev4-dev-ed.develop.my.salesforce.com/lightning/r/ServiceResource/0HnQH0000006kL70AI/view&quot;,
-        &quot;likelyAvailable&quot;: true,
-        &quot;conflicts&quot;: [],
-        &quot;conflictCount&quot;: 0,
-        &quot;RelatedRecordId&quot;: &quot;005QH00000Ahc4IYAR&quot;,
-        &quot;IsActive&quot;: true,
-        &quot;ResourceType&quot;: &quot;T&quot;,
-        &quot;Name&quot;: &quot;Summary&quot;,
-        &quot;Id&quot;: &quot;0HnQH0000006kL70AI&quot;
-      }
-    ],
-    &quot;count&quot;: 1,
+    &quot;resources&quot;: [],
+    &quot;count&quot;: 0,
     &quot;windowEnd&quot;: &quot;2026-08-17 01:00:00&quot;,
     &quot;windowStart&quot;: &quot;2026-08-10 01:00:00&quot;
   }

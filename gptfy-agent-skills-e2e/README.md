@@ -1,6 +1,7 @@
 # GPTfy Agent Skills E2E
 
-Public always-latest report for verification.
+Share these public links (no git access needed):
 
-- **Main (this page):** full request + response per skill
-- **Archive:** `archive/` dated snapshots
+- **Dashboard (all runs):** [dashboard.html](./dashboard.html)
+- **Latest skill detail:** [index.html](./index.html)
+- **Archives:** `archive/` dated snapshots
